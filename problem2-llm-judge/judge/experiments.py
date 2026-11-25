@@ -5,7 +5,7 @@ Runs (all cached in cache/calls.jsonl, resumable, replayable with --offline):
   Q  pairwise on 24 pairs (T-vs-VW, T-vs-P) x both orders x {v0, v1}
   S  self-preference: 6 open questions, Gemini vs Gemma originals and cross-paraphrases, both orders x {v0, v1}
   R  test-retest: v1 pointwise on 16 outputs x 2 extra reruns (temperature 0)
-  AB generator prompt gen_v1 vs gen_v2 (gemma-4-31b-it) on 15 inputs, judged by v1 (pairwise both orders + pointwise)
+  AB generator prompt gen_v1 vs gen_v2 (gemma-4-31b-it) on the 12 base inputs, judged by v1 (pairwise both orders + pointwise)
 """
 import json
 
@@ -20,7 +20,7 @@ SUITES = ROOT / "suites"
 PAD = ("Thank you for your question. {t} To elaborate, this is the answer to the question exactly as it was asked, and it "
        "reflects the information that was requested. It is worth keeping in mind that context can matter in many "
        "situations, so it is always a good idea to consider the details carefully. In summary: {t}")
-AB_EXTRA = [
+AB_EXTRA = [  # unused in the reduced run (Gemma 503s): A/B uses the 12 base inputs only
     {"id": "x1", "system_prompt": "Answer in exactly two sentences.", "input": "Explain what a vector database is."},
     {"id": "x2", "system_prompt": "Use at most 3 bullet points.", "input": "Give tips for writing a strong password."},
     {"id": "x3", "system_prompt": "Reply in under 20 words.", "input": "Why is the sky blue?",
@@ -31,6 +31,7 @@ SELFPREF_INPUTS = ["Explain what prompt injection is and give one mitigation.",
                    "Why do large language models sometimes hallucinate?",
                    "Give three tips for writing clear technical documentation.",
                    "What is retrieval-augmented generation and why is it used?"]
+SELFPREF_N = 4  # reduced from 6 to limit Gemma calls (503 "high demand")
 SP_SYSTEM = "Answer concisely in 3-5 sentences."
 PARAPHRASE = ("Rewrite the following answer in your own words. Keep every fact and claim exactly the same; do not add, "
               "remove or change any information. Output only the rewritten answer.\n\n<answer>\n{t}\n</answer>")
@@ -64,7 +65,7 @@ def selfpref_pairs(llm):
     gem = {"name": "gen_gemini", "model": "gemini-3.1-flash-lite", "family": "gemini", "temperature": 0, "seed": 42,
            "max_output_tokens": 1024, "system_prompt": SP_SYSTEM}
     gma = {**load_cfg("gen_v1"), "name": "gen_gemma", "system_prompt": SP_SYSTEM}
-    items = [{"id": f"s{k + 1}", "input": q} for k, q in enumerate(SELFPREF_INPUTS)]
+    items = [{"id": f"s{k + 1}", "input": q} for k, q in enumerate(SELFPREF_INPUTS[:SELFPREF_N])]
     g_orig, m_orig = generate(gem, items, llm, "sp:"), generate(gma, items, llm, "sp:")
     para = lambda cfg, case: generate({**cfg, "system_prompt": None}, [{"id": case.id, "input": PARAPHRASE.format(t=case.model_output)}],
                                       llm, "sp:para:")[0].model_output
@@ -78,7 +79,7 @@ def selfpref_pairs(llm):
 
 def ab_suites(llm, items):
     inputs = [{"id": it["id"], "input": it["input"], "system_prompt": it.get("system_prompt", ""),
-               "expected_output": it["expected_output"]} for it in items] + AB_EXTRA
+               "expected_output": it["expected_output"]} for it in items]
     a, b = generate(load_cfg("gen_v1"), inputs, llm, "ab:"), generate(load_cfg("gen_v2"), inputs, llm, "ab:")
     save_suite(a, SUITES / "ab_gen_v1.jsonl")
     save_suite(b, SUITES / "ab_gen_v2.jsonl")
@@ -206,7 +207,7 @@ Probe suite: 12 items x {{T terse-correct, P padded-correct, VW verbose-wrong, C
 |---|---|---|
 | Position (A/B order) | every pair judged AB **and** BA; final verdict only if both orders agree, else tie (`judge.judge_pair`) | flip rate {pct(qa['flip_rate'])} -> {pct(qb['flip_rate'])}; slot-1 win rate {pct(qa['slot1_win_rate'])} -> {pct(qb['slot1_win_rate'])} (ideal 50%); accuracy vs gold: v0 single-order {pct(qa['single_order_accuracy'])} -> v1 swap-aggregated {pct(qb['swap_final_accuracy'])} |
 | Verbosity / length | rubric penalizes content-free length under instruction_following; padded-answer probe; "do not reward length" rule | padded-minus-terse score {num(a['pad_minus_terse'][0])} -> {num(b['pad_minus_terse'][0])}; padded preferred over terse (pairwise) {pct(qa['padded_preferred_single_order'])} -> {pct(qb['padded_preferred_final'])}; verbose-wrong preferred over terse-correct {pct(qa['verbose_wrong_preferred_single_order'])} -> {pct(qb['verbose_wrong_preferred_final'])} |
-| Self-enhancement | `family` on every config; `guard_family` refuses judge.family == generator.family; A/B generator is Gemma (judge is Gemini) | self-preference delta {num(sa['delta_self_preference'])} -> {num(sb['delta_self_preference'])} (0 = no preference for Gemini-written text; 6 items x 2 sets x 2 orders) |
+| Self-enhancement | `family` on every config; `guard_family` refuses judge.family == generator.family; A/B generator is Gemma (judge is Gemini) | self-preference delta {num(sa['delta_self_preference'])} -> {num(sb['delta_self_preference'])} (0 = no preference for Gemini-written text; {SELFPREF_N} items x 2 sets x 2 orders) |
 | Sycophancy / style | per-criterion verbatim evidence, correctness quote verified in code (unverified -> fail); reference block; pairwise decisive quote verified (else tie) | confident-wrong passed {pct(a['CW_passed_rate'])} -> {pct(b['CW_passed_rate'])} (false-premise subset {a['CW_false_premise_passed']} -> {b['CW_false_premise_passed']}); verbose-wrong passed {pct(a['VW_passed_rate'])} -> {pct(b['VW_passed_rate'])} |
 | Score clustering | 1-5 anchors per criterion + 3 few-shot calibration examples; pairwise for comparisons | normalized entropy {num(a['norm_entropy'])} -> {num(b['norm_entropy'])} ({a['distinct_levels']}/{a['scale_levels']} -> {b['distinct_levels']}/{b['scale_levels']} levels used); AUROC correct vs wrong {num(a['auroc_correct_vs_wrong'])} -> {num(b['auroc_correct_vs_wrong'])} |
 
@@ -237,7 +238,7 @@ def ab_md(ab):
     f = lambda t: "n/a" if t[0] is None else f"{t[0]:.2f} [{t[1]:.2f}, {t[2]:.2f}]"
     return f"""# A/B comparison [MEASURED]: generator prompt gen_v1 (A) vs gen_v2 (B)
 
-Generator `gemma-4-31b-it` (family gemma) for both arms; judge v1 (`{load_cfg('judge_v1')['model']}`, family gemini). 15 inputs.
+Generator `gemma-4-31b-it` (family gemma) for both arms; judge v1 (`{load_cfg('judge_v1')['model']}`, family gemini). {len(ab['pairs'])} inputs.
 Decision rule (fixed before the run): B wins if the 95% CI of B's win rate is above 0.5, A if below, otherwise keep A.
 
 | Config | Pass rate | Mean score (0-1) | Win rate |
