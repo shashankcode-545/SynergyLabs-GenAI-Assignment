@@ -1,5 +1,16 @@
 # Progress report
 
+## Update 2026-11-25: smoke tests with GEMINI_API_KEY_P2 failed on 503; suite not launched
+
+- The P2 client is verified to use `GEMINI_API_KEY_P2`: the authenticated catalog call succeeded.
+- Live smoke tests (uncached inputs that belong to the real runs):
+  - `gemini-3.1-flash-lite` pointwise (P v1 `f1-T`): `503 UNAVAILABLE "This model is currently experiencing high demand"` after bounded retries.
+  - Pairwise test: not reached, because it runs after the failed pointwise call.
+  - `gemma-4-26b-a4b-it` generation (A/B `gen_v1` `f3`): same 503.
+- No new cache entries (judge 6, gen 27 lines unchanged). Per the instruction, the full suite was **not** launched.
+- The new key changed nothing about the 503s, so the cause is model capacity, not the key or quota.
+- Counts, remaining work and resume commands are unchanged from the 19:41 update below.
+
 ## Update 2026-11-25 19:41: full suite launched with the approved models; both stopped on 503 (external capacity)
 
 - **Approved configuration:**
