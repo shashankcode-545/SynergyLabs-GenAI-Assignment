@@ -8,7 +8,8 @@ from pathlib import Path
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
-JUDGE, GEN, GEN2 = "gemini-3.6-flash", "gemini-3.1-flash-lite", "gemma-4-31b-it"
+JUDGE, GEN, GEN2 = "gemini-3.6-flash", "gemini-3.1-flash-lite", "gemma-4-31b-it"  # JUDGE = P1 answer-eval judge
+P2_JUDGE = "gemini-3.5-flash-lite"  # switched from 3.6-flash (free tier 20 req/day), user-approved
 EMBED = "gemini-embedding-2"  # switched from gemini-embedding-001 (free-tier quota exhausted; user-approved)
 KEY_PATTERN = re.compile(r"AIza[0-9A-Za-z_-]{20,}|AQ\.[0-9A-Za-z_-]{20,}")
 
@@ -29,7 +30,7 @@ def test_p1_models_pinned():
 
 def test_p2_judge_and_generator_pinned_and_independent():
     cfg = {p.stem: yaml.safe_load(p.read_text(encoding="utf-8")) for p in (ROOT / "problem2-llm-judge/configs").glob("*.yaml")}
-    assert {cfg["judge_v0"]["model"], cfg["judge_v1"]["model"]} == {JUDGE}
+    assert {cfg["judge_v0"]["model"], cfg["judge_v1"]["model"]} == {P2_JUDGE}
     assert {cfg["gen_v1"]["model"], cfg["gen_v2"]["model"]} == {GEN2}
     # self-enhancement guard precondition: judge family differs from generator family
     assert cfg["judge_v1"]["family"] != cfg["gen_v1"]["family"]

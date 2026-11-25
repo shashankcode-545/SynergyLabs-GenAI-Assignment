@@ -46,8 +46,7 @@ Caps: P1 $1.5 + P2 $3.5 = $5 project cap. Billing was never enabled.
 | `gemma-4-31b-it` (second-family generator) | 503 "high demand"; the generation stage failed after 6 retries (only 2 of 6 self-preference answers cached). Gemma is free-tier only. | unknown (capacity, not quota) |
 | `gemini-embedding-001` free tier: 1,000 texts/day | Used up. P1 switched to `gemini-embedding-2` (user-approved); P1 is complete. | ≈ 22 h |
 
-**Decision needed** (not yet answered):
-- **Judge:** either you enable billing yourself (keeps `gemini-3.6-flash`; estimated P2 judge spend ~$1.2 under the $3.5 cap), or the P2 judge switches to `gemini-3.5-flash-lite` (separate free quota whose daily limit is unknown; weaker judge; disclosed).
+**Decided:** the P2 judge is now `gemini-3.5-flash-lite` (configs updated; its free daily limit is still unknown). **Still open:**
 - **Generator:** either keep retrying Gemma 31b with a smaller set (12 A/B inputs + 4 self-preference items), or switch to `gemma-4-26b-a4b-it`.
 
 ## Cache notes (do not delete)

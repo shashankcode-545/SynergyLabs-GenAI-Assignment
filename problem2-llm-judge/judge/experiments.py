@@ -199,7 +199,7 @@ def bias_md(m):
     sa, sb = m["self_preference"]["v0"], m["self_preference"]["v1"]
     return f"""# Bias handling [MEASURED]: judge v0 (naive) -> v1 (mitigated)
 
-Same judge model (`gemini-3.6-flash`), same data; only the prompt and the code-side mitigations change.
+Same judge model (`{load_cfg('judge_v1')['model']}`), same data; only the prompt and the code-side mitigations change.
 Probe suite: 12 items x {{T terse-correct, P padded-correct, VW verbose-wrong, CW confident-wrong}}; 24 pairs judged in both orders.
 
 | Bias | Mitigation implemented (in code) | Metric & result (before v0 -> after v1) |
@@ -237,7 +237,7 @@ def ab_md(ab):
     f = lambda t: "n/a" if t[0] is None else f"{t[0]:.2f} [{t[1]:.2f}, {t[2]:.2f}]"
     return f"""# A/B comparison [MEASURED]: generator prompt gen_v1 (A) vs gen_v2 (B)
 
-Generator `gemma-4-31b-it` (family gemma) for both arms; judge v1 (`gemini-3.6-flash`, family gemini). 15 inputs.
+Generator `gemma-4-31b-it` (family gemma) for both arms; judge v1 (`{load_cfg('judge_v1')['model']}`, family gemini). 15 inputs.
 Decision rule (fixed before the run): B wins if the 95% CI of B's win rate is above 0.5, A if below, otherwise keep A.
 
 | Config | Pass rate | Mean score (0-1) | Win rate |

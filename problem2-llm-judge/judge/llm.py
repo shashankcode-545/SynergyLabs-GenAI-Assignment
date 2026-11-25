@@ -7,7 +7,7 @@ that could push spend over BUDGET_USD is refused before it is made.
 import hashlib, json, time
 from pathlib import Path
 
-PRICES = {"gemini-3.6-flash": (0.75, 3.75), "gemini-3.1-flash-lite": (0.25, 1.50), "gemma-4-31b-it": (0.0, 0.0)}
+PRICES = {"gemini-3.6-flash": (0.75, 3.75), "gemini-3.5-flash-lite": (0.30, 2.50), "gemini-3.1-flash-lite": (0.25, 1.50), "gemma-4-31b-it": (0.0, 0.0)}
 # USD per 1M tokens (input, output incl. thinking), aistudio.google.com/docs/pricing read 2026-11-25; Gemma: free tier only
 
 

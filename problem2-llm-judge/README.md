@@ -42,7 +42,7 @@ cd problem2-llm-judge
 
 - **Independent configs:** judge and generator are configured separately, `configs/judge_v0.yaml` / `judge_v1.yaml` vs `configs/gen_v1.yaml` / `gen_v2.yaml`. Each has a `model` and a `family`.
 - **Models:**
-  - judge: `gemini-3.6-flash` (family gemini);
+  - judge: `gemini-3.5-flash-lite` (family gemini). It replaced `gemini-3.6-flash`, whose free tier allows only 20 requests/day;
   - generator: `gemma-4-31b-it` (family gemma).
 - **Spend cap:** a hard budget cap (`BUDGET_USD=3.5`) is checked before every call.
 - **Audit log:** every call is appended to `cache/calls.jsonl` with tag, model version, system prompt, full prompt, raw text, tokens, cost and latency. It is committed, so all results can be audited and replayed.

@@ -40,7 +40,7 @@ Every API call is cached and replayable. Hard spend caps apply (P1 $1.5 + P2 $3.
 **Pinned models (Phase 0):**
 - embeddings: `gemini-embedding-2` @ 768-d (switched from embedding-001 after its free daily quota ran out)
 - RAG generator: `gemini-3.1-flash-lite`
-- only judge: `gemini-3.6-flash`
+- judges: P1 answer evaluation `gemini-3.6-flash` (done); P2 judge `gemini-3.5-flash-lite` (3.6-flash free tier is 20 req/day)
 - second-family generator: `gemma-4-31b-it`
 
 ## Tests
