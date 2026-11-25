@@ -1,5 +1,26 @@
 # Progress report
 
+## Update 2026-11-25: offline recovery work while Google returns 503 (no live calls made)
+
+- **Interim report** (offline, cached data only): `problem2-llm-judge/results/interim_gemini-3.5-flash-lite.md`.
+  - One judge model only, clearly marked incomplete.
+  - Coverage: P v0 48/48, Q v0 24/24, P v1 19/48, Q v1 1/24; S, R and AB 0.
+  - Finding: a ceiling effect. The v0 judge scores 100% gold agreement, a 0% flip rate and AUROC 1.00 on the probes.
+- **`--stage bias --offline`:** not run. The current judge (`gemini-3.1-flash-lite`) has only 6 cached calls, so it would produce no meaningful metrics.
+- **Submission draft:** `reports/submission.docx`, from `reports/fill_submission.py`.
+  - 43 headings are identical to the template.
+  - Problem 1 cells come from real results.
+  - Problem 2 static cells (diagram, commands, rubric, mitigations, design decisions) are filled.
+  - Problem 2 result cells read **PENDING**.
+  - Candidate-only cells are untouched.
+- **Availability probe:** `python -m judge probe`. It makes 1 uncached P v1 judge call and 1 uncached A/B generation, with 2 attempts each. Both are real suite calls, so a success is cached and reused. Exit code 0 means both models are available. Unit-tested offline; **not run live**.
+- **Scheduling capability:**
+  - Desktop scheduled tasks (persistent, cron or one-time) and session-only `CronCreate` are both available.
+  - **Nothing was scheduled.**
+  - Proposed, pending approval: run `probe` about hourly; on exit 0, resume `--stage core`, `--stage gen`, then `experiments`, validate, and report.
+  - Per probe: at most 2 successful calls (≈ $0.0012); failed 503 attempts return no tokens.
+- **Remaining:** 298 judge calls (≈ $0.22) and 21 A/B generations ($0). P2 spend so far: $0.0434 of $3.50.
+
 ## Update 2026-11-25: smoke tests with GEMINI_API_KEY_P2 failed on 503; suite not launched
 
 - The P2 client is verified to use `GEMINI_API_KEY_P2`: the authenticated catalog call succeeded.

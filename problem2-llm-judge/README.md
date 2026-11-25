@@ -76,4 +76,21 @@ cd problem2-llm-judge
 
 See [`results/bias_validation.md`](results/bias_validation.md) (bias before → after, judge validation), [`results/ab_report.md`](results/ab_report.md) (A/B winner) and [`results/report.md`](results/report.md) (suite report).
 
-**Pending.** The live runs (bias before → after, validation, A/B) are blocked by free-tier quotas. See `../reports/progress_report.md`.
+**Final results: pending.** The full suite with the current judge (`gemini-3.1-flash-lite`) and A/B generator (`gemma-4-26b-a4b-it`) has not run. Google returned `503 UNAVAILABLE "high demand"` for every model we tried, even after bounded retries (log in `../reports/progress_report.md`). No final number is reported until `results/bias_validation.md` and `results/ab_report.md` exist; `tests/test_results.py` then validates them.
+
+**Interim, incomplete [MEASURED]:** [`results/interim_gemini-3.5-flash-lite.md`](results/interim_gemini-3.5-flash-lite.md).
+- Source: the cached calls of the replaced judge `gemini-3.5-flash-lite`, one judge model only, built with no API calls.
+- Coverage: v0 complete (48 pointwise, 24 pairs); v1 partial (19 pointwise, 1 pair).
+- Finding: the naive v0 judge already scores 100% gold agreement, a 0% AB/BA flip rate and AUROC 1.00. These clear-cut probes hit a **ceiling** for this judge, so they may not show mitigation gains. Harder probes would be needed to show bias reduction.
+
+### How to finish (resumable; all cached calls are skipped)
+
+```powershell
+..\.venv\Scripts\python -m judge probe          # 1 judge + 1 generator call (2 attempts each); exit 0 = both available
+..\.venv\Scripts\python -u -m judge experiments --stage core
+$env:LLM_TIMEOUT_S=240; ..\.venv\Scripts\python -u -m judge experiments --stage gen --cache gen_calls.jsonl
+..\.venv\Scripts\python -u -m judge experiments                  # S + AB + all reports (or --stage bias without A/B)
+..\.venv\Scripts\python -m pytest -q                              # includes results validation
+```
+
+Remaining: 298 judge calls (≈ $0.22 estimated from measured per-call costs) and 21 A/B generations ($0).

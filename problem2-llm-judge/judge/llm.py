@@ -39,7 +39,7 @@ class Gemini:
             if not key:
                 raise RuntimeError("GEMINI_API_KEY_P2 is not set (repo-root .env)")
             self._client = genai.Client(api_key=key, http_options=types.HttpOptions(timeout=timeout_ms, retry_options=types.HttpRetryOptions(
-                attempts=6, initial_delay=2.0, max_delay=60.0, http_status_codes=[429, 500, 503])))
+                attempts=int(os.getenv("LLM_RETRY_ATTEMPTS") or 6), initial_delay=2.0, max_delay=60.0, http_status_codes=[429, 500, 503])))
         return self._client
 
     def spent(self):

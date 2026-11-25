@@ -117,3 +117,20 @@ def test_client_requires_the_p2_key(tmp_path, monkeypatch):
         Gemini(tmp_path / "c.jsonl", 1.0).client
     monkeypatch.setenv("GEMINI_API_KEY_P2", "test-key-p2")
     assert Gemini(tmp_path / "c.jsonl", 1.0).client._api_client.api_key == "test-key-p2"
+
+
+def test_availability_probe_uses_first_uncached_calls_and_reports_errors():
+    from judge.experiments import availability_probe
+
+    class Offline:  # nothing cached
+        def generate(self, *a, **k):
+            raise KeyError("not cached")
+
+    class Down:
+        def generate(self, *a, **k):
+            raise RuntimeError("503 UNAVAILABLE")
+
+    ok = availability_probe(FakeLLM([GOOD]), FakeLLM(["Carbon dioxide."]), Offline())
+    assert ok["judge"] and ok["generator"] and ok["judge_case"] == "f1-T" and ok["generator_case"] == "gen_v1:f1"
+    down = availability_probe(Down(), Down(), Offline())
+    assert not down["judge"] and not down["generator"] and "503" in down["judge_error"]

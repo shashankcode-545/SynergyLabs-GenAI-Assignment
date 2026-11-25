@@ -273,3 +273,104 @@ def suite_md(name, recs):
 |---|---|
 {crit}
 """
+
+
+# ---------------------------------------------------------------------------------------------------- interim (offline)
+def interim_report(model):
+    """Offline-only report from whatever is cached for ONE judge model (no API calls, no cross-model mixing).
+    Pointwise v0 vs v1 is compared only on case ids present for both versions."""
+    from .pipeline import make_llm
+    llm = make_llm(offline=True)
+    cases, pairs = build_probes(base_items())
+    cfg = {v: {**load_cfg(f"judge_{v}"), "model": model} for v in ("v0", "v1")}
+
+    def cached(fn):
+        try:
+            return fn()
+        except KeyError:  # not in cache for this model
+            return None
+    P = {v: [r for x in cases if (r := cached(lambda: judge_pointwise(x, cfg[v], llm, tag="P:")))] for v in cfg}
+    Q = {v: [r for p in pairs if (r := cached(lambda: judge_pair(p["id"], p["input"], p["system_prompt"], p["reference"], p["out1"],
+             p["out2"], cfg[v], llm, tag="Q:", meta={"kind": p["kind"], "gold": p["gold"]})))] for v in cfg}
+    common = {r["id"] for r in P["v0"]} & {r["id"] for r in P["v1"]}
+    sub = {v: [r for r in P[v] if r["id"] in common] for v in P}
+    cov = {"P_v0": f"{len(P['v0'])}/{len(cases)}", "P_v1": f"{len(P['v1'])}/{len(cases)}", "Q_v0": f"{len(Q['v0'])}/{len(pairs)}",
+           "Q_v1": f"{len(Q['v1'])}/{len(pairs)}", "S": "0 (not run)", "R": "0 (not run)", "AB": "0 (not run)"}
+    m = {"coverage": cov, "common_pointwise_ids": sorted(common),
+         "pointwise_v0_full": pointwise_metrics(P["v0"]) if P["v0"] else None,
+         "pairwise_v0_full": pairwise_metrics(Q["v0"]) if Q["v0"] else None,
+         "pointwise_common": {v: pointwise_metrics(sub[v]) for v in sub} if common else None,
+         "pairwise_v1": pairwise_metrics(Q["v1"]) if Q["v1"] else None}
+    assert llm.calls == 0
+    a, q = m["pointwise_v0_full"], m["pairwise_v0_full"]
+    c0, c1 = (m["pointwise_common"] or {}).get("v0"), (m["pointwise_common"] or {}).get("v1")
+    row = lambda name, k, f: f"| {name} | {f(c0[k])} | {f(c1[k])} |" if c0 and c1 else ""
+    md = f"""# INTERIM report [MEASURED, INCOMPLETE]: judge `{model}`
+
+**Not the final result.** This judge was replaced after repeated 503 errors. Its run stopped part-way, so this report uses
+only the calls that were cached before it stopped, and only this one model (no cross-model mixing). No API calls were made to produce it.
+
+| Run | Coverage |
+|---|---|
+""" + "\n".join(f"| {k} | {v} |" for k, v in cov.items()) + f"""
+
+## v0 (naive) baseline: complete for P and Q
+
+| Metric | v0 |
+|---|---|
+| Gold agreement (pointwise, T/VW/CW) | {pct(a['gold_accuracy'])} (kappa {num(a['gold_kappa'])}, n = {a['n_gold']}) |
+| Verbose-wrong passed / confident-wrong passed / terse-correct failed | {pct(a['VW_passed_rate'])} / {pct(a['CW_passed_rate'])} / {pct(a['T_failed_rate'])} |
+| Padded-minus-terse score | {num(a['pad_minus_terse'][0])} |
+| Score clustering: normalized entropy, levels used, AUROC correct vs wrong | {num(a['norm_entropy'])}, {a['distinct_levels']}/{a['scale_levels']}, {num(a['auroc_correct_vs_wrong'])} |
+| Pairwise flip rate (AB vs BA) / slot-1 win rate | {pct(q['flip_rate'])} / {pct(q['slot1_win_rate'])} (n = {q['n']} pairs) |
+| Pairwise accuracy vs gold: single order / swap-aggregated | {pct(q['single_order_accuracy'])} / {pct(q['swap_final_accuracy'])} |
+| Padded preferred over terse / verbose-wrong preferred (single order) | {pct(q['padded_preferred_single_order'])} / {pct(q['verbose_wrong_preferred_single_order'])} |
+
+## Pointwise v0 vs v1 on the {len(common)} cases cached for both (items {", ".join(sorted({i.split('-')[0] for i in common}))})
+
+| Metric | v0 | v1 |
+|---|---|---|
+{row("Gold agreement", "gold_accuracy", pct)}
+{row("Cohen's kappa vs gold", "gold_kappa", num)}
+{row("Verbose-wrong passed", "VW_passed_rate", pct)}
+{row("Confident-wrong passed", "CW_passed_rate", pct)}
+{row("AUROC correct vs wrong", "auroc_correct_vs_wrong", num)}
+{row("Normalized entropy", "norm_entropy", num)}
+
+Not available from cached data: pairwise v1 (position bias after mitigation: {cov['Q_v1']} pairs), self-preference (S),
+test-retest (R), and the A/B comparison. The final results need the live runs with the current judge.
+"""
+    write(f"interim_{model}", {"kind": "measured_incomplete", "judge_model": model, "metrics": m}, md)
+    return m
+
+
+# ---------------------------------------------------------------------------------------------------- availability probe
+def _missing(fn):
+    try:
+        fn()
+        return False
+    except KeyError:  # offline replay: not cached
+        return True
+
+
+def availability_probe(online, gen_online, offline):
+    """One uncached P v1 judge call + one uncached A/B generation. Both are real suite calls, so a success is cached and
+    reused (no wasted quota). Returns {"judge": bool, "generator": bool, ...errors}."""
+    v1, out = load_cfg("judge_v1"), {}
+    cases, _ = build_probes(base_items())
+    case = next((x for x in cases if _missing(lambda: judge_pointwise(x, v1, offline, tag="P:"))), None)
+    try:
+        out["judge"] = case is None or "passed" in judge_pointwise(case, v1, online, tag="P:")
+        out["judge_case"] = case.id if case else "all P v1 cached"
+    except Exception as e:  # 503 after bounded retries, timeout, ...
+        out.update(judge=False, judge_error=f"{type(e).__name__}: {str(e)[:160]}")
+    items = [{"id": it["id"], "input": it["input"], "system_prompt": it.get("system_prompt", ""),
+              "expected_output": it["expected_output"]} for it in base_items()]
+    todo = next(((cfg, it) for cfg in (load_cfg("gen_v1"), load_cfg("gen_v2")) for it in items
+                 if _missing(lambda: generate(cfg, [it], offline, "ab:"))), None)
+    try:
+        out["generator"] = todo is None or bool(generate(todo[0], [todo[1]], gen_online, "ab:")[0].model_output.strip())
+        out["generator_case"] = f"{todo[0]['name']}:{todo[1]['id']}" if todo else "all A/B cached"
+    except Exception as e:
+        out.update(generator=False, generator_error=f"{type(e).__name__}: {str(e)[:160]}")
+    return out

@@ -1,0 +1,132 @@
+{
+ "kind": "measured_incomplete",
+ "judge_model": "gemini-3.5-flash-lite",
+ "metrics": {
+  "coverage": {
+   "P_v0": "48/48",
+   "P_v1": "19/48",
+   "Q_v0": "24/24",
+   "Q_v1": "1/24",
+   "S": "0 (not run)",
+   "R": "0 (not run)",
+   "AB": "0 (not run)"
+  },
+  "common_pointwise_ids": [
+   "f1-CW",
+   "f1-P",
+   "f1-T",
+   "f1-VW",
+   "f2-CW",
+   "f2-P",
+   "f2-T",
+   "f2-VW",
+   "f3-CW",
+   "f3-P",
+   "f3-T",
+   "f3-VW",
+   "f4-CW",
+   "f4-P",
+   "f4-T",
+   "f4-VW",
+   "m1-P",
+   "m1-T",
+   "m1-VW"
+  ],
+  "pointwise_v0_full": {
+   "n": 48,
+   "parse_failed": 0,
+   "gold_accuracy": 1.0,
+   "gold_kappa": 1.0,
+   "n_gold": 36,
+   "T_failed_rate": 0.0,
+   "VW_passed_rate": 0.0,
+   "CW_passed_rate": 0.0,
+   "CW_false_premise_passed": "0/4",
+   "pad_minus_terse": [
+    -0.5925925925925926,
+    -0.7129629629629629,
+    -0.49074074074074076
+   ],
+   "length_spearman_correct_only": -0.8496964569055905,
+   "norm_entropy": 0.5994195835822996,
+   "distinct_levels": 7,
+   "scale_levels": 10,
+   "auroc_correct_vs_wrong": 1.0,
+   "ungrounded_correctness": 0
+  },
+  "pairwise_v0_full": {
+   "n": 24,
+   "parse_failed": 0,
+   "flip_rate": 0.0,
+   "slot1_win_rate": 0.5,
+   "single_order_accuracy": 1.0,
+   "swap_final_accuracy": 1.0,
+   "ties_from_disagreement": 0.0,
+   "padded_preferred_single_order": 0.0,
+   "padded_preferred_final": 0.0,
+   "verbose_wrong_preferred_single_order": 0.0,
+   "verbose_wrong_preferred_final": 0.0,
+   "ungrounded_winner_orders": 0
+  },
+  "pointwise_common": {
+   "v0": {
+    "n": 19,
+    "parse_failed": 0,
+    "gold_accuracy": 1.0,
+    "gold_kappa": 1.0,
+    "n_gold": 14,
+    "T_failed_rate": 0.0,
+    "VW_passed_rate": 0.0,
+    "CW_passed_rate": 0.0,
+    "CW_false_premise_passed": "0/2",
+    "pad_minus_terse": [
+     -0.4666666666666666,
+     -0.5111111111111111,
+     -0.4444444444444445
+    ],
+    "length_spearman_correct_only": -0.9045340337332909,
+    "norm_entropy": 0.5878162386934872,
+    "distinct_levels": 5,
+    "scale_levels": 10,
+    "auroc_correct_vs_wrong": 1.0,
+    "ungrounded_correctness": 0
+   },
+   "v1": {
+    "n": 19,
+    "parse_failed": 0,
+    "gold_accuracy": 1.0,
+    "gold_kappa": 1.0,
+    "n_gold": 14,
+    "T_failed_rate": 0.0,
+    "VW_passed_rate": 0.0,
+    "CW_passed_rate": 0.0,
+    "CW_false_premise_passed": "0/2",
+    "pad_minus_terse": [
+     -0.07499999999999996,
+     -0.07499999999999996,
+     -0.07499999999999996
+    ],
+    "length_spearman_correct_only": -0.8703882797784891,
+    "norm_entropy": 0.6171522383536687,
+    "distinct_levels": 3,
+    "scale_levels": 5,
+    "auroc_correct_vs_wrong": 1.0,
+    "ungrounded_correctness": 0
+   }
+  },
+  "pairwise_v1": {
+   "n": 1,
+   "parse_failed": 0,
+   "flip_rate": 0.0,
+   "slot1_win_rate": 0.5,
+   "single_order_accuracy": 1.0,
+   "swap_final_accuracy": 1.0,
+   "ties_from_disagreement": 0.0,
+   "padded_preferred_single_order": 0.0,
+   "padded_preferred_final": 0.0,
+   "verbose_wrong_preferred_single_order": 0.0,
+   "verbose_wrong_preferred_final": 0.0,
+   "ungrounded_winner_orders": 0
+  }
+ }
+}
