@@ -10,10 +10,10 @@ from pathlib import Path
 
 import numpy as np
 
-PRICES = {  # USD per 1M tokens (input, output incl. thinking); aistudio.google.com/docs/pricing, read 2026-11-25
+PRICES = {
     "gemini-3.1-flash-lite": (0.25, 1.50), "gemini-3.6-flash": (0.75, 3.75), "gemini-embedding-001": (0.15, 0.0),
     "gemini-embedding-2": (0.20, 0.0)}
-EMB2_PREFIX = {"RETRIEVAL_QUERY": "task: search result | query: ", "RETRIEVAL_DOCUMENT": "title: none | text: "}  # docs: embeddings page
+EMB2_PREFIX = {"RETRIEVAL_QUERY": "task: search result | query: ", "RETRIEVAL_DOCUMENT": "title: none | text: "}
 
 
 class BudgetExceeded(RuntimeError):
@@ -39,7 +39,6 @@ class Gemini:
         self._client = client
         self._emb = {}
 
-    # -- plumbing --------------------------------------------------------------------------------
     @property
     def client(self):
         if self._client is None:
@@ -65,7 +64,6 @@ class Gemini:
         p_in, p_out = PRICES.get(model, (0.0, 0.0))
         return (prompt_tokens * p_in + output_tokens * p_out) / 1e6
 
-    # -- generation ------------------------------------------------------------------------------
     def generate(self, model, prompt, system=None, schema=None, thinking_level=None, max_output_tokens=1024,
                  temperature=0.0, seed=42, rerun_idx=0, offline=False):
         params = dict(system=system, schema=schema, thinking_level=thinking_level, max_output_tokens=max_output_tokens,
@@ -95,7 +93,6 @@ class Gemini:
         self.entries[key] = e
         return {**e, "cached": False}
 
-    # -- embeddings ------------------------------------------------------------------------------
     def _emb_file(self, model, dim):
         return self.cache_dir / f"emb_{model}_{dim}.npz"
 
@@ -122,8 +119,6 @@ class Gemini:
             est = self.cost(model, sum(len(t) for _, t in chunk) // 4, 0)
             self._guard(est)
             if model in PRICES and model.startswith("gemini-embedding-2"):
-                # embedding-2: no task_type (prompt prefix instead); a plain list of strings would be merged into ONE
-                # embedding, so each text goes in its own Content
                 contents = [types.Content(parts=[types.Part(text=EMB2_PREFIX[task_type] + t)]) for _, t in chunk]
                 cfg = types.EmbedContentConfig(output_dimensionality=dim)
             else:
@@ -135,7 +130,7 @@ class Gemini:
             for (k, _), e in zip(chunk, r.embeddings):
                 v = np.asarray(e.values, dtype=np.float32)
                 cache[k] = v / np.linalg.norm(v)
-            self.emb_spend += est  # shortcut: embed API returns no token usage, so cost uses chars/4; fine at $0.15/1M
+            self.emb_spend += est
             (self.cache_dir / "emb_spend.json").write_text(json.dumps({"usd": self.emb_spend}))
             np.savez(self._emb_file(model, dim), keys=np.array(list(cache)), vecs=np.stack(list(cache.values())))
         return np.stack([cache[k] for k in keys]).astype(np.float32)

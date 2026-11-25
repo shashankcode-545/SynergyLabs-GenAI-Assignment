@@ -41,7 +41,7 @@ def call(llm, cfg, prompt, model_cls, tag, rerun_idx=0, check=None, crit=CRITERI
     meta = {"keys": [r["key"]], "cost_usd": r["cost_usd"], "tokens": dict(r["usage"]), "cached": r["cached"]}
     v, step, err = parse_verdict(r["text"], model_cls)
     err = err or (check(v) if check else None)
-    if err:  # one repair retry, logged as its own call
+    if err:
         r2 = llm.generate(cfg["model"], prompt + f"\n\nYour previous reply was invalid ({err}). Reply again with ONLY the JSON object.",
                           tag=tag + ":repair", **kw)
         meta["keys"].append(r2["key"])
@@ -58,7 +58,7 @@ def judge_pointwise(case, cfg, llm, rerun_idx=0, tag=""):
     rec = {"id": case.id, "version": version, "rerun_idx": rerun_idx, "len_chars": len(case.model_output), **case.meta}
     if version == "v0":
         v, meta = call(llm, cfg, P.pointwise_v0(case), PointwiseV0, f"{tag}pw:{case.id}:v0", rerun_idx)
-        if v:  # pass bar at the same normalized level as v1's 3.5/5
+        if v:
             rec.update(raw_score=v.score, score_norm=(v.score - 1) / 9, passed=v.score >= 7, rationale=v.rationale)
         return {**rec, **meta}
     crit = case.criteria or CRITERIA
@@ -91,7 +91,7 @@ def judge_pair(pid, inp, system_prompt, reference, out1, out2, cfg, llm, rerun_i
         slot = v.winner if v else None
         cand = {"A": 1 if order == "AB" else 2, "B": 2 if order == "AB" else 1, "tie": 0}.get(slot)
         ungrounded = bool(version == "v1" and v and cand and not grounded(v.decisive_quote, out1 if cand == 1 else out2))
-        if ungrounded:  # winner not backed by a verbatim quote from the winning response -> no decision
+        if ungrounded:
             cand = 0
         rec["orders"][order] = {"slot": slot, "candidate": cand, "ungrounded": ungrounded, **m}
     ab, ba = rec["orders"]["AB"]["candidate"], rec["orders"]["BA"]["candidate"]

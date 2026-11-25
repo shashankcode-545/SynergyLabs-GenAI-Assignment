@@ -46,7 +46,7 @@ def norm_entropy(values, levels):
 
 def spearman(x, y):
     rank = lambda v: np.argsort(np.argsort(v, kind="stable"), kind="stable").astype(float)
-    def avg_rank(v):  # average ranks for ties
+    def avg_rank(v):
         v = np.asarray(v, float)
         r = rank(v)
         for val in np.unique(v):

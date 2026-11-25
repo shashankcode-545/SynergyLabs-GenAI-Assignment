@@ -8,7 +8,6 @@ import hashlib, json, os, time
 from pathlib import Path
 
 PRICES = {"gemini-3.6-flash": (0.75, 3.75), "gemini-3.5-flash-lite": (0.30, 2.50), "gemini-3.1-flash-lite": (0.25, 1.50), "gemma-4-31b-it": (0.0, 0.0)}
-# USD per 1M tokens (input, output incl. thinking), aistudio.google.com/docs/pricing read 2026-11-25; Gemma: free tier only
 
 
 class BudgetExceeded(RuntimeError):
@@ -20,7 +19,7 @@ class Gemini:
         self.path = Path(cache_file)
         self.path.parent.mkdir(parents=True, exist_ok=True)
         self.entries = {}
-        for f in sorted(self.path.parent.glob("*.jsonl")):  # read every log in the cache dir; append only to our own
+        for f in sorted(self.path.parent.glob("*.jsonl")):
             for line in f.read_text(encoding="utf-8").splitlines():
                 e = json.loads(line)
                 self.entries[e["key"]] = e
@@ -33,9 +32,8 @@ class Gemini:
         if self._client is None:
             from google import genai
             from google.genai import types
-            # per-attempt HTTP timeout (ms) bounds a hung request; judge calls take ~1-20 s, Gemma up to ~160 s
             timeout_ms = int(float(os.getenv("LLM_TIMEOUT_S") or 120) * 1000)
-            key = os.getenv("GEMINI_API_KEY_P2")  # Problem 2 has its own key; never fall back to another one
+            key = os.getenv("GEMINI_API_KEY_P2")
             if not key:
                 raise RuntimeError("GEMINI_API_KEY_P2 is not set (repo-root .env)")
             self._client = genai.Client(api_key=key, http_options=types.HttpOptions(timeout=timeout_ms, retry_options=types.HttpRetryOptions(

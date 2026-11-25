@@ -10,7 +10,7 @@ from .llm import Gemini
 from .schema import CRITERIA, TestCase
 from .stats import bootstrap_ci, sign_test_p
 
-ROOT = Path(__file__).resolve().parents[1]  # problem2-llm-judge/
+ROOT = Path(__file__).resolve().parents[1]
 load_dotenv(ROOT.parent / ".env", encoding="utf-8-sig")
 RESULTS = ROOT / "results"
 
@@ -22,7 +22,7 @@ def load_cfg(name_or_path):
 
 
 def make_llm(offline=False, cache_name="calls.jsonl"):
-    return Gemini(ROOT / "cache" / cache_name, float(os.getenv("BUDGET_USD") or 3.5),  # P2 share of the $5 cap
+    return Gemini(ROOT / "cache" / cache_name, float(os.getenv("BUDGET_USD") or 3.5),
                   int(os.getenv("LLM_RPM") or 15), offline=offline)
 
 
@@ -68,7 +68,6 @@ def compare(cases_a, cases_b, judge_cfg, llm, tag="ab:"):
     win_b = [1.0 if p["final"] == 2 else 0.0 if p["final"] == 1 else 0.5 for p in decided]
     wins_b, wins_a = sum(p["final"] == 2 for p in decided), sum(p["final"] == 1 for p in decided)
     wr = bootstrap_ci(win_b)
-    # Decision rule fixed before the run: B wins if its win-rate CI is above 0.5, A if below, else keep A (incumbent).
     winner = "B" if wr[1] > 0.5 else "A" if wr[2] < 0.5 else "A (no significant difference; incumbent kept)"
     return {"pairs": pairs, "pointwise_a": pw_a, "pointwise_b": pw_b, "summary_a": sum_a, "summary_b": sum_b,
             "win_rate_b": wr, "wins_b": wins_b, "wins_a": wins_a, "ties": len(decided) - wins_a - wins_b,

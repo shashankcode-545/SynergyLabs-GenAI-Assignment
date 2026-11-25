@@ -20,7 +20,7 @@ from .metrics import bootstrap_ci, contains_all, exact_match, ir_metrics, is_rel
 from .validate_questions import DEV, EVAL, load
 
 CORPUS, RESULTS = ROOT / "data/corpus", ROOT / "results"
-CONFIGS = [(1200, 200), (2400, 400)]  # first = default; 600/100 dropped (free-tier embedding quota)
+CONFIGS = [(1200, 200), (2400, 400)]
 KS = (1, 3, 5, 10)
 JUDGE_SYSTEM = "You are a strict evaluator of answers produced by a retrieval-augmented QA system. Judge only against the given context."
 JUDGE_SCHEMA = {"type": "object", "required": ["claims", "relevance", "relevance_rationale"], "properties": {
@@ -55,9 +55,6 @@ def calibrate(s, llm, offline):
     table = open_table(s.db_path, s.table_name(), s.embed_dim)
     sims = [(q["id"], q["answerable"], search(table, llm.embed([q["question"]], s.embed_model, s.embed_dim, "RETRIEVAL_QUERY",
                                                                offline=offline)[0], 1)[0]["score"]) for q in load(DEV)]
-    # Unanswerable dev similarities overlap answerable ones, so the gate is only a cheap pre-filter for clearly
-    # off-topic queries; it must not reject any answerable dev question. The LLM's answerable flag + citation check
-    # are the main abstention mechanism.
     tau = min(x for _, ans, x in sims if ans) - 0.02
     acc = sum((x >= tau) == ans for _, ans, x in sims)
     out = {"min_similarity": round(tau, 4), "dev_gating_accuracy": f"{acc}/{len(sims)}",
@@ -152,7 +149,7 @@ def answers(s, llm, offline):
     res = {"provenance": provenance(s), "k": s.top_k, "chunk": f"{s.chunk_size}/{s.chunk_overlap}", "summary": summary,
            "per_question": per_q}
     (RESULTS / "answers.json").write_text(json.dumps(res, indent=1, ensure_ascii=False))
-    if len(gen_live) == len([p for p in per_q if not p["abstained"]]) and gen_live:  # only a fully live run times e2e
+    if len(gen_live) == len([p for p in per_q if not p["abstained"]]) and gen_live:
         tot = [l["total"] for l in gen_live]
         (RESULTS / "latency_e2e.json").write_text(json.dumps({"kind": "measured", "n": len(tot), "p50_ms": float(np.percentile(tot, 50)),
             "p95_ms": float(np.percentile(tot, 95)), "note": "live run: query embed + retrieval + generation, answered questions only",

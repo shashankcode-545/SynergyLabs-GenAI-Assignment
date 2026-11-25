@@ -11,18 +11,18 @@ from rag.config import ROOT
 
 RESULTS = ROOT / "results"
 SCALES = [100_000, 1_000_000, 10_000_000]
-QUERY_VOLUMES = [50_000, 1_000_000, 10_000_000]  # per month; 50K = "lightly queried" baseline
-CHURN = 0.05            # assumption: 5% of vectors re-upserted per month
-TOKENS_PER_CHUNK = 300  # ~1200-char chunks at ~4 chars/token (measured chunk size / 4)
+QUERY_VOLUMES = [50_000, 1_000_000, 10_000_000]
+CHURN = 0.05
+TOKENS_PER_CHUNK = 300
 
 
 def self_hosted(n, bytes_row, idx_bytes, p):
     aws, h = p["aws_us_east_1"], p["hours_per_month"]
     data_gb = n * (bytes_row + idx_bytes) / 1e9
-    big = n > 2_000_000  # shortcut: 10M on a 16 GiB node so IVF-PQ codes + hot pages stay in RAM; re-size from a real 10M test
+    big = n > 2_000_000
     vm = (aws["r7g_large_usd_per_hour"] if big else aws["t4g_medium_usd_per_hour"]) * h
-    ebs = math.ceil(max(20, data_gb * 1.5)) * aws["ebs_gp3_usd_per_gb_month"]  # 50% headroom, 20 GB minimum volume
-    s3 = data_gb * aws["s3_standard_usd_per_gb_month"]  # one snapshot copy for backup
+    ebs = math.ceil(max(20, data_gb * 1.5)) * aws["ebs_gp3_usd_per_gb_month"]
+    s3 = data_gb * aws["s3_standard_usd_per_gb_month"]
     return {"instance": "r7g.large (16 GiB)" if big else "t4g.medium (4 GiB)", "data_gb": data_gb,
             "vm": vm, "ebs": ebs, "s3_backup": s3, "total": vm + ebs + s3}
 
@@ -41,8 +41,8 @@ def pinecone(n, record_bytes, queries, p):
 def main():
     p = yaml.safe_load((ROOT / "eval/pricing.yaml").read_text())
     lat = json.loads((RESULTS / "latency.json").read_text())
-    bytes_row = lat["real_corpus"]["bytes_per_row"]                 # vector + chunk text + metadata, measured
-    idx_bytes = lat["synthetic"]["index_bytes_per_vector"]          # IVF-PQ index overhead, measured at 100K
+    bytes_row = lat["real_corpus"]["bytes_per_row"]
+    idx_bytes = lat["synthetic"]["index_bytes_per_vector"]
     rows = []
     for n in SCALES:
         sh = self_hosted(n, bytes_row, idx_bytes, p)

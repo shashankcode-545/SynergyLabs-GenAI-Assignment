@@ -46,7 +46,7 @@ def answer(question, settings, llm, table, k=None, filters=None, offline=False, 
         valid = {f"S{i}" for i in range(1, len(chunks) + 1)}
         cites = sorted({c for c in j.get("citations", []) + re.findall(r"S\d+", j.get("answer", "")) if c in valid},
                        key=lambda s: int(s[1:]))
-        if not j.get("answerable") or not cites:  # no grounded citation -> abstain rather than risk a hallucination
+        if not j.get("answerable") or not cites:
             out.update(abstained=True, reason="model reported unanswerable" if not j.get("answerable") else "no valid citations",
                        answer=ABSTAIN, citations=[], context_chunks=[c["chunk_id"] for c in chunks])
         else:

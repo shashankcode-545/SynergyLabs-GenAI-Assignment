@@ -14,12 +14,12 @@ from docx import Document
 ROOT = Path(__file__).resolve().parents[1]
 TEMPLATE, OUT = ROOT / "reference/submission_template.docx", ROOT / "reports/submission.docx"
 P1R, P2R = ROOT / "problem1-rag/results", ROOT / "problem2-llm-judge/results"
-CANDIDATE_TABLES = {16, 17, 18, 19, 20, 34, 35, 36, 37, 38}  # screenshots + reflections: never touched
+CANDIDATE_TABLES = {16, 17, 18, 19, 20, 34, 35, 36, 37, 38}
 j = lambda p: json.loads(p.read_text(encoding="utf-8"))
 
 
 def set_cell(cell, text):
-    if hasattr(cell, "rows"):  # single-cell box tables are passed as Table
+    if hasattr(cell, "rows"):
         cell = cell.cell(0, 0)
     paras = cell.paragraphs
     for p in paras[1:]:
@@ -56,19 +56,17 @@ def p1_values():
 def fill(doc):
     T, paras = doc.tables, doc.paragraphs
     ret, ans, lat, cost, e2e, m, s = p1_values()
-    bv = j(P2R / "bias_validation.json") if (P2R / "bias_validation.json").exists() else None  # None -> P2 results pending
+    bv = j(P2R / "bias_validation.json") if (P2R / "bias_validation.json").exists() else None
     ab = j(P2R / "ab_report.json") if (P2R / "ab_report.json").exists() else None
     rub = yaml.safe_load((ROOT / "problem2-llm-judge/judge/rubric.yaml").read_text(encoding="utf-8"))
     judge_model = yaml.safe_load((ROOT / "problem2-llm-judge/configs/judge_v1.yaml").read_text())["model"]
 
-    # candidate details: only the two technical rows
     for row in T[0].rows:
         if row.cells[0].text.startswith("Problem 1"):
             set_cell(row.cells[1], "LanceDB (embedded, local disk)")
         if row.cells[0].text.startswith("Problem 2"):
             set_cell(row.cells[1], f"judge: {judge_model} (Gemini family) · generator: gemma-4-31b-it (Gemma family)")
 
-    # ---------------- Problem 1
     set_cell(T[1], "Mermaid source: problem1-rag/README.md (Architecture). PDF/HTML/MD -> loaders (normalized text + page/"
              "section map) -> doc-hash check (unchanged = skip) -> recursive chunker 1200/200 chars with offsets -> "
              "gemini-embedding-2 @768-d (cached) -> LanceDB (vector + doc_id, source_type, title, location, text) -> "
@@ -158,7 +156,6 @@ def fill(doc):
     for t, text in zip(T[10:16], d1):
         set_cell(t, text)
 
-    # ---------------- Problem 2
     PENDING = ("PENDING - not yet measured: live judge runs blocked by Gemini 503 'high demand' (reports/progress_report.md). "
                "Interim, incomplete data: problem2-llm-judge/results/interim_gemini-3.5-flash-lite.md")
     gen_model = yaml.safe_load((ROOT / "problem2-llm-judge/configs/gen_v1.yaml").read_text())["model"]

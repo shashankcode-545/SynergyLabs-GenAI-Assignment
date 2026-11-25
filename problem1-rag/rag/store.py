@@ -36,6 +36,6 @@ def search(table, qvec, k, filters=None):
         q = q.where(w, prefilter=True)
     rows = q.to_list()
     for r in rows:
-        r["score"] = 1.0 - r.pop("_distance")  # cosine similarity
+        r["score"] = 1.0 - r.pop("_distance")
         r.pop("vector", None)
     return rows

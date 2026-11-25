@@ -1,6 +1,6 @@
 """Recursive character chunking with exact char offsets into the document text."""
 
-SEPARATORS = ["\n\n", "\n", ". ", " "]  # paragraph > line > sentence > word
+SEPARATORS = ["\n\n", "\n", ". ", " "]
 
 
 def chunk_spans(text, size, overlap):
@@ -13,7 +13,7 @@ def chunk_spans(text, size, overlap):
         if start >= n:
             break
         end = min(start + size, n)
-        if end < n:  # cut at the strongest separator in the back half of the window
+        if end < n:
             for sep in SEPARATORS:
                 cut = text.rfind(sep, start + size // 2, end)
                 if cut != -1:
@@ -26,6 +26,6 @@ def chunk_spans(text, size, overlap):
         if end >= n:
             break
         nxt = max(end - overlap, start + 1)
-        space = text.find(" ", nxt, end)  # start the overlap on a word boundary
+        space = text.find(" ", nxt, end)
         start = space + 1 if space != -1 else nxt
     return spans

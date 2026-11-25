@@ -20,7 +20,7 @@ SUITES = ROOT / "suites"
 PAD = ("Thank you for your question. {t} To elaborate, this is the answer to the question exactly as it was asked, and it "
        "reflects the information that was requested. It is worth keeping in mind that context can matter in many "
        "situations, so it is always a good idea to consider the details carefully. In summary: {t}")
-AB_EXTRA = [  # unused in the reduced run (Gemma 503s): A/B uses the 12 base inputs only
+AB_EXTRA = [
     {"id": "x1", "system_prompt": "Answer in exactly two sentences.", "input": "Explain what a vector database is."},
     {"id": "x2", "system_prompt": "Use at most 3 bullet points.", "input": "Give tips for writing a strong password."},
     {"id": "x3", "system_prompt": "Reply in under 20 words.", "input": "Why is the sky blue?",
@@ -31,7 +31,7 @@ SELFPREF_INPUTS = ["Explain what prompt injection is and give one mitigation.",
                    "Why do large language models sometimes hallucinate?",
                    "Give three tips for writing clear technical documentation.",
                    "What is retrieval-augmented generation and why is it used?"]
-SELFPREF_N = 4  # reduced from 6 to limit Gemma calls (503 "high demand")
+SELFPREF_N = 4
 SP_SYSTEM = "Answer concisely in 3-5 sentences."
 PARAPHRASE = ("Rewrite the following answer in your own words. Keep every fact and claim exactly the same; do not add, "
               "remove or change any information. Output only the rewritten answer.\n\n<answer>\n{t}\n</answer>")
@@ -64,7 +64,6 @@ def build_probes(items):
 def selfpref_pairs(llm):
     gem = {"name": "gen_gemini", "model": "gemini-3.1-flash-lite", "family": "gemini", "temperature": 0, "seed": 42,
            "max_output_tokens": 1024, "system_prompt": SP_SYSTEM}
-    # pinned: the completed self-preference set was generated with gemma-4-31b-it (A/B later moved to 26b-a4b)
     gma = {**load_cfg("gen_v1"), "name": "gen_gemma", "model": "gemma-4-31b-it", "system_prompt": SP_SYSTEM}
     items = [{"id": f"s{k + 1}", "input": q} for k, q in enumerate(SELFPREF_INPUTS[:SELFPREF_N])]
     g_orig, m_orig = generate(gem, items, llm, "sp:"), generate(gma, items, llm, "sp:")
@@ -72,8 +71,8 @@ def selfpref_pairs(llm):
                                       llm, "sp:para:")[0].model_output
     pairs = []
     for g, m in zip(g_orig, m_orig):
-        pairs.append({"id": f"{g.id}-X", "set": "X", "input": g.input, "out1": g.model_output, "out2": para(gma, g)})  # orig = Gemini
-        pairs.append({"id": f"{g.id}-Y", "set": "Y", "input": g.input, "out1": m.model_output, "out2": para(gem, m)})  # orig = Gemma
+        pairs.append({"id": f"{g.id}-X", "set": "X", "input": g.input, "out1": g.model_output, "out2": para(gma, g)})
+        pairs.append({"id": f"{g.id}-Y", "set": "Y", "input": g.input, "out1": m.model_output, "out2": para(gem, m)})
     (SUITES / "selfpref.jsonl").write_text("\n".join(json.dumps(p, ensure_ascii=False) for p in pairs) + "\n", encoding="utf-8")
     return pairs
 
@@ -87,7 +86,6 @@ def ab_suites(llm, items):
     return a, b
 
 
-# ---------------------------------------------------------------------------------------------------- metrics
 def _orders(recs):
     return [o for r in recs for o in r["orders"].values() if o["candidate"] is not None]
 
@@ -134,7 +132,7 @@ def pairwise_metrics(recs):
 
 
 def selfpref_delta(recs):
-    def p_orig(s):  # per order verdict: original (candidate 1) wins = 1, tie = 0.5, paraphrase wins = 0
+    def p_orig(s):
         od = [o["candidate"] for r in recs if r["set"] == s for o in r["orders"].values() if o["candidate"] is not None]
         return sum({1: 1.0, 0: 0.5, 2: 0.0}[c] for c in od) / max(1, len(od))
     px, py = p_orig("X"), p_orig("Y")
@@ -152,7 +150,6 @@ def retest(recs0, reruns):
             "mean_weighted_score_range": sum(spread) / max(1, len(spread))}
 
 
-# ---------------------------------------------------------------------------------------------------- run all
 def run_all(llm, stage="all"):
     """stage: 'gen' = generations only; 'core' = P, Q, R judge runs only; 'bias' = P, Q, S, R + bias/validation reports
     (no A/B, so it does not need the A/B generator); 'all' = everything + all reports."""
@@ -192,7 +189,6 @@ def run_all(llm, stage="all"):
     return m, AB
 
 
-# ---------------------------------------------------------------------------------------------------- markdown
 pct = lambda x: "n/a" if x is None else f"{100 * x:.0f}%"
 num = lambda x: "n/a" if x is None else f"{x:.2f}"
 
@@ -275,7 +271,6 @@ def suite_md(name, recs):
 """
 
 
-# ---------------------------------------------------------------------------------------------------- interim (offline)
 def interim_report(model):
     """Offline-only report from whatever is cached for ONE judge model (no API calls, no cross-model mixing).
     Pointwise v0 vs v1 is compared only on case ids present for both versions."""
@@ -287,7 +282,7 @@ def interim_report(model):
     def cached(fn):
         try:
             return fn()
-        except KeyError:  # not in cache for this model
+        except KeyError:
             return None
     P = {v: [r for x in cases if (r := cached(lambda: judge_pointwise(x, cfg[v], llm, tag="P:")))] for v in cfg}
     Q = {v: [r for p in pairs if (r := cached(lambda: judge_pair(p["id"], p["input"], p["system_prompt"], p["reference"], p["out1"],
@@ -344,12 +339,11 @@ test-retest (R), and the A/B comparison. The final results need the live runs wi
     return m
 
 
-# ---------------------------------------------------------------------------------------------------- availability probe
 def _missing(fn):
     try:
         fn()
         return False
-    except KeyError:  # offline replay: not cached
+    except KeyError:
         return True
 
 
@@ -362,7 +356,7 @@ def availability_probe(online, gen_online, offline):
     try:
         out["judge"] = case is None or "passed" in judge_pointwise(case, v1, online, tag="P:")
         out["judge_case"] = case.id if case else "all P v1 cached"
-    except Exception as e:  # 503 after bounded retries, timeout, ...
+    except Exception as e:
         out.update(judge=False, judge_error=f"{type(e).__name__}: {str(e)[:160]}")
     items = [{"id": it["id"], "input": it["input"], "system_prompt": it.get("system_prompt", ""),
               "expected_output": it["expected_output"]} for it in base_items()]

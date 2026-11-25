@@ -11,13 +11,13 @@ CRITERIA = list(RUBRIC["criteria"])
 
 
 class TestCase(BaseModel):
-    __test__ = False  # not a pytest class
+    __test__ = False
     id: str
     input: str
     system_prompt: str = ""
     model_output: str
     expected_output: str | None = None
-    criteria: list[str] | None = None  # optional subset of rubric criteria
+    criteria: list[str] | None = None
     meta: dict = {}
 
 

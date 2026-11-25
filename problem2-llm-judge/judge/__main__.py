@@ -34,7 +34,6 @@ def main():
     for s in sub.choices.values():
         s.add_argument("--offline", action="store_true", help="replay from cache/calls.jsonl only; no API calls")
     a = ap.parse_args()
-    # judge responses go to a per-judge-model file; keys also contain the model id, so models never mix
     llm = make_llm(a.offline, getattr(a, "cache", None) or f"judge_{load_cfg('judge_v1')['model']}.jsonl")
 
     if a.cmd == "run":
@@ -61,10 +60,9 @@ def main():
                 print((RESULTS / "ab_report.md").read_text(encoding="utf-8"))
     elif a.cmd == "probe":
         import os, sys
-        os.environ.setdefault("LLM_RETRY_ATTEMPTS", "2")  # probe gently while the API is overloaded
+        os.environ.setdefault("LLM_RETRY_ATTEMPTS", "2")
         os.environ.setdefault("LLM_TIMEOUT_S", "240")
         from .experiments import availability_probe
-        # judge responses -> judge_<model>.jsonl (llm), generator responses -> gen_calls.jsonl
         res = availability_probe(llm, make_llm(cache_name="gen_calls.jsonl"), make_llm(offline=True))
         print(json.dumps(res))
         sys.exit(0 if res["judge"] and res["generator"] else 1)

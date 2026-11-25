@@ -4,7 +4,7 @@ from collections import Counter
 
 import numpy as np
 
-REL_MIN_COVER = 0.5  # a chunk is relevant to a gold span if it covers >= 50% of the span's characters
+REL_MIN_COVER = 0.5
 
 
 def covers(chunk, span):
@@ -24,7 +24,7 @@ def ir_metrics(ranked, spans, n_relevant_in_index, k):
     rel = [is_relevant(c, spans) for c in top]
     first = next((i for i, r in enumerate(rel) if r), None)
     dcg = sum(r / math.log2(i + 2) for i, r in enumerate(rel))
-    idcg = sum(1 / math.log2(i + 2) for i in range(min(k, n_relevant_in_index)))  # ideal over the whole index
+    idcg = sum(1 / math.log2(i + 2) for i in range(min(k, n_relevant_in_index)))
     prec_at = [sum(rel[:i + 1]) / (i + 1) for i in range(len(rel))]
     return {
         "hit": float(any(rel)),

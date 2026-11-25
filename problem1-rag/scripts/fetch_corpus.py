@@ -12,13 +12,13 @@ from pypdf import PdfReader
 
 CORPUS = Path(__file__).resolve().parents[1] / "data" / "corpus"
 UA = "SynergyLabsAssignmentCorpusFetcher/1.0 (educational RAG evaluation project)"
-OWASP_SHA = "eb87ba80e0698de911dcdb8af60830e97723e3fc"  # latest commit touching 2_0_vulns as of 2026-11-25
+OWASP_SHA = "eb87ba80e0698de911dcdb8af60830e97723e3fc"
 OWASP_RAW = f"https://raw.githubusercontent.com/OWASP/www-project-top-10-for-large-language-model-applications/{OWASP_SHA}/2_0_vulns/"
 NIST_LIC = "U.S. Government work, not subject to copyright in the United States (17 U.S.C. 105)"
 OWASP_LIC = "CC BY-SA 4.0 (repository LICENSE.md)"
 WIKI_LIC = "CC BY-SA 4.0 (Wikipedia text)"
 
-SOURCES = [  # doc_id, format, title, publisher, download_url, citation_url, license, version
+SOURCES = [
     ("nist-ai-100-1", "pdf", "Artificial Intelligence Risk Management Framework (AI RMF 1.0), NIST AI 100-1", "NIST",
      "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-1.pdf", "https://doi.org/10.6028/NIST.AI.100-1", NIST_LIC, "AI 100-1"),
     ("nist-ai-600-1", "pdf", "AI RMF: Generative Artificial Intelligence Profile, NIST AI 600-1", "NIST",
@@ -58,7 +58,7 @@ def main():
                 failed.append(f"{doc_id}: HTTP {r.status_code} {r.text[:160]!r}")
                 continue
             content, how = r.content, "downloaded by scripts/fetch_corpus.py"
-            if not MAGIC[fmt](content):  # downloaded bytes are untrusted: refuse anything that is not the expected type
+            if not MAGIC[fmt](content):
                 failed.append(f"{doc_id}: content is not {fmt}")
                 continue
             path.parent.mkdir(parents=True, exist_ok=True)

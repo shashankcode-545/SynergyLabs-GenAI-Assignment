@@ -12,7 +12,6 @@ from pypdf import PdfReader
 
 BLOCKS = ["p", "li", "h1", "h2", "h3", "h4", "h5", "h6", "dd", "dt", "blockquote", "pre", "figcaption", "td", "th"]
 HEADINGS = {"h1", "h2", "h3", "h4", "h5", "h6"}
-# Wikipedia/Parsoid chrome and citation markers that are not article prose
 HTML_DROP = ["script", "style", "sup.reference", "sup.mw-ref", ".mw-references-wrap", "ol.references", ".reflist",
              ".navbox", ".mw-editsection", ".hatnote", ".metadata", ".noprint", "link", "meta"]
 
@@ -23,7 +22,7 @@ class Document:
     source_type: str
     title: str
     text: str
-    locations: list = field(default_factory=list)  # [(start_offset, label)] sorted; label = "p. N" or section heading
+    locations: list = field(default_factory=list)
 
     def location_at(self, offset):
         label = None
@@ -65,9 +64,9 @@ def _html(path):
         for el in soup.select(sel):
             el.decompose()
     parts, section = [], None
-    root = soup.find("main") or soup.find("article") or soup  # skip site nav/footer when the page marks its content
+    root = soup.find("main") or soup.find("article") or soup
     for el in root.find_all(BLOCKS):
-        if el.find(BLOCKS):  # shortcut: parent text that precedes a nested block is skipped; fine for article prose
+        if el.find(BLOCKS):
             continue
         t = el.get_text()
         if el.name in HEADINGS:
@@ -79,7 +78,7 @@ def _html(path):
 def _md(path):
     parts, section, buf = [], None, []
     for line in path.read_text(encoding="utf-8").splitlines():
-        line = re.sub(r"!?\[([^\]]*)\]\([^)]*\)", r"\1", line)  # [text](url) -> text
+        line = re.sub(r"!?\[([^\]]*)\]\([^)]*\)", r"\1", line)
         if line.startswith("#"):
             parts.append((section, "\n".join(buf)))
             section, buf = line.lstrip("#").strip(), []

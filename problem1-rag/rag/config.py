@@ -5,12 +5,12 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-ROOT = Path(__file__).resolve().parents[1]  # problem1-rag/
+ROOT = Path(__file__).resolve().parents[1]
 load_dotenv(ROOT.parent / ".env", encoding="utf-8-sig")
 
 
 def _calibrated_tau():
-    f = ROOT / "eval" / "calibration.json"  # written by `python -m eval.run_eval calibrate` from the dev questions only
+    f = ROOT / "eval" / "calibration.json"
     return json.loads(f.read_text())["min_similarity"] if f.exists() else 0.5
 
 
@@ -32,7 +32,7 @@ class Settings:
     db_path: Path = ROOT / _env("RAG_DB_PATH", "lancedb")
     log_path: Path = ROOT / _env("RAG_LOG_PATH", "logs/queries.jsonl")
     cache_dir: Path = ROOT / "cache"
-    budget_usd: float = float(_env("BUDGET_USD", 1.5))  # P1 share of the $5 project cap (P2 gets 3.5)
+    budget_usd: float = float(_env("BUDGET_USD", 1.5))
     rpm: int = int(_env("LLM_RPM", 15))
 
     def table_name(self, size=None, overlap=None):
