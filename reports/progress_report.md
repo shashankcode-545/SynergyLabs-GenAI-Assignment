@@ -1,6 +1,6 @@
 # Progress report
 
-## Update 2026-11-25 18:45: P2 live runs partially done, paused on repeated 503
+## Update 2026-11-25 19:06: P2 live runs partially done, stopped on a third 503 (not restarted)
 
 - **Judge:** `gemini-3.5-flash-lite`. JSON-schema sanity checks passed; both pointwise and pairwise replies parsed and grounded.
 - **Done and cached** (`cache/calls.jsonl`):
@@ -9,19 +9,19 @@
   |---|---|
   | P v0 | 48/48 |
   | Q v0 | 48/48 |
-  | P v1 | 15/48 |
+  | P v1 | 19/48 |
   | Q v1 | 2/48 (sanity pair) |
   | R | 0/32 |
   | S | 0/32 |
   | AB | 0/48 |
 
   There were 0 repair retries and every reply parsed. The offline replay confirms that cached calls are skipped on resume.
-- **Blocker:** the judge stage failed twice with `503 UNAVAILABLE "This model is currently experiencing high demand"` after the SDK's bounded retries ran out: about 18:42 on `P:pw:f4-T:v1`, and 18:43 on `P:pw:f4-VW:v1` after a resume. Logs: `evidence/p2_core_run_attempt1_503.log` and `evidence/p2_core_run.log`.
+- **Blocker:** the judge stage failed twice with `503 UNAVAILABLE "This model is currently experiencing high demand"` after the SDK's bounded retries ran out: about 18:42 on `P:pw:f4-T:v1`, and 18:43 on `P:pw:f4-VW:v1` after a resume. Logs: `evidence/p2_core_run_attempt1_503.log` and `evidence/p2_core_run.log`. A single resume after a 10-minute pause (with the new timeout) cached 4 more calls, then failed at 19:06 with the same 503 on `P:pw:m1-CW:v1` (`evidence/p2_core_run_resume2.log`). Per instruction it was not restarted again.
   - Earlier, one call took 361 s inside the SDK before succeeding.
   - No 429 or quota errors.
-  - Retry setup: 6 attempts, exponential back-off from 2 s capped at 60 s, on 429/500/503. **No per-request HTTP timeout is set.**
+  - Retry setup: 6 attempts, exponential back-off from 2 s capped at 60 s, on 429/500/503. A 120 s per-attempt HTTP timeout (`LLM_TIMEOUT_S`) has now been added; it does not change cache keys.
 - **Gemma generation** (`cache/gen_calls.jsonl`): stopped by `503 "high demand"` from `gemma-4-31b-it` after bounded retries (`evidence/p2_gen_run.log`). The self-preference set is complete (4 items, originals + paraphrases, no empty outputs, in `suites/selfpref.jsonl`). A/B `gen_v1` is 12/12; A/B `gen_v2` is 3/12 and failed at `f4`, leaving 9 Gemma calls.
-- **Remaining:** about 193 judge calls (P v1 33, Q v1 46, R 32, S 32, AB 48) plus the rest of the Gemma calls. Then validation, reports, README updates and `reports/fill_submission.py` (written, not yet run).
+- **Remaining:** 187 judge calls (P v1 29, Q v1 46, R 32, S 32, AB 48) and 9 Gemma generations (A/B `gen_v2` f4-c4) plus the rest of the Gemma calls. Then validation, reports, README updates and `reports/fill_submission.py` (written, not yet run).
 - **P2 spend so far:** ≈ $0.031.
 - **Resume command:** `cd problem2-llm-judge; ..\.venv\Scripts\python -u -m judge experiments --stage core`, then `--stage gen --cache gen_calls.jsonl` if generation is unfinished, then `python -m judge experiments`.
 

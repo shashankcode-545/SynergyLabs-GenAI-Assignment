@@ -4,7 +4,7 @@ cache/calls.jsonl holds one line per call: key, tag, model, full prompt + system
 It is committed, so every verdict can be replayed offline (`--offline`) and audited. Spend = sum of logged costs; a call
 that could push spend over BUDGET_USD is refused before it is made.
 """
-import hashlib, json, time
+import hashlib, json, os, time
 from pathlib import Path
 
 PRICES = {"gemini-3.6-flash": (0.75, 3.75), "gemini-3.5-flash-lite": (0.30, 2.50), "gemini-3.1-flash-lite": (0.25, 1.50), "gemma-4-31b-it": (0.0, 0.0)}
@@ -33,7 +33,9 @@ class Gemini:
         if self._client is None:
             from google import genai
             from google.genai import types
-            self._client = genai.Client(http_options=types.HttpOptions(retry_options=types.HttpRetryOptions(
+            # per-attempt HTTP timeout (ms) bounds a hung request; judge calls take ~1-20 s, Gemma up to ~160 s
+            timeout_ms = int(float(os.getenv("LLM_TIMEOUT_S") or 120) * 1000)
+            self._client = genai.Client(http_options=types.HttpOptions(timeout=timeout_ms, retry_options=types.HttpRetryOptions(
                 attempts=6, initial_delay=2.0, max_delay=60.0, http_status_codes=[429, 500, 503])))
         return self._client
 
