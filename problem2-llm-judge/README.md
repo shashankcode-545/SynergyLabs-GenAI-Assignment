@@ -32,7 +32,7 @@ flowchart TD
 ```powershell
 cd problem2-llm-judge
 ..\.venv\Scripts\python -m pip install -r requirements.txt
-# repo-root .env: GEMINI_API_KEY (all variable names: .env.example)
+# repo-root .env: GEMINI_API_KEY_P2 (Problem 2 uses only this key; all variable names: .env.example)
 ..\.venv\Scripts\python -m judge run --suite suites/demo.yaml                 # suite in -> results/run_demo_judge_v1.{md,json}
 ..\.venv\Scripts\python -m judge compare --a suites/ab_gen_v1.jsonl --b suites/ab_gen_v2.jsonl
 ..\.venv\Scripts\python -m judge experiments --offline                      # rebuild every bias/validation/A-B table from the log

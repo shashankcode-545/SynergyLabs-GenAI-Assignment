@@ -35,7 +35,10 @@ class Gemini:
             from google.genai import types
             # per-attempt HTTP timeout (ms) bounds a hung request; judge calls take ~1-20 s, Gemma up to ~160 s
             timeout_ms = int(float(os.getenv("LLM_TIMEOUT_S") or 120) * 1000)
-            self._client = genai.Client(http_options=types.HttpOptions(timeout=timeout_ms, retry_options=types.HttpRetryOptions(
+            key = os.getenv("GEMINI_API_KEY_P2")  # Problem 2 has its own key; never fall back to another one
+            if not key:
+                raise RuntimeError("GEMINI_API_KEY_P2 is not set (repo-root .env)")
+            self._client = genai.Client(api_key=key, http_options=types.HttpOptions(timeout=timeout_ms, retry_options=types.HttpRetryOptions(
                 attempts=6, initial_delay=2.0, max_delay=60.0, http_status_codes=[429, 500, 503])))
         return self._client
 

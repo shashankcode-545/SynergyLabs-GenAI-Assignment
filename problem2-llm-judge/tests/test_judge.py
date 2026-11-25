@@ -108,3 +108,12 @@ def test_cache_and_budget_cap(tmp_path):
         Gemini(tmp_path / "c.jsonl", budget_usd=g.spent(), rpm=6000, client=client).generate("gemini-3.6-flash", "new")
     with pytest.raises(KeyError):
         Gemini(tmp_path / "c.jsonl", 1.0, client=client, offline=True).generate("gemini-3.6-flash", "never")
+
+
+def test_client_requires_the_p2_key(tmp_path, monkeypatch):
+    monkeypatch.delenv("GEMINI_API_KEY_P2", raising=False)
+    monkeypatch.setenv("GEMINI_API_KEY", "not-used-by-p2")  # another key present must not be picked up
+    with pytest.raises(RuntimeError, match="GEMINI_API_KEY_P2"):
+        Gemini(tmp_path / "c.jsonl", 1.0).client
+    monkeypatch.setenv("GEMINI_API_KEY_P2", "test-key-p2")
+    assert Gemini(tmp_path / "c.jsonl", 1.0).client._api_client.api_key == "test-key-p2"
