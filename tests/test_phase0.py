@@ -9,7 +9,7 @@ import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 JUDGE, GEN, GEN2 = "gemini-3.6-flash", "gemini-3.1-flash-lite", "gemma-4-31b-it"  # JUDGE = P1 answer-eval judge
-P2_JUDGE = "gemini-3.5-flash-lite"  # switched from 3.6-flash (free tier 20 req/day), user-approved
+P2_JUDGE = "gemini-3.1-flash-lite"  # user-approved; earlier 3.6-flash (20 req/day), 3.5-flash-lite (repeated 503)
 EMBED = "gemini-embedding-2"  # switched from gemini-embedding-001 (free-tier quota exhausted; user-approved)
 KEY_PATTERN = re.compile(r"AIza[0-9A-Za-z_-]{20,}|AQ\.[0-9A-Za-z_-]{20,}")
 

@@ -1,5 +1,20 @@
 # Progress report
 
+## Update 2026-11-25: judge switched to gemini-3.1-flash-lite (approved); generator test pending approval
+
+- **Judge:** `configs/judge_v0.yaml` and `judge_v1.yaml` now use `gemini-3.1-flash-lite`.
+  - Responses go to `cache/judge_gemini-3.1-flash-lite.jsonl` (6 calls so far: the v1 and v0 sanity checks).
+  - Production config check: v1 replayed entirely from cache (0 new calls); v0 made 3 new calls; all replies parsed and were grounded; no flips.
+- **Old judge responses:** the 117 `gemini-3.5-flash-lite` responses stay untouched in `cache/calls.jsonl` for audit. Cache keys include the model id, so none of them can enter the new metrics.
+- **Generator test (not adopted):** one call to `gemma-4-26b-a4b-it` on A/B input `c1` with the `gen_v2` prompt.
+  - Output `"Yellow"`: one word, correct.
+  - 21.9 s, 45 prompt / 1 output / 135 thinking tokens, $0 (Gemma is free tier only).
+  - Saved in `cache/gen_test_gemma-4-26b-a4b-it.jsonl`.
+  - `gemma-4-31b-it` still returned 503 at the last check.
+- **Remaining (estimate):**
+  - 298 judge calls ≈ $0.22, from measured per-call costs.
+  - If the 26b generator is approved: 24 A/B regenerations for both arms ($0). The self-preference set is unchanged.
+
 ## Update 2026-11-25 19:06: P2 live runs partially done, stopped on a third 503 (not restarted)
 
 - **Judge:** `gemini-3.5-flash-lite`. JSON-schema sanity checks passed; both pointwise and pairwise replies parsed and grounded.

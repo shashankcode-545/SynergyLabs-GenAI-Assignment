@@ -1,7 +1,7 @@
 # Judge v1 (mitigated "after"). Same model as the other version, so before→after isolates the prompt/mitigation change.
 name: judge_v1
 provider: gemini
-model: gemini-3.5-flash-lite   # sole P2 judge; switched from gemini-3.6-flash (free tier 20 req/day), user-approved
+model: gemini-3.1-flash-lite   # sole P2 judge (user-approved); earlier: 3.6-flash (20 req/day quota), 3.5-flash-lite (repeated 503)
 family: gemini
 prompt_version: v1
 temperature: 0

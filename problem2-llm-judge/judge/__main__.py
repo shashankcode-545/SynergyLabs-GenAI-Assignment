@@ -24,14 +24,15 @@ def main():
     p.add_argument("--judge", default="judge_v1")
     p = sub.add_parser("experiments")
     p.add_argument("--stage", choices=["all", "gen", "core"], default="all")
-    p.add_argument("--cache", default="calls.jsonl", help="log file to append to (all cache/*.jsonl are read)")
+    p.add_argument("--cache", help="log file to append to (default: judge_<judge model>.jsonl; all cache/*.jsonl are read)")
     p = sub.add_parser("show")
     p.add_argument("key", nargs="?")
     p.add_argument("--pair")
     for s in sub.choices.values():
         s.add_argument("--offline", action="store_true", help="replay from cache/calls.jsonl only; no API calls")
     a = ap.parse_args()
-    llm = make_llm(a.offline, getattr(a, "cache", "calls.jsonl"))
+    # judge responses go to a per-judge-model file; keys also contain the model id, so models never mix
+    llm = make_llm(a.offline, getattr(a, "cache", None) or f"judge_{load_cfg('judge_v1')['model']}.jsonl")
 
     if a.cmd == "run":
         cfg = load_cfg(a.judge)
