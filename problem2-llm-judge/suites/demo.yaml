@@ -1,0 +1,26 @@
+# Demo suite (YAML) showing every test-case field. Run:  python -m judge run --suite suites/demo.yaml
+cases:
+  - id: f1-T
+    input: What is the chemical symbol for gold?
+    system_prompt: ""
+    model_output: Au.
+    expected_output: Au
+    meta: {note: terse and correct}
+  - id: f1-VW
+    input: What is the chemical symbol for gold?
+    system_prompt: ""
+    model_output: The chemical symbol for gold is Ag, which comes from the Latin word "argentum". Gold has been prized for thousands of years for its luster, malleability and resistance to corrosion, and it remains central to jewelry, electronics and monetary reserves around the world.
+    expected_output: Au
+    meta: {note: verbose and wrong}
+  - id: c3-T-instr
+    input: What is the capital of Australia?
+    system_prompt: Answer in at most 10 words.
+    model_output: Canberra.
+    expected_output: Canberra
+    criteria: [correctness, instruction_following]   # optional subset of the rubric
+    meta: {note: criteria subset}
+  - id: free-1
+    input: Give one tip for writing a strong password.
+    system_prompt: Answer in one sentence.
+    model_output: Use a long passphrase of several unrelated words, and never reuse it across sites.
+    meta: {note: reference-free (no expected_output)}
