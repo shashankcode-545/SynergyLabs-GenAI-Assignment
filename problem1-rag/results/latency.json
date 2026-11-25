@@ -1,0 +1,51 @@
+{
+ "kind": "measured",
+ "ts": "2026-11-25T15:19:28",
+ "hardware": {
+  "os": "Windows-10-10.0.26300-SP0",
+  "cpu": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+  "logical_cpus": 16,
+  "python": "3.11.9",
+  "lancedb": "0.41.0"
+ },
+ "real_corpus": {
+  "table": "chunks_gemini_embedding_2_768_c1200_o200",
+  "rows": 356,
+  "index": "none (exact flat scan)",
+  "k": 5,
+  "p50_ms": 6.988400000409456,
+  "p95_ms": 8.277310000448779,
+  "p99_ms": 9.412699999993501,
+  "n": 360,
+  "disk_bytes": 1399045,
+  "bytes_per_row": 3929.9016853932585
+ },
+ "synthetic": {
+  "n": 100000,
+  "dim": 768,
+  "k": 5,
+  "data": "seeded random unit vectors (seed 42); no cluster structure, so pessimistic for ANN",
+  "flat": {
+   "p50_ms": 210.4780000008759,
+   "p95_ms": 225.7358949998888,
+   "p99_ms": 258.5157690028425,
+   "n": 200
+  },
+  "ivf_pq": {
+   "p50_ms": 9.327749998192303,
+   "p95_ms": 11.475375000736676,
+   "p99_ms": 14.341724000842051,
+   "n": 200,
+   "num_partitions": 316,
+   "num_sub_vectors": 96,
+   "nprobes": 20,
+   "refine_factor": 5,
+   "build_s": 39.46722420000151,
+   "recall@10_vs_flat": 0.13399999999999998
+  },
+  "disk_bytes_vectors_only": 307401638,
+  "disk_bytes_with_index": 319271118,
+  "bytes_per_vector": 3074.01638,
+  "index_bytes_per_vector": 118.6948
+ }
+}

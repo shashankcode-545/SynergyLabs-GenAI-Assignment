@@ -25,22 +25,20 @@ Copy-Item .env.example .env             # then put your GEMINI_API_KEY in .env (
 - **[PROJECTED]**: public prices × stated assumptions;
 - **[ESTIMATE]**: planning only.
 
-Every API call is cached and replayable. A hard `BUDGET_USD=5` cap applies, and billing is never enabled by the code.
+Every API call is cached and replayable. Hard spend caps apply (P1 $1.5 + P2 $3.5 = $5), and billing is never enabled by the code.
 
 ## Progress
 
 | Milestone | Status | Commit | Tests |
 |---|---|---|---|
 | Phase 0: scaffold, pinned models, Gemini smoke test | done | `cd907dc` | `tests/` 6 passed |
-| Phase 1a: P1 corpus (8 docs), 18 eval + 5 dev questions, validators | done, **pending candidate review** of the questions | this milestone | `problem1-rag/tests/` |
-| Phase 1b: ingestion (chunking, embeddings, LanceDB, idempotency) | not started | | |
-| Phase 1c: query path + HTTP API + logging | not started | | |
-| Phase 2: P1 evaluation (retrieval, answer, latency, cost) | not started | | |
+| Phase 1a: P1 corpus (8 docs), 18 eval + 5 dev questions, validators | done (questions AI-drafted; candidate review recommended) | `7e17448` | `problem1-rag/tests/` |
+| Phases 1b–2: P1 ingestion, query API, evaluation (retrieval, answers, latency, cost) | done | see git log | `problem1-rag/tests/` 35 passed |
 | Phases 3–4: P2 judge pipeline, bias + validation runs | not started | | |
 | Phase 5: packaging, submission template | not started | | |
 
 **Pinned models (Phase 0):**
-- embeddings: `gemini-embedding-001` @ 768-d
+- embeddings: `gemini-embedding-2` @ 768-d (switched from embedding-001 after its free daily quota ran out)
 - RAG generator: `gemini-3.1-flash-lite`
 - only judge: `gemini-3.6-flash`
 - second-family generator: `gemma-4-31b-it`

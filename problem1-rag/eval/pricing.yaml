@@ -1,0 +1,22 @@
+# Prices used by eval/cost_model.py. status: verified = read on the source page on the date shown;
+# assumption = AWS list price from prior knowledge that the official page did not expose as text (re-check before relying on it).
+retrieved: "2026-11-25"
+pinecone_standard:            # https://www.pinecone.io/pricing/  (verified 2026-11-25)
+  monthly_minimum_usd: 50
+  storage_usd_per_gb_month: 0.33
+  read_usd_per_million_ru: 16      # range on page: $16-18 by region; lowest used (favours managed)
+  write_usd_per_million_wu: 4      # range on page: $4-4.50; lowest used
+  status: verified
+pinecone_units:               # https://docs.pinecone.io/guides/manage-cost/understanding-cost (verified 2026-11-25)
+  ru_per_gb_namespace_per_query: 1
+  min_ru_per_query: 0.25
+  wu_per_kb_upserted: 1
+  status: verified
+aws_us_east_1:                # https://aws.amazon.com/ec2/pricing/on-demand/ , /ebs/pricing/ , /s3/pricing/
+  t4g_medium_usd_per_hour: 0.0336    # 2 vCPU / 4 GiB
+  r7g_large_usd_per_hour: 0.1071     # 2 vCPU / 16 GiB
+  ebs_gp3_usd_per_gb_month: 0.08     # the EBS page's own worked example uses $0.08/GB-month
+  s3_standard_usd_per_gb_month: 0.023
+  status: assumption
+gemini_embedding_2_usd_per_million_tokens: 0.20   # aistudio.google.com/docs/pricing (verified 2026-11-25)
+hours_per_month: 730

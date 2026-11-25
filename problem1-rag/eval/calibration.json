@@ -1,0 +1,32 @@
+{
+ "min_similarity": 0.6756,
+ "dev_gating_accuracy": "3/5",
+ "dev_top1_similarity": [
+  {
+   "id": "d01",
+   "answerable": true,
+   "top1": 0.7998
+  },
+  {
+   "id": "d02",
+   "answerable": true,
+   "top1": 0.6956
+  },
+  {
+   "id": "d03",
+   "answerable": true,
+   "top1": 0.7347
+  },
+  {
+   "id": "d04",
+   "answerable": false,
+   "top1": 0.7129
+  },
+  {
+   "id": "d05",
+   "answerable": false,
+   "top1": 0.7075
+  }
+ ],
+ "rule": "lowest answerable dev top-1 similarity minus 0.02 (recall-preserving pre-filter). Dev questions only."
+}

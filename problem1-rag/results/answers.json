@@ -1,0 +1,672 @@
+{
+ "provenance": {
+  "kind": "measured",
+  "ts": "2026-11-25T15:23:38",
+  "git": "7e17448",
+  "embed": "gemini-embedding-2@768",
+  "gen_model": "gemini-3.1-flash-lite",
+  "judge_model": "gemini-3.6-flash",
+  "min_similarity": 0.6756,
+  "questions_sha256": "5cddb9f32f8a256f"
+ },
+ "k": 5,
+ "chunk": "1200/200",
+ "summary": {
+  "faithfulness": [
+   1.0,
+   1.0,
+   1.0
+  ],
+  "answer_relevance": [
+   1.0,
+   1.0,
+   1.0
+  ],
+  "em": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "f1": [
+   0.31019843952906834,
+   0.19431691699668374,
+   0.4273819451152108
+  ],
+  "contains_gold": [
+   0.5714285714285714,
+   0.2857142857142857,
+   0.7857142857142857
+  ],
+  "citation_precision": [
+   0.611111111111111,
+   0.4444444444444444,
+   0.7916666666666666
+  ],
+  "correct_abstention": "4/4",
+  "false_abstention": "2/14",
+  "answered_unanswerable": [],
+  "gen_cost_usd": 0.006982500000000001,
+  "judge_cost_usd": 0.020594249999999998
+ },
+ "per_question": [
+  {
+   "id": "q01",
+   "type": "single_fact",
+   "answerable": true,
+   "abstained": false,
+   "reason": "",
+   "answer": "The AI RMF Core is composed of four functions: GOVERN, MAP, MEASURE, and MANAGE. [S1], [S2]",
+   "gold": "GOVERN, MAP, MEASURE, and MANAGE",
+   "tokens": {
+    "prompt": 1556,
+    "output": 69,
+    "thoughts": 0
+   },
+   "gen_cost_usd": 0.0004925,
+   "latency_ms": {
+    "embed": 0.1,
+    "retrieve": 6.2,
+    "generate": 0.3,
+    "total": 6.5
+   },
+   "em": 0.0,
+   "f1": 0.5,
+   "contains_gold": 1.0,
+   "citation_precision": 0.5,
+   "faithfulness": 1.0,
+   "relevance": 1.0,
+   "claims": [
+    {
+     "claim": "The AI RMF Core is composed of four functions: GOVERN, MAP, MEASURE, and MANAGE.",
+     "supported": true,
+     "evidence": "the Core is composed of four functions: GOVERN, MAP, MEASURE, and MANAGE."
+    }
+   ],
+   "verified_supported": 1,
+   "judge_cost_usd": 0.00152625
+  },
+  {
+   "id": "q02",
+   "type": "single_fact",
+   "answerable": true,
+   "abstained": false,
+   "reason": "",
+   "answer": "The root causes of Excessive Agency in LLM-based systems are typically categorized as excessive functionality, excessive permissions, and excessive autonomy. [S1]",
+   "gold": "excessive functionality, excessive permissions, or excessive autonomy",
+   "tokens": {
+    "prompt": 1451,
+    "output": 56,
+    "thoughts": 0
+   },
+   "gen_cost_usd": 0.00044675,
+   "latency_ms": {
+    "embed": 0.1,
+    "retrieve": 5.8,
+    "generate": 0.1,
+    "total": 6.0
+   },
+   "em": 0.0,
+   "f1": 0.4444444444444444,
+   "contains_gold": 1.0,
+   "citation_precision": 1.0,
+   "faithfulness": 1.0,
+   "relevance": 1.0,
+   "claims": [
+    {
+     "claim": "The root causes of Excessive Agency in LLM-based systems are typically excessive functionality, excessive permissions, and excessive autonomy.",
+     "supported": true,
+     "evidence": "The root cause of Excessive Agency is typically one or more of:\n\n* excessive functionality;\n* excessive permissions;\n* excessive autonomy."
+    }
+   ],
+   "verified_supported": 1,
+   "judge_cost_usd": 0.0014505
+  },
+  {
+   "id": "q03",
+   "type": "single_fact",
+   "answerable": true,
+   "abstained": false,
+   "reason": "",
+   "answer": "The NIST Generative AI Profile was developed pursuant to President Biden’s Executive Order (EO) 14110 on Safe, Secure, and Trustworthy Artificial Intelligence.",
+   "gold": "Executive Order (EO) 14110",
+   "tokens": {
+    "prompt": 1489,
+    "output": 68,
+    "thoughts": 0
+   },
+   "gen_cost_usd": 0.00047425,
+   "latency_ms": {
+    "embed": 0.0,
+    "retrieve": 3.8,
+    "generate": 0.1,
+    "total": 4.0
+   },
+   "em": 0.0,
+   "f1": 0.32,
+   "contains_gold": 1.0,
+   "citation_precision": 1.0,
+   "faithfulness": 1.0,
+   "relevance": 1.0,
+   "claims": [
+    {
+     "claim": "The NIST Generative AI Profile was developed pursuant to President Biden's Executive Order (EO) 14110 on Safe, Secure, and Trustworthy Artificial Intelligence.",
+     "supported": true,
+     "evidence": "pursuant to President Biden’s Executive Order (EO) 14110 on Safe, Secure, and Trustworthy Artificial Intelligence."
+    }
+   ],
+   "verified_supported": 1,
+   "judge_cost_usd": 0.00159975
+  },
+  {
+   "id": "q04",
+   "type": "single_fact",
+   "answerable": true,
+   "abstained": true,
+   "reason": "top similarity 0.666 < 0.6756",
+   "answer": "I can't answer that from the indexed documents.",
+   "gold": "CVE-2019-20634",
+   "tokens": {
+    "prompt": 0,
+    "output": 0,
+    "thoughts": 0
+   },
+   "gen_cost_usd": 0.0,
+   "latency_ms": {
+    "embed": 0.0,
+    "retrieve": 6.0,
+    "generate": 0.0,
+    "total": 6.1
+   },
+   "em": 0.0,
+   "f1": 0.0,
+   "contains_gold": 0.0
+  },
+  {
+   "id": "q05",
+   "type": "single_fact",
+   "answerable": true,
+   "abstained": false,
+   "reason": "",
+   "answer": "The banking chatbot system prompt example reveals a daily transaction limit of $5000 per user. [S1]",
+   "gold": "$5000 per day",
+   "tokens": {
+    "prompt": 1377,
+    "output": 56,
+    "thoughts": 0
+   },
+   "gen_cost_usd": 0.00042825,
+   "latency_ms": {
+    "embed": 0.1,
+    "retrieve": 8.0,
+    "generate": 0.2,
+    "total": 8.2
+   },
+   "em": 0.0,
+   "f1": 0.23529411764705882,
+   "contains_gold": 0.0,
+   "citation_precision": 1.0,
+   "faithfulness": 1.0,
+   "relevance": 1.0,
+   "claims": [
+    {
+     "claim": "The banking chatbot system prompt example reveals a daily transaction limit of $5000 per user.",
+     "supported": true,
+     "evidence": "The Transaction limit is set to $5000 per day for a user"
+    }
+   ],
+   "verified_supported": 1,
+   "judge_cost_usd": 0.00132825
+  },
+  {
+   "id": "q06",
+   "type": "single_fact",
+   "answerable": true,
+   "abstained": false,
+   "reason": "",
+   "answer": "OWASP cites Air Canada's chatbot as an example of factual inaccuracies, noting that it provided misinformation to travelers which led to legal complications and a successful lawsuit against the airline.",
+   "gold": "Air Canada",
+   "tokens": {
+    "prompt": 1521,
+    "output": 73,
+    "thoughts": 0
+   },
+   "gen_cost_usd": 0.00048975,
+   "latency_ms": {
+    "embed": 0.1,
+    "retrieve": 7.3,
+    "generate": 0.2,
+    "total": 7.6
+   },
+   "em": 0.0,
+   "f1": 0.06896551724137931,
+   "contains_gold": 1.0,
+   "citation_precision": 0.5,
+   "faithfulness": 1.0,
+   "relevance": 1.0,
+   "claims": [
+    {
+     "claim": "OWASP cites Air Canada's chatbot as an example of factual inaccuracies.",
+     "supported": true,
+     "evidence": "1. Factual Inaccuracies\n\nThe model produces incorrect statements, leading users to make decisions based on false information. For example, Air Canada’s chatbot provided misinformation to travelers"
+    },
+    {
+     "claim": "The chatbot provided misinformation to travelers leading to legal complications and a successful lawsuit against the airline.",
+     "supported": true,
+     "evidence": "Air Canada’s chatbot provided misinformation to travelers, leading to operational disruptions and legal complications. The airline was successfully sued as a result."
+    }
+   ],
+   "verified_supported": 2,
+   "judge_cost_usd": 0.0017655
+  },
+  {
+   "id": "q07",
+   "type": "paraphrased",
+   "answerable": true,
+   "abstained": false,
+   "reason": "",
+   "answer": "NIST refers to the phenomenon where generative AI systems confidently present erroneous or false content as \"confabulation,\" which is also colloquially known as \"hallucination\" or \"fabrication.\" [S4]",
+   "gold": "Confabulation",
+   "tokens": {
+    "prompt": 1459,
+    "output": 69,
+    "thoughts": 0
+   },
+   "gen_cost_usd": 0.00046825,
+   "latency_ms": {
+    "embed": 0.1,
+    "retrieve": 8.1,
+    "generate": 0.2,
+    "total": 8.4
+   },
+   "em": 0.0,
+   "f1": 0.07407407407407407,
+   "contains_gold": 1.0,
+   "citation_precision": 0.0,
+   "faithfulness": 1.0,
+   "relevance": 1.0,
+   "claims": [
+    {
+     "claim": "NIST refers to the phenomenon where generative AI systems confidently present erroneous or false content as confabulation.",
+     "supported": true,
+     "evidence": "“Confabulation” refers to a phenomenon in which GAI systems generate and confidently present erroneous or false content in response to prompts."
+    },
+    {
+     "claim": "Confabulation is also colloquially known as hallucination or fabrication.",
+     "supported": true,
+     "evidence": "These phenomena are colloquially also referred to as “hallucinations” or “fabrications.”"
+    }
+   ],
+   "verified_supported": 2,
+   "judge_cost_usd": 0.00176325
+  },
+  {
+   "id": "q08",
+   "type": "paraphrased",
+   "answerable": true,
+   "abstained": false,
+   "reason": "",
+   "answer": "The GOVERN function is designed to be a cross-cutting function that is infused throughout the other three functions of the AI RMF Core: MAP, MEASURE, and MANAGE.",
+   "gold": "GOVERN",
+   "tokens": {
+    "prompt": 1523,
+    "output": 81,
+    "thoughts": 0
+   },
+   "gen_cost_usd": 0.00050225,
+   "latency_ms": {
+    "embed": 0.1,
+    "retrieve": 8.1,
+    "generate": 0.4,
+    "total": 8.5
+   },
+   "em": 0.0,
+   "f1": 0.08333333333333333,
+   "contains_gold": 1.0,
+   "citation_precision": 0.3333333333333333,
+   "faithfulness": 1.0,
+   "relevance": 1.0,
+   "claims": [
+    {
+     "claim": "The GOVERN function is designed to be a cross-cutting function.",
+     "supported": true,
+     "evidence": "GOVERN is a cross-cutting function"
+    },
+    {
+     "claim": "The GOVERN function is infused throughout the other three functions of the AI RMF Core.",
+     "supported": true,
+     "evidence": "Governance is designed to be a cross-cutting function to inform and be infused throughout the other three functions."
+    },
+    {
+     "claim": "The other three functions of the AI RMF Core are MAP, MEASURE, and MANAGE.",
+     "supported": true,
+     "evidence": "the Core is composed of four functions: GOVERN, MAP, MEASURE, and MANAGE."
+    }
+   ],
+   "verified_supported": 3,
+   "judge_cost_usd": 0.00193425
+  },
+  {
+   "id": "q09",
+   "type": "paraphrased",
+   "answerable": true,
+   "abstained": true,
+   "reason": "top similarity 0.671 < 0.6756",
+   "answer": "I can't answer that from the indexed documents.",
+   "gold": "Separate and clearly denote untrusted content",
+   "tokens": {
+    "prompt": 0,
+    "output": 0,
+    "thoughts": 0
+   },
+   "gen_cost_usd": 0.0,
+   "latency_ms": {
+    "embed": 0.1,
+    "retrieve": 9.3,
+    "generate": 0.0,
+    "total": 9.4
+   },
+   "em": 0.0,
+   "f1": 0.0,
+   "contains_gold": 0.0
+  },
+  {
+   "id": "q10",
+   "type": "multi_span",
+   "answerable": true,
+   "abstained": false,
+   "reason": "",
+   "answer": "Direct prompt injections occur when a user's input directly alters the model's behavior, whereas indirect prompt injections happen when an LLM processes input from external sources like websites or files that contain data designed to alter the model's behavior [S1]. Both types of injections can be intentional or unintentional [S1, S2].",
+   "gold": "In a direct injection a user's prompt input directly alters the behavior of the model; in an indirect injection the LLM accepts input from external sources, such as websites or files.",
+   "tokens": {
+    "prompt": 1185,
+    "output": 106,
+    "thoughts": 0
+   },
+   "gen_cost_usd": 0.00045525,
+   "latency_ms": {
+    "embed": 0.1,
+    "retrieve": 9.5,
+    "generate": 0.2,
+    "total": 9.8
+   },
+   "em": 0.0,
+   "f1": 0.4722222222222222,
+   "contains_gold": 0.0,
+   "citation_precision": 0.5,
+   "faithfulness": 1.0,
+   "relevance": 1.0,
+   "claims": [
+    {
+     "claim": "Direct prompt injections occur when a user's input directly alters the model's behavior.",
+     "supported": true,
+     "evidence": "Direct prompt injections occur when a user's prompt input directly alters the behavior of the model in unintended or unexpected ways."
+    },
+    {
+     "claim": "Indirect prompt injections happen when an LLM processes input from external sources like websites or files that contain data designed to alter the model's behavior.",
+     "supported": true,
+     "evidence": "Indirect prompt injections occur when an LLM accepts input from external sources, such as websites or files. The external source may have content data that when interpreted by the model, alters the behavior of the model in unintended or unexpected ways."
+    },
+    {
+     "claim": "Both direct and indirect types of injections can be intentional or unintentional.",
+     "supported": true,
+     "evidence": "Like direct injections, indirect injections can be either intentional or unintentional."
+    }
+   ],
+   "verified_supported": 3,
+   "judge_cost_usd": 0.00181425
+  },
+  {
+   "id": "q11",
+   "type": "multi_span",
+   "answerable": true,
+   "abstained": false,
+   "reason": "",
+   "answer": "The AI RMF 1.0 was released in January 2023, and a review with formal input from the AI community is expected to take place no later than 2028.",
+   "gold": "Released in January 2023; the review is expected no later than 2028.",
+   "tokens": {
+    "prompt": 1598,
+    "output": 80,
+    "thoughts": 0
+   },
+   "gen_cost_usd": 0.0005195,
+   "latency_ms": {
+    "embed": 0.1,
+    "retrieve": 7.5,
+    "generate": 0.2,
+    "total": 7.7
+   },
+   "em": 0.0,
+   "f1": 0.6111111111111112,
+   "contains_gold": 1.0,
+   "citation_precision": 0.5,
+   "faithfulness": 1.0,
+   "relevance": 1.0,
+   "claims": [
+    {
+     "claim": "The AI RMF 1.0 was released in January 2023.",
+     "supported": true,
+     "evidence": "Artificial Intelligence Risk Management\nFramework (AI RMF 1.0)\nThis publication is available free of charge from:\nhttps://doi.org/10.6028/NIST.AI.100-1\nJanuary 2023"
+    },
+    {
+     "claim": "A review with formal input from the AI community is expected to take place no later than 2028.",
+     "supported": true,
+     "evidence": "a review with formal input from the AI community is expected to take place no later than 2028"
+    }
+   ],
+   "verified_supported": 2,
+   "judge_cost_usd": 0.0019545
+  },
+  {
+   "id": "q12",
+   "type": "multi_span",
+   "answerable": true,
+   "abstained": false,
+   "reason": "",
+   "answer": "Attackers hide instructions in resumes by using split malicious prompts that are combined by the LLM [S1] or by including hidden text, such as white text on a white background [S3].",
+   "gold": "By uploading a resume with split malicious prompts, or by including hidden text such as white text on a white background.",
+   "tokens": {
+    "prompt": 1417,
+    "output": 79,
+    "thoughts": 0
+   },
+   "gen_cost_usd": 0.00047275,
+   "latency_ms": {
+    "embed": 0.1,
+    "retrieve": 6.7,
+    "generate": 0.2,
+    "total": 6.9
+   },
+   "em": 0.0,
+   "f1": 0.6666666666666666,
+   "contains_gold": 1.0,
+   "citation_precision": 1.0,
+   "faithfulness": 1.0,
+   "relevance": 1.0,
+   "claims": [
+    {
+     "claim": "Attackers hide instructions in resumes by using split malicious prompts that are combined by the LLM.",
+     "supported": true,
+     "evidence": "An attacker uploads a resume with split malicious prompts."
+    },
+    {
+     "claim": "Attackers hide instructions in resumes by including hidden text, such as white text on a white background.",
+     "supported": true,
+     "evidence": "An attacker creates a resume that includes hidden text, such as white text on a white background"
+    }
+   ],
+   "verified_supported": 2,
+   "judge_cost_usd": 0.001581
+  },
+  {
+   "id": "q13",
+   "type": "filter_scoped",
+   "answerable": true,
+   "abstained": false,
+   "reason": "",
+   "answer": "A prompt injection vulnerability occurs when user prompts alter the behavior or output of an LLM in unintended or unexpected ways [S1]. This can happen through direct input from a user or via indirect sources like websites or files that the model interprets [S2].",
+   "gold": "when user prompts alter the LLM’s behavior or output in unintended ways",
+   "tokens": {
+    "prompt": 1257,
+    "output": 90,
+    "thoughts": 0
+   },
+   "gen_cost_usd": 0.00044925,
+   "latency_ms": {
+    "embed": 0.1,
+    "retrieve": 7.5,
+    "generate": 0.2,
+    "total": 7.7
+   },
+   "em": 0.0,
+   "f1": 0.3999999999999999,
+   "contains_gold": 0.0,
+   "citation_precision": 0.5,
+   "faithfulness": 1.0,
+   "relevance": 1.0,
+   "claims": [
+    {
+     "claim": "A prompt injection vulnerability occurs when user prompts alter the behavior or output of an LLM in unintended ways.",
+     "supported": true,
+     "evidence": "A Prompt Injection Vulnerability occurs when user prompts alter the LLM’s behavior or output in unintended ways."
+    },
+    {
+     "claim": "Prompt injection can happen through direct input from a user.",
+     "supported": true,
+     "evidence": "Direct prompt injections occur when a user's prompt input directly alters the behavior of the model in unintended or unexpected ways."
+    },
+    {
+     "claim": "Prompt injection can happen via indirect sources like websites or files that the model interprets.",
+     "supported": true,
+     "evidence": "Indirect prompt injections occur when an LLM accepts input from external sources, such as websites or files."
+    }
+   ],
+   "verified_supported": 3,
+   "judge_cost_usd": 0.001716
+  },
+  {
+   "id": "q14",
+   "type": "filter_scoped",
+   "answerable": true,
+   "abstained": false,
+   "reason": "",
+   "answer": "Indirect prompt injection attacks occur when adversaries remotely exploit LLM-integrated applications by injecting prompts into data that is likely to be retrieved, rather than using a direct interface [S1], [S2]. This method allows attackers to potentially steal proprietary data or execute malicious code remotely on a machine [S2].",
+   "gold": "Adversaries remotely exploit LLM-integrated applications by injecting prompts into data likely to be retrieved.",
+   "tokens": {
+    "prompt": 1922,
+    "output": 92,
+    "thoughts": 0
+   },
+   "gen_cost_usd": 0.0006185,
+   "latency_ms": {
+    "embed": 0.1,
+    "retrieve": 7.7,
+    "generate": 0.2,
+    "total": 7.9
+   },
+   "em": 0.0,
+   "f1": 0.4666666666666667,
+   "contains_gold": 0.0,
+   "citation_precision": 0.5,
+   "faithfulness": 1.0,
+   "relevance": 1.0,
+   "claims": [
+    {
+     "claim": "Indirect prompt injection attacks occur when adversaries remotely exploit LLM-integrated applications by injecting prompts into data that is likely to be retrieved, without using a direct interface.",
+     "supported": true,
+     "evidence": "Indirect prompt injection attacks occur when adversaries remotely (i.e., without a direct interface) exploit LLM-integrated applications by injecting prompts into data likely to be retrieved."
+    },
+    {
+     "claim": "This method allows attackers to potentially steal proprietary data or execute malicious code remotely on a machine.",
+     "supported": true,
+     "evidence": "Security researchers have already demonstrated how indirect prompt injections can exploit vulnerabilities by stealing proprietary data or running malicious code remotely on a machine."
+    }
+   ],
+   "verified_supported": 2,
+   "judge_cost_usd": 0.00216075
+  },
+  {
+   "id": "q15",
+   "type": "unanswerable",
+   "answerable": false,
+   "abstained": true,
+   "reason": "top similarity 0.629 < 0.6756",
+   "answer": "I can't answer that from the indexed documents.",
+   "gold": null,
+   "tokens": {
+    "prompt": 0,
+    "output": 0,
+    "thoughts": 0
+   },
+   "gen_cost_usd": 0.0,
+   "latency_ms": {
+    "embed": 0.1,
+    "retrieve": 5.6,
+    "generate": 0.0,
+    "total": 5.7
+   }
+  },
+  {
+   "id": "q16",
+   "type": "unanswerable",
+   "answerable": false,
+   "abstained": true,
+   "reason": "model reported unanswerable",
+   "answer": "I can't answer that from the indexed documents.",
+   "gold": null,
+   "tokens": {
+    "prompt": 1372,
+    "output": 23,
+    "thoughts": 0
+   },
+   "gen_cost_usd": 0.0003775,
+   "latency_ms": {
+    "embed": 0.1,
+    "retrieve": 6.1,
+    "generate": 0.2,
+    "total": 6.4
+   }
+  },
+  {
+   "id": "q17",
+   "type": "unanswerable",
+   "answerable": false,
+   "abstained": true,
+   "reason": "model reported unanswerable",
+   "answer": "I can't answer that from the indexed documents.",
+   "gold": null,
+   "tokens": {
+    "prompt": 1494,
+    "output": 23,
+    "thoughts": 0
+   },
+   "gen_cost_usd": 0.000408,
+   "latency_ms": {
+    "embed": 0.1,
+    "retrieve": 5.7,
+    "generate": 0.2,
+    "total": 6.0
+   }
+  },
+  {
+   "id": "q18",
+   "type": "unanswerable",
+   "answerable": false,
+   "abstained": true,
+   "reason": "model reported unanswerable",
+   "answer": "I can't answer that from the indexed documents.",
+   "gold": null,
+   "tokens": {
+    "prompt": 1381,
+    "output": 23,
+    "thoughts": 0
+   },
+   "gen_cost_usd": 0.00037975,
+   "latency_ms": {
+    "embed": 0.1,
+    "retrieve": 6.1,
+    "generate": 0.1,
+    "total": 6.3
+   }
+  }
+ ]
+}

@@ -1,0 +1,8 @@
+{
+ "kind": "measured",
+ "n": 12,
+ "p50_ms": 6040.15,
+ "p95_ms": 53748.20999999996,
+ "note": "live run: query embed + retrieval + generation, answered questions only",
+ "ts": "2026-11-25T15:17:44"
+}
