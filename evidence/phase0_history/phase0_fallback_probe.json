@@ -1,0 +1,65 @@
+{
+  "ts": "2026-11-25T14:07:02+0530",
+  "probes": [
+    {
+      "model": "gemini-3.8-flash",
+      "ok": false,
+      "error": "ServerError: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}",
+      "latency_ms": 18551
+    },
+    {
+      "model": "gemini-3.6-flash",
+      "ok": true,
+      "text": "{\"answer\": \"Paris\", \"score\": 5}",
+      "finish_reason": "FinishReason.STOP",
+      "usage": {
+        "prompt_token_count": 13,
+        "candidates_token_count": 12,
+        "thoughts_token_count": null
+      },
+      "latency_ms": 1550
+    },
+    {
+      "model": "gemini-4-hydrogen",
+      "ok": true,
+      "text": "{\"answer\": \"Paris\", \"score\": 5}",
+      "finish_reason": "FinishReason.STOP",
+      "usage": {
+        "prompt_token_count": 213,
+        "candidates_token_count": 28,
+        "thoughts_token_count": 58
+      },
+      "latency_ms": 4331
+    },
+    {
+      "model": "gemini-3.5-flash-lite",
+      "ok": true,
+      "text": "{\n  \"answer\": \"Paris\",\n  \"score\": 5\n}",
+      "finish_reason": "FinishReason.STOP",
+      "usage": {
+        "prompt_token_count": 13,
+        "candidates_token_count": 18,
+        "thoughts_token_count": null
+      },
+      "latency_ms": 1525
+    },
+    {
+      "model": "gemma-4-26b-a4b-it",
+      "ok": false,
+      "error": "ServerError: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}",
+      "latency_ms": 9547
+    },
+    {
+      "model": "gemma-4-31b-it",
+      "ok": true,
+      "text": "The capital of France is Paris.",
+      "finish_reason": "FinishReason.STOP",
+      "usage": {
+        "prompt_token_count": 12,
+        "candidates_token_count": 7,
+        "thoughts_token_count": 51
+      },
+      "latency_ms": 73585
+    }
+  ]
+}

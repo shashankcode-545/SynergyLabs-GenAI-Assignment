@@ -1,0 +1,126 @@
+{
+  "ts": "2026-11-25T14:02:29+0530",
+  "sdk": "3.6.1",
+  "checks": {
+    "model:embed": {
+      "ok": true,
+      "id": "gemini-embedding-001",
+      "actions": [
+        "embedContent",
+        "countTextTokens",
+        "countTokens",
+        "asyncBatchEmbedContent"
+      ]
+    },
+    "model:gen": {
+      "ok": true,
+      "id": "gemini-3.1-flash-lite",
+      "actions": [
+        "generateContent",
+        "countTokens",
+        "createCachedContent",
+        "batchGenerateContent"
+      ]
+    },
+    "model:judge": {
+      "ok": true,
+      "id": "gemini-3.8-flash",
+      "actions": [
+        "generateContent",
+        "countTokens",
+        "createCachedContent",
+        "batchGenerateContent"
+      ]
+    },
+    "model:gemma-4": {
+      "ok": true,
+      "ids": [
+        "gemma-4-26b-a4b-it",
+        "gemma-4-31b-it"
+      ]
+    },
+    "embed": {
+      "ok": true,
+      "dims": [
+        3072,
+        768
+      ],
+      "norm3072": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "norm768_raw": [
+        0.583299994468689,
+        0.590399980545044,
+        0.5871999859809875
+      ],
+      "cos_trunc_vs_api768": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "generate:gen": {
+      "ok": true,
+      "thinking_level": "MINIMAL",
+      "text": "{\n  \"answer\": \"Paris\",\n  \"score\": 5\n}",
+      "latency_ms": 10190,
+      "model_version": "gemini-3.1-flash-lite",
+      "usage": {
+        "prompt_token_count": 13,
+        "candidates_token_count": 18,
+        "thoughts_token_count": null,
+        "total_token_count": 31
+      }
+    },
+    "generate:judge": {
+      "ok": false,
+      "error": "ServerError: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}"
+    },
+    "gemma:plain": {
+      "ok": true,
+      "id": "gemma-4-26b-a4b-it",
+      "text": "",
+      "usage": {
+        "prompt_token_count": 11,
+        "candidates_token_count": null
+      }
+    },
+    "gemma:json": {
+      "ok": false,
+      "id": "gemma-4-26b-a4b-it",
+      "error": "ServerError: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}"
+    }
+  },
+  "all_models": [
+    "antigravity-preview-05-2026",
+    "antigravity-preview-09-2026",
+    "antigravity-preview-latest",
+    "deep-research-max-preview-04-2026",
+    "deep-research-preview-04-2026",
+    "gemini-2.5-flash",
+    "gemini-2.5-flash-image",
+    "gemini-2.5-flash-lite",
+    "gemini-2.5-pro",
+    "gemini-3-pro-image",
+    "gemini-3.1-flash-image",
+    "gemini-3.1-flash-lite",
+    "gemini-3.1-flash-lite-image",
+    "gemini-3.5-flash",
+    "gemini-3.5-flash-lite",
+    "gemini-3.6-flash",
+    "gemini-3.7-flash",
+    "gemini-3.8-flash",
+    "gemini-4-argon",
+    "gemini-4-carbon",
+    "gemini-4-hydrogen",
+    "gemini-4-neon",
+    "gemini-embedding-001",
+    "gemini-embedding-2",
+    "gemini-nano-banana-2.1",
+    "gemini-omni-flash-preview",
+    "gemma-4-26b-a4b-it",
+    "gemma-4-31b-it"
+  ]
+}

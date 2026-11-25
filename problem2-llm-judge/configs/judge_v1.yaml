@@ -1,0 +1,10 @@
+# Judge v1 (mitigated "after"). Same model as the other version, so before→after isolates the prompt/mitigation change.
+name: judge_v1
+provider: gemini
+model: gemini-3.6-flash   # sole judge, pinned in Phase 0 (see evidence/phase0_summary.md)
+family: gemini
+prompt_version: v1
+temperature: 0
+seed: 42
+thinking_level: LOW
+max_output_tokens: 2048

@@ -1,0 +1,9 @@
+# Generator v2 (A/B arm B). Identical to v1 except the system prompt.
+name: gen_v2
+provider: gemini
+model: gemma-4-31b-it
+family: gemma
+temperature: 0
+seed: 42
+max_output_tokens: 1024
+system_prompt: "Follow every explicit constraint in the request (format, length, scope). Check facts before stating them. Answer concisely and say when you are unsure."

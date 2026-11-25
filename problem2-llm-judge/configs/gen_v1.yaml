@@ -1,0 +1,9 @@
+# Generator v1 (A/B arm A). Family differs from the Gemini judge; same vendor (Google) — disclosed limitation.
+name: gen_v1
+provider: gemini
+model: gemma-4-31b-it
+family: gemma
+temperature: 0
+seed: 42
+max_output_tokens: 1024   # Gemma 4 thinks; small limits starve the visible answer (Phase 0 evidence)
+system_prompt: "Answer the user's request."

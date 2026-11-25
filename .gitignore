@@ -1,0 +1,23 @@
+# secrets
+.env
+.env.*
+!.env.example
+
+# python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# local data stores (rebuilt by ingest; embedding cache is committed instead)
+problem1-rag/lancedb/
+problem1-rag/cache/emb_3072/
+problem1-rag/logs/
+problem1-rag/bench_data/
+problem2-llm-judge/logs/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
