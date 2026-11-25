@@ -20,7 +20,7 @@
   - Earlier, one call took 361 s inside the SDK before succeeding.
   - No 429 or quota errors.
   - Retry setup: 6 attempts, exponential back-off from 2 s capped at 60 s, on 429/500/503. **No per-request HTTP timeout is set.**
-- **Gemma generation** (`cache/gen_calls.jsonl`): 16 of 34 calls done; still running at the time of writing. Each call takes 30–100 s; no failures or empty outputs.
+- **Gemma generation** (`cache/gen_calls.jsonl`): stopped by `503 "high demand"` from `gemma-4-31b-it` after bounded retries (`evidence/p2_gen_run.log`). The self-preference set is complete (4 items, originals + paraphrases, no empty outputs, in `suites/selfpref.jsonl`). A/B `gen_v1` is 12/12; A/B `gen_v2` is 3/12 and failed at `f4`, leaving 9 Gemma calls.
 - **Remaining:** about 193 judge calls (P v1 33, Q v1 46, R 32, S 32, AB 48) plus the rest of the Gemma calls. Then validation, reports, README updates and `reports/fill_submission.py` (written, not yet run).
 - **P2 spend so far:** ≈ $0.031.
 - **Resume command:** `cd problem2-llm-judge; ..\.venv\Scripts\python -u -m judge experiments --stage core`, then `--stage gen --cache gen_calls.jsonl` if generation is unfinished, then `python -m judge experiments`.

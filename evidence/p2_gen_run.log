@@ -5,12 +5,12 @@ Traceback (most recent call last):
     main()
   File "D:\programming\SynergyLabs-GenAI-Assignment\problem2-llm-judge\judge\__main__.py", line 53, in main
     run_all(llm, a.stage)
-  File "D:\programming\SynergyLabs-GenAI-Assignment\problem2-llm-judge\judge\experiments.py", line 160, in run_all
+  File "D:\programming\SynergyLabs-GenAI-Assignment\problem2-llm-judge\judge\experiments.py", line 161, in run_all
     selfpref_pairs(llm), ab_suites(llm, items)
-    ^^^^^^^^^^^^^^^^^^^
-  File "D:\programming\SynergyLabs-GenAI-Assignment\problem2-llm-judge\judge\experiments.py", line 68, in selfpref_pairs
-    g_orig, m_orig = generate(gem, items, llm, "sp:"), generate(gma, items, llm, "sp:")
-                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                         ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\programming\SynergyLabs-GenAI-Assignment\problem2-llm-judge\judge\experiments.py", line 83, in ab_suites
+    a, b = generate(load_cfg("gen_v1"), inputs, llm, "ab:"), generate(load_cfg("gen_v2"), inputs, llm, "ab:")
+                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "D:\programming\SynergyLabs-GenAI-Assignment\problem2-llm-judge\judge\pipeline.py", line 86, in generate
     r = llm.generate(gen_cfg["model"], it["input"], system=system, max_output_tokens=gen_cfg["max_output_tokens"],
         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
