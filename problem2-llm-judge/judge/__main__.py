@@ -23,7 +23,7 @@ def main():
     p.add_argument("--b", required=True)
     p.add_argument("--judge", default="judge_v1")
     p = sub.add_parser("experiments")
-    p.add_argument("--stage", choices=["all", "gen", "core"], default="all")
+    p.add_argument("--stage", choices=["all", "gen", "core", "bias"], default="all")
     p.add_argument("--cache", help="log file to append to (default: judge_<judge model>.jsonl; all cache/*.jsonl are read)")
     p = sub.add_parser("show")
     p.add_argument("key", nargs="?")
@@ -52,9 +52,10 @@ def main():
     elif a.cmd == "experiments":
         from .experiments import run_all
         run_all(llm, a.stage)
-        if a.stage == "all":
+        if a.stage in ("all", "bias"):
             print((RESULTS / "bias_validation.md").read_text(encoding="utf-8"))
-            print((RESULTS / "ab_report.md").read_text(encoding="utf-8"))
+            if a.stage == "all":
+                print((RESULTS / "ab_report.md").read_text(encoding="utf-8"))
     elif a.cmd == "show":
         keys = []
         if a.pair:

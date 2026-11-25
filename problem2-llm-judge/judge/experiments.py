@@ -5,7 +5,7 @@ Runs (all cached in cache/calls.jsonl, resumable, replayable with --offline):
   Q  pairwise on 24 pairs (T-vs-VW, T-vs-P) x both orders x {v0, v1}
   S  self-preference: 6 open questions, Gemini vs Gemma originals and cross-paraphrases, both orders x {v0, v1}
   R  test-retest: v1 pointwise on 16 outputs x 2 extra reruns (temperature 0)
-  AB generator prompt gen_v1 vs gen_v2 (gemma-4-31b-it) on the 12 base inputs, judged by v1 (pairwise both orders + pointwise)
+  AB generator prompt gen_v1 vs gen_v2 (gemma-4-26b-a4b-it) on the 12 base inputs, judged by v1 (pairwise both orders + pointwise)
 """
 import json
 
@@ -64,7 +64,8 @@ def build_probes(items):
 def selfpref_pairs(llm):
     gem = {"name": "gen_gemini", "model": "gemini-3.1-flash-lite", "family": "gemini", "temperature": 0, "seed": 42,
            "max_output_tokens": 1024, "system_prompt": SP_SYSTEM}
-    gma = {**load_cfg("gen_v1"), "name": "gen_gemma", "system_prompt": SP_SYSTEM}
+    # pinned: the completed self-preference set was generated with gemma-4-31b-it (A/B later moved to 26b-a4b)
+    gma = {**load_cfg("gen_v1"), "name": "gen_gemma", "model": "gemma-4-31b-it", "system_prompt": SP_SYSTEM}
     items = [{"id": f"s{k + 1}", "input": q} for k, q in enumerate(SELFPREF_INPUTS[:SELFPREF_N])]
     g_orig, m_orig = generate(gem, items, llm, "sp:"), generate(gma, items, llm, "sp:")
     para = lambda cfg, case: generate({**cfg, "system_prompt": None}, [{"id": case.id, "input": PARAPHRASE.format(t=case.model_output)}],
@@ -153,7 +154,8 @@ def retest(recs0, reruns):
 
 # ---------------------------------------------------------------------------------------------------- run all
 def run_all(llm, stage="all"):
-    """stage: 'gen' = generations only; 'core' = P, Q, R judge runs only; 'all' = everything + reports."""
+    """stage: 'gen' = generations only; 'core' = P, Q, R judge runs only; 'bias' = P, Q, S, R + bias/validation reports
+    (no A/B, so it does not need the A/B generator); 'all' = everything + all reports."""
     v0, v1 = load_cfg("judge_v0"), load_cfg("judge_v1")
     items = base_items()
     cases, pairs = build_probes(items)
@@ -168,21 +170,22 @@ def run_all(llm, stage="all"):
         [judge_pointwise(x, v1, llm, rerun_idx=i, tag="R:") for i in (1, 2) for x in cases if x.meta["item"] in RETEST_ITEMS]
         return None, None
     sp_pairs = selfpref_pairs(llm)
-    ab_a, ab_b = ab_suites(llm, items)
+    ab_a, ab_b = ab_suites(llm, items) if stage == "all" else (None, None)
     P = {c["prompt_version"]: [judge_pointwise(x, c, llm, tag="P:") for x in cases] for c in (v0, v1)}
     Q = {c["prompt_version"]: [judge_pair(p["id"], p["input"], p["system_prompt"], p["reference"], p["out1"], p["out2"], c, llm,
                                           tag="Q:", meta={"kind": p["kind"], "gold": p["gold"]}) for p in pairs] for c in (v0, v1)}
     S = {c["prompt_version"]: [judge_pair(p["id"], p["input"], "", None, p["out1"], p["out2"], c, llm, tag="S:", meta={"set": p["set"]})
                                for p in sp_pairs] for c in (v0, v1)}
     R = [judge_pointwise(x, v1, llm, rerun_idx=i, tag="R:") for i in (1, 2) for x in cases if x.meta["item"] in RETEST_ITEMS]
-    AB = compare(ab_a, ab_b, v1, llm)
+    AB = compare(ab_a, ab_b, v1, llm) if stage == "all" else None
     m = {"pointwise": {v: pointwise_metrics(P[v]) for v in P}, "pairwise": {v: pairwise_metrics(Q[v]) for v in Q},
          "self_preference": {v: selfpref_delta(S[v]) for v in S}, "test_retest_v1": retest(P["v1"], R)}
     prov = provenance(v1, llm)
     write("experiments_raw", {"provenance": prov, "P": P, "Q": Q, "S": S, "R": R})
     write("bias_validation", {"provenance": prov, "metrics": m}, bias_md(m) + "\n" + validation_md(m))
-    write("ab_report", {"provenance": prov, **{k: v for k, v in AB.items() if k not in ("pairs", "pointwise_a", "pointwise_b")},
-                        "pairs": AB["pairs"], "pointwise_a": AB["pointwise_a"], "pointwise_b": AB["pointwise_b"]}, ab_md(AB))
+    if AB:
+        write("ab_report", {"provenance": prov, **{k: v for k, v in AB.items() if k not in ("pairs", "pointwise_a", "pointwise_b")},
+                            "pairs": AB["pairs"], "pointwise_a": AB["pointwise_a"], "pointwise_b": AB["pointwise_b"]}, ab_md(AB))
     write("report", {"provenance": prov, "suite": "suites/probes.jsonl", "judge": "judge_v1",
                      "summary": __import__("judge.pipeline", fromlist=["summarize_pointwise"]).summarize_pointwise(P["v1"])},
           suite_md("suites/probes.jsonl (48 probe outputs)", P["v1"]))
@@ -238,7 +241,7 @@ def ab_md(ab):
     f = lambda t: "n/a" if t[0] is None else f"{t[0]:.2f} [{t[1]:.2f}, {t[2]:.2f}]"
     return f"""# A/B comparison [MEASURED]: generator prompt gen_v1 (A) vs gen_v2 (B)
 
-Generator `gemma-4-31b-it` (family gemma) for both arms; judge v1 (`{load_cfg('judge_v1')['model']}`, family gemini). {len(ab['pairs'])} inputs.
+Generator `{load_cfg('gen_v1')['model']}` (family gemma) for both arms; judge v1 (`{load_cfg('judge_v1')['model']}`, family gemini). {len(ab['pairs'])} inputs.
 Decision rule (fixed before the run): B wins if the 95% CI of B's win rate is above 0.5, A if below, otherwise keep A.
 
 | Config | Pass rate | Mean score (0-1) | Win rate |

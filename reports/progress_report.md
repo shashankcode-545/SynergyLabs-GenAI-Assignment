@@ -1,5 +1,38 @@
 # Progress report
 
+## Update 2026-11-25 19:41: full suite launched with the approved models; both stopped on 503 (external capacity)
+
+- **Approved configuration:**
+  - judge `gemini-3.1-flash-lite` (v0 and v1);
+  - A/B generator `gemma-4-26b-a4b-it` (`configs/gen_v1/v2.yaml`);
+  - the self-preference set stays pinned to `gemma-4-31b-it` and is reused from cache (8 pairs, 0 calls).
+- **A/B generation** (`evidence/p2_final_gen.log`): 2 new outputs (`ab:gen_v1:f1`, `f2`), then `503 UNAVAILABLE "high demand"` from `gemma-4-26b-a4b-it` after bounded retries (about 19:39).
+  - Arms so far: 3 of 24 (v1 f1, f2; v2 c1 from the earlier controlled test).
+- **Judge core stage** (`evidence/p2_final_core.log`): `503 UNAVAILABLE "high demand"` from `gemini-3.1-flash-lite` on its first call (about 19:40); 0 new calls.
+  - Judge cache `cache/judge_gemini-3.1-flash-lite.jsonl`: 6 entries (P v0/v1 `m1-VW`; Q v0/v1 `m1-T-vs-VW`, both orders).
+- **Neither stage was restarted** (repeated-503 rule).
+- **Completion vs expected judge calls** (new judge):
+
+  | Run | Done / expected |
+  |---|---|
+  | P | 2/96 |
+  | Q | 4/96 |
+  | R | 0/32 |
+  | S | 0/32 |
+  | AB | 0/48 |
+
+  **No experiment is complete, and no result files exist.**
+- **P2 spend:** $0.0434 of the $3.50 cap, summed over all P2 cache files.
+- **Added:** a `--stage bias` option (P, Q, S, R + bias/validation reports with no A/B dependency) and `tests/test_results.py`. The test validates counts, ids, parse rate, single judge model and metric recomputation once results exist; until then it skips.
+- **Remaining:** 298 judge calls (≈ $0.22) and 21 A/B generations ($0). Then reports, README results, `reports/fill_submission.py` (written, not run) and the submission docx.
+- **Resume:**
+  ```powershell
+  cd problem2-llm-judge
+  ..\.venv\Scripts\python -u -m judge experiments --stage core
+  $env:LLM_TIMEOUT_S=240; ..\.venv\Scripts\python -u -m judge experiments --stage gen --cache gen_calls.jsonl
+  ..\.venv\Scripts\python -u -m judge experiments             # or --stage bias if Gemma stays down
+  ```
+
 ## Update 2026-11-25: judge switched to gemini-3.1-flash-lite (approved); generator test pending approval
 
 - **Judge:** `configs/judge_v0.yaml` and `judge_v1.yaml` now use `gemini-3.1-flash-lite`.
