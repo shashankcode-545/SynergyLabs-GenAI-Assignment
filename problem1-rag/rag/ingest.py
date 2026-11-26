@@ -11,8 +11,8 @@ def chunk_rows(doc, size, overlap):
     for start, end in chunk_spans(doc.text, size, overlap):
         text = doc.text[start:end]
         yield {"chunk_id": hashlib.sha256(f"{doc.doc_id}|{cfg}|{start}|{hashlib.sha256(text.encode()).hexdigest()}".encode()).hexdigest()[:32],
-               "doc_id": doc.doc_id, "source_type": doc.source_type, "title": doc.title,
-               "location": doc.location_at(start) or "", "text": text, "char_start": start, "char_end": end}
+            "doc_id": doc.doc_id, "source_type": doc.source_type, "title": doc.title,
+            "location": doc.location_at(start) or "", "text": text, "char_start": start, "char_end": end}
 
 
 def ingest(corpus_dir, settings, llm, size=None, overlap=None, offline=False):
@@ -23,7 +23,7 @@ def ingest(corpus_dir, settings, llm, size=None, overlap=None, offline=False):
     manifest = json.loads(manifest_path.read_text()) if manifest_path.exists() else {}
     before = table.count_rows()
     stats = {"table": name, "chunk_size": size, "chunk_overlap": overlap, "embed_model": settings.embed_model,
-             "embed_dim": settings.embed_dim, "vectors_before": before, "skipped": [], "ingested": []}
+            "embed_dim": settings.embed_dim, "vectors_before": before, "skipped": [], "ingested": []}
     for doc in load_corpus(corpus_dir):
         h = hashlib.sha256(doc.text.encode()).hexdigest()
         if manifest.get(doc.doc_id) == h and table.count_rows(f"doc_id = '{doc.doc_id}'") > 0:

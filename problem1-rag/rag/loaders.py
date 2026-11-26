@@ -13,7 +13,7 @@ from pypdf import PdfReader
 BLOCKS = ["p", "li", "h1", "h2", "h3", "h4", "h5", "h6", "dd", "dt", "blockquote", "pre", "figcaption", "td", "th"]
 HEADINGS = {"h1", "h2", "h3", "h4", "h5", "h6"}
 HTML_DROP = ["script", "style", "sup.reference", "sup.mw-ref", ".mw-references-wrap", "ol.references", ".reflist",
-             ".navbox", ".mw-editsection", ".hatnote", ".metadata", ".noprint", "link", "meta"]
+                ".navbox", ".mw-editsection", ".hatnote", ".metadata", ".noprint", "link", "meta"]
 
 
 @dataclass
