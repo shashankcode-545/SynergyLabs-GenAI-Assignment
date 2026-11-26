@@ -134,3 +134,19 @@ def test_availability_probe_uses_first_uncached_calls_and_reports_errors():
     assert ok["judge"] and ok["generator"] and ok["judge_case"] == "f1-T" and ok["generator_case"] == "gen_v1:f1"
     down = availability_probe(Down(), Down(), Offline())
     assert not down["judge"] and not down["generator"] and "503" in down["judge_error"]
+
+
+def test_probe_gen_model_override_is_in_memory_only():
+    from judge.experiments import availability_probe
+    from judge.pipeline import load_cfg
+
+    class Offline:
+        def generate(self, *a, **k):
+            raise KeyError("not cached")
+
+    gen = FakeLLM(["Carbon dioxide."])
+    gen_models = []
+    orig = gen.generate
+    gen.generate = lambda model, prompt, **k: (gen_models.append(model), orig(model, prompt, **k))[1]
+    availability_probe(FakeLLM([GOOD]), gen, Offline(), gen_model="gemma-4-31b-it")
+    assert gen_models == ["gemma-4-31b-it"] and load_cfg("gen_v1")["model"] != "gemma-4-31b-it"

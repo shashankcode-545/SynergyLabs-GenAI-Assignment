@@ -347,7 +347,7 @@ def _missing(fn):
         return True
 
 
-def availability_probe(online, gen_online, offline):
+def availability_probe(online, gen_online, offline, gen_model=None):
     """One uncached P v1 judge call + one uncached A/B generation. Both are real suite calls, so a success is cached and
     reused (no wasted quota). Returns {"judge": bool, "generator": bool, ...errors}."""
     v1, out = load_cfg("judge_v1"), {}
@@ -360,7 +360,8 @@ def availability_probe(online, gen_online, offline):
         out.update(judge=False, judge_error=f"{type(e).__name__}: {str(e)[:160]}")
     items = [{"id": it["id"], "input": it["input"], "system_prompt": it.get("system_prompt", ""),
               "expected_output": it["expected_output"]} for it in base_items()]
-    todo = next(((cfg, it) for cfg in (load_cfg("gen_v1"), load_cfg("gen_v2")) for it in items
+    gens = [{**load_cfg(g), **({"model": gen_model} if gen_model else {})} for g in ("gen_v1", "gen_v2")]  # in-memory only
+    todo = next(((cfg, it) for cfg in gens for it in items
                  if _missing(lambda: generate(cfg, [it], offline, "ab:"))), None)
     try:
         out["generator"] = todo is None or bool(generate(todo[0], [todo[1]], gen_online, "ab:")[0].model_output.strip())

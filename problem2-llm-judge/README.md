@@ -95,6 +95,9 @@ All numbers below are **[MEASURED]**.
 **A/B comparison: not completed, no winner declared.** `gemma-4-26b-a4b-it` kept returning `503 UNAVAILABLE "high demand"`.
 - Generations so far: `gen_v1` 10/12 and `gen_v2` 1/12, so 13 are missing.
 - The pipeline (`judge compare`, decision rule fixed in advance) is implemented and unit-tested, but it has no complete A/B data.
+- **Preferred generator for completing it: `gemma-4-31b-it`** (configuration unchanged until it responds).
+  - It already has 15 of the 24 answers cached (`gen_v1` 12/12, `gen_v2` 3/12); 9 remain.
+  - Next check: `python -m judge probe --gen-model gemma-4-31b-it`. Checkpoint and procedure: `../reports/progress_report.md`.
 
 ### Results [MEASURED]
 

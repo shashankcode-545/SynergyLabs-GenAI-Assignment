@@ -1,5 +1,34 @@
 # Progress report
 
+## Update 2026-11-26 ~10:15: A/B generator decision and next retry checkpoint (A/B still PENDING)
+
+- **Preferred A/B generator: `gemma-4-31b-it`** (user decision).
+  - Its **15 cached A/B answers are preserved**: `gen_v1` 12/12 and `gen_v2` 3/12 (`f1`–`f3`), in `cache/gen_calls.jsonl`.
+  - The 11 `gemma-4-26b-a4b-it` answers are also kept, for audit.
+- **Current state:** the generator configuration is *not* changed (still `gemma-4-26b-a4b-it` in `configs/gen_v*.yaml`). No judge calls were run. A/B remains **PENDING, no winner**.
+- **Last availability results (2026-11-26):**
+
+  | Time | Model | Item | Result |
+  |---|---|---|---|
+  | 10:01 | `gemma-4-26b-a4b-it` | `gen_v1:c3` | 503 |
+  | ~10:10 | `gemma-4-31b-it` | `gen_v2:f4` | 503 |
+  | ~10:10 | `gemini-2.5-flash-lite` | — | 404 "no longer available to new users" |
+
+- **Next retry checkpoint: 2026-11-26 14:00 local.** One controlled probe; do not retry repeatedly while it returns 503.
+  ```powershell
+  cd problem2-llm-judge
+  $env:LLM_TIMEOUT_S=240; ..\.venv\Scripts\python -m judge probe --gen-model gemma-4-31b-it   # 1 live Gemma call (gen_v2:f4), 2 attempts; config unchanged
+  ```
+  - **Exit 0:**
+    1. Set `model: gemma-4-31b-it` in both `configs/gen_v1.yaml` and `gen_v2.yaml`, and the generator assertion in `tests/test_phase0.py`.
+    2. Run `--stage gen --cache gen_calls.jsonl`. 31b is missing `gen_v2` `f4`, `m1`–`m4` and `c1`–`c4` (9 items); the probe caches `f4`, so **8** remain. Everything else is reused from cache.
+    3. Run `python -m judge experiments`: 48 judge calls, ≈ $0.05.
+    4. Validate (`pytest`, offline replay); declare a winner only under the fixed decision rule.
+  - **Still 503:** stop and **ask the user** before switching to `gemini-3.5-flash-lite`.
+    - If approved: regenerate all 24 answers with it (both arms), set `family: gemini`, and run with the documented same-family override (`--allow-same-family`, recorded in the report).
+    - The same-family limitation must be disclosed.
+- **Unchanged:** methodology, prompts, rubric, thresholds and the decision rule. P2 spend stays $0.1805 of $3.50.
+
 ## Update 2026-11-26: P2 bias + validation complete; A/B blocked by Gemma 503 (uncommitted, pending approval)
 
 - **Judge** `gemini-3.1-flash-lite`, key `GEMINI_API_KEY_P2`. Every run is complete and verified:
