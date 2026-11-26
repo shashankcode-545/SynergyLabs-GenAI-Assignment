@@ -89,15 +89,26 @@ All numbers below are **[MEASURED]**.
 | Q pairwise, AB + BA | 96 (24 pairs × 2 orders × v0, v1) | complete |
 | S self-preference | 32 (8 pairs × 2 orders × v0, v1) | complete |
 | R test-retest | 32 (16 outputs × 2 reruns) | complete |
+| AB prompt v1 vs v2 | 48 (12 pairs × 2 orders + 24 pointwise; 42 made live, 6 identical prompts served from cache) | complete |
 
-0 parse failures and 0 repair retries in 256 judge calls, costing $0.1405.
+0 parse failures and 0 repair retries in 298 judge calls, costing $0.1688 (`results/usage.md`).
 
-**A/B comparison: not completed, no winner declared.** `gemma-4-26b-a4b-it` kept returning `503 UNAVAILABLE "high demand"`.
-- Generations so far: `gen_v1` 10/12 and `gen_v2` 1/12, so 13 are missing.
-- The pipeline (`judge compare`, decision rule fixed in advance) is implemented and unit-tested, but it has no complete A/B data.
-- **Preferred generator for completing it: `gemma-4-31b-it`** (configuration unchanged until it responds).
-  - It already has 15 of the 24 answers cached (`gen_v1` 12/12, `gen_v2` 3/12); 9 remain.
-  - Next check: `python -m judge probe --gen-model gemma-4-31b-it`. Checkpoint and procedure: `../reports/progress_report.md`.
+**A/B comparison** ([`results/ab_report.md`](results/ab_report.md)): generator `gemma-4-31b-it` for both arms, with 12 inputs; judge v1.
+
+| Config | Pass rate | Mean score (0–1) | Win rate |
+|---|---|---|---|
+| A: `gen_v1` ("Answer the user's request.") | 0.83 [0.58, 1.00] | 1.00 | 0.42 |
+| B: `gen_v2` (constraint-following + fact-check prompt) | 0.92 [0.75, 1.00] | 1.00 | 0.58 [0.50, 0.71] |
+
+- **Pairwise, both orders:** B wins 2 (`m2`, `m4`), A wins 0, ties 10. Order flip rate 0%; sign test p = 0.50.
+- **Decision rule (fixed before the run):** B wins only if the lower bound of its win-rate CI is above 0.5. The bound is exactly 0.50, so the declared result is **A kept: no significant difference**. v2 is directionally better (2–0), but 12 inputs are too few to show it.
+- **Generator history:** `gemma-4-26b-a4b-it`, the earlier approved generator, returned 503 repeatedly. Its 11 outputs stay in `cache/` for audit only. No A/B result mixes generators.
+- **Pointwise:** every one of the 24 answers scored 5/5 on every criterion, so pointwise hits a ceiling here. All 3 pass-rule failures (A `m2`, A `m3`, B `f4`) are **grounding-check failures**: the judge's correctness quote was not verbatim in the answer.
+  - `m2`: the judge paraphrased.
+  - `m3`: markdown `**Yes**` broke the match.
+  - `f4`: the LaTeX `	ext` was read as a tab in the judge's JSON.
+
+  So the pass-rate gap reflects the strict verbatim check on formatted text, not answer quality. One pairwise order (`m3`, AB) had an unverifiable decisive quote and became a tie, as designed.
 
 ### Results [MEASURED]
 
@@ -142,7 +153,7 @@ All numbers below are **[MEASURED]**.
 - The self-preference probe is insensitive: all ties.
 - The v1 pass rule does not gate on instruction-following. Padded answers to "answer in exactly one word" items still pass, although their instruction-following score drops.
 - Judge and generators all come from one vendor (Google).
-- The A/B comparison is unfinished.
+- A/B has only 12 inputs. Pointwise judging hits a ceiling, and the verbatim-quote grounding check is brittle on markdown/LaTeX answers. Normalizing formatting before matching is a candidate fix; it is not applied, because the method was fixed before the run.
 
 **Would we let it gate a release?** Not as the only gate (evidence for the decision):
 - On clear-cut cases it is accurate, deterministic at temperature 0 and order-insensitive.
@@ -155,11 +166,10 @@ Reasonable guardrails:
 - send every failure and every AB/BA disagreement to human review;
 - re-validate against human labels on harder probes before trusting it with borderline releases.
 
-### Resume (cached calls are skipped)
+### Reproduce (offline, from committed caches)
 
 ```powershell
-..\.venv\Scripts\python -m judge probe
-$env:LLM_TIMEOUT_S=240; ..\.venv\Scripts\python -u -m judge experiments --stage gen --cache gen_calls.jsonl   # 13 A/B generations
-..\.venv\Scripts\python -u -m judge experiments        # runs only the 48 A/B judge calls (~$0.05 est.), rewrites all reports
+..\.venv\Scripts\python -m judge experiments --offline   # rebuilds bias_validation.md, report.md, ab_report.md
+..\.venv\Scripts\python -m judge usage --offline
 ..\.venv\Scripts\python -m pytest -q
 ```

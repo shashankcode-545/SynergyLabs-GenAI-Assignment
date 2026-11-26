@@ -1,7 +1,7 @@
 # Generator v1 (A/B arm A). Family differs from the Gemini judge; same vendor (Google) — disclosed limitation.
 name: gen_v1
 provider: gemini
-model: gemma-4-26b-a4b-it   # user-approved A/B generator; gemma-4-31b-it kept returning 503
+model: gemma-4-31b-it   # A/B generator (user decision 2026-11-26; 26b-a4b outputs kept in cache for audit only)
 family: gemma
 temperature: 0
 seed: 42

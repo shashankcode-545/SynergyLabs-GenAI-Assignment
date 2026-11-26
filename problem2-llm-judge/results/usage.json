@@ -1,5 +1,5 @@
 {
  "judge_model": "gemini-3.1-flash-lite",
- "calls": 256,
- "cost_usd": 0.1405160000000001
+ "calls": 298,
+ "cost_usd": 0.16884100000000016
 }

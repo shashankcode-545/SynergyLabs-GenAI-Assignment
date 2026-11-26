@@ -77,3 +77,11 @@ Each model got exactly one controlled call with a single attempt and no retries.
 - **Preferred generator: `gemma-4-31b-it`.** Its 15 cached A/B answers are preserved. The configuration stays unchanged until a probe succeeds.
 - **Next checkpoint:** 2026-11-26 14:00 local. One `judge probe --gen-model gemma-4-31b-it`; no repeated retries while it returns 503.
 - **`gemini-3.5-flash-lite`** only with explicit user approval. All 24 answers would then be regenerated with it, and the same-family limitation documented.
+
+## Completion (2026-11-26)
+
+- The user's probe succeeded at 10:25 and cached `gen_v2:f4`.
+- Both A/B configs were then switched to `gemma-4-31b-it`.
+- Only the 8 missing answers were generated (cache 36 → 44, no duplicates).
+- The 48 A/B judge calls followed: 42 live, 6 identical prompts served from cache.
+- Result: **no significant difference, incumbent v1 kept** under the fixed decision rule (`problem2-llm-judge/results/ab_report.md`).

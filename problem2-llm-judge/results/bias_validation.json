@@ -1,8 +1,8 @@
 {
  "provenance": {
   "kind": "measured",
-  "ts": "2026-11-26T09:33:13",
-  "git": "977690a",
+  "ts": "2026-11-26T10:47:33",
+  "git": "030786e",
   "judge": {
    "name": "judge_v1",
    "provider": "gemini",
@@ -14,9 +14,9 @@
    "thinking_level": "LOW",
    "max_output_tokens": 2048
   },
-  "api_calls_made": 32,
-  "cache_hits": 240,
-  "spent_total_usd": 0.1805
+  "api_calls_made": 42,
+  "cache_hits": 302,
+  "spent_total_usd": 0.2088
  },
  "metrics": {
   "pointwise": {

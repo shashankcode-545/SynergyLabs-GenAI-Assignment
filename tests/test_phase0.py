@@ -31,7 +31,7 @@ def test_p1_models_pinned():
 def test_p2_judge_and_generator_pinned_and_independent():
     cfg = {p.stem: yaml.safe_load(p.read_text(encoding="utf-8")) for p in (ROOT / "problem2-llm-judge/configs").glob("*.yaml")}
     assert {cfg["judge_v0"]["model"], cfg["judge_v1"]["model"]} == {P2_JUDGE}
-    assert {cfg["gen_v1"]["model"], cfg["gen_v2"]["model"]} == {"gemma-4-26b-a4b-it"}  # A/B generator (31b: repeated 503)
+    assert {cfg["gen_v1"]["model"], cfg["gen_v2"]["model"]} == {"gemma-4-31b-it"}  # A/B generator (26b-a4b outputs kept for audit only)
     # self-enhancement guard precondition: judge family differs from generator family
     assert cfg["judge_v1"]["family"] != cfg["gen_v1"]["family"]
 

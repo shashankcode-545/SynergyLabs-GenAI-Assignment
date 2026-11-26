@@ -1,5 +1,24 @@
 # Progress report
 
+## Update 2026-11-26: P2 A/B comparison complete (uncommitted, pending approval)
+
+- **Generator:** `configs/gen_v1.yaml` and `gen_v2.yaml` now use `gemma-4-31b-it`.
+  - The 16 cached 31B answers were reused: `gen_v1` 12/12, `gen_v2` 4/12 including the probe's `f4`.
+  - **Only 8 answers were generated:** `gen_v2` `m1`–`m4` and `c1`–`c4`. Cache 36 → 44, no duplicate keys, no empty outputs (`evidence/p2_run_gen_31b.log`).
+  - The 11 `gemma-4-26b-a4b-it` answers are kept for audit only; no A/B result mixes generators.
+- **A/B judging** (`evidence/p2_run_ab.log`): 48 judge calls; 42 live, and 6 served from cache because both arms gave identical answers, which made AB and BA identical. $0.0283; 0 parse failures. **No API errors** in this run (one slow call, p95 latency 121 s).
+- **Result** (`results/ab_report.md`):
+  - pass rate A 0.83 vs B 0.92;
+  - mean score 1.00 vs 1.00 (pointwise ceiling);
+  - pairwise B 2 wins, A 0, ties 10; win rate B 0.58 [0.50, 0.71]; sign test p = 0.50.
+  - **Decision rule: no significant difference, incumbent A (v1) kept.** All 3 pointwise failures are grounding-check failures (markdown/LaTeX or a paraphrased quote) with 5/5 scores. Documented as a limitation; not changed.
+- **Validation:**
+  - `tests/test_results.py` passes 3/3, now including the A/B counts.
+  - An offline replay reproduces `bias_validation.md`, `report.md` and `ab_report.md` byte-for-byte.
+  - The bias reports are unchanged by the A/B run.
+- **Spend:** judge total 298 calls, $0.1688. **P2 total: $0.2088 of $3.50.**
+- **Updated:** the P2 README (A/B results and limitations), `submission.docx` (A/B cells and declared winner), the root README and `p2_generator_fallback.md`.
+
 ## Update 2026-11-26 ~10:15: A/B generator decision and next retry checkpoint (A/B still PENDING)
 
 - **Preferred A/B generator: `gemma-4-31b-it`** (user decision).

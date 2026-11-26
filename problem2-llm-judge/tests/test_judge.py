@@ -148,5 +148,6 @@ def test_probe_gen_model_override_is_in_memory_only():
     gen_models = []
     orig = gen.generate
     gen.generate = lambda model, prompt, **k: (gen_models.append(model), orig(model, prompt, **k))[1]
-    availability_probe(FakeLLM([GOOD]), gen, Offline(), gen_model="gemma-4-31b-it")
-    assert gen_models == ["gemma-4-31b-it"] and load_cfg("gen_v1")["model"] != "gemma-4-31b-it"
+    configured = load_cfg("gen_v1")["model"]
+    availability_probe(FakeLLM([GOOD]), gen, Offline(), gen_model="override-model-x")
+    assert gen_models == ["override-model-x"] and load_cfg("gen_v1")["model"] == configured

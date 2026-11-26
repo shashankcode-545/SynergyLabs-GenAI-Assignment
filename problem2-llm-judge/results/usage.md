@@ -9,5 +9,6 @@
 | R | v1 | 32 | 25162 | 12244 | 3864 | 2247 | 13345 | 0.0305 |
 | S | v0 | 16 | 4836 | 1088 | 1618 | 1444 | 6213 | 0.0053 |
 | S | v1 | 16 | 11444 | 2000 | 1634 | 1670 | 6200 | 0.0083 |
+| ab | v1 | 42 | 29816 | 9357 | 4557 | 2042 | 120925 | 0.0283 |
 
-Total: 256 calls, $0.1405. Cost = API usage metadata x list price ($0.25 / $1.50 per 1M input / output tokens, thinking billed as output).
+Total: 298 calls, $0.1688. Cost = API usage metadata x list price ($0.25 / $1.50 per 1M input / output tokens, thinking billed as output).

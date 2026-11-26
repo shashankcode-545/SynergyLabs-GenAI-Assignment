@@ -1,0 +1,1584 @@
+{
+ "provenance": {
+  "kind": "measured",
+  "ts": "2026-11-26T10:47:33",
+  "git": "030786e",
+  "judge": {
+   "name": "judge_v1",
+   "provider": "gemini",
+   "model": "gemini-3.1-flash-lite",
+   "family": "gemini",
+   "prompt_version": "v1",
+   "temperature": 0,
+   "seed": 42,
+   "thinking_level": "LOW",
+   "max_output_tokens": 2048
+  },
+  "api_calls_made": 42,
+  "cache_hits": 302,
+  "spent_total_usd": 0.2088
+ },
+ "summary_a": {
+  "n": 12,
+  "parse_failed": 0,
+  "pass_rate": [
+   0.8333333333333334,
+   0.5833333333333334,
+   1.0
+  ],
+  "mean_score_norm": [
+   1.0,
+   1.0,
+   1.0
+  ],
+  "calls": 12,
+  "cost_usd": 0.01021675,
+  "tokens": {
+   "prompt": 9469,
+   "output": 3841,
+   "thoughts": 1392
+  },
+  "mean_by_criterion": {
+   "correctness": 5.0,
+   "faithfulness": 5.0,
+   "completeness": 5.0,
+   "instruction_following": 5.0,
+   "tone_safety": 5.0
+  }
+ },
+ "summary_b": {
+  "n": 12,
+  "parse_failed": 0,
+  "pass_rate": [
+   0.9166666666666666,
+   0.75,
+   1.0
+  ],
+  "mean_score_norm": [
+   1.0,
+   1.0,
+   1.0
+  ],
+  "calls": 12,
+  "cost_usd": 0.00961825,
+  "tokens": {
+   "prompt": 9457,
+   "output": 3507,
+   "thoughts": 1329
+  },
+  "mean_by_criterion": {
+   "correctness": 5.0,
+   "faithfulness": 5.0,
+   "completeness": 5.0,
+   "instruction_following": 5.0,
+   "tone_safety": 5.0
+  }
+ },
+ "win_rate_b": [
+  0.5833333333333334,
+  0.5,
+  0.7083333333333334
+ ],
+ "wins_b": 2,
+ "wins_a": 0,
+ "ties": 10,
+ "flip_rate": 0.0,
+ "sign_test_p": 0.5,
+ "winner": "A (no significant difference; incumbent kept)",
+ "pair_calls": 24,
+ "pair_cost_usd": 0.010957999999999999,
+ "pairs": [
+  {
+   "id": "f1",
+   "version": "v1",
+   "rerun_idx": 0,
+   "orders": {
+    "AB": {
+     "slot": "tie",
+     "candidate": 0,
+     "ungrounded": false,
+     "keys": [
+      "8704144cb319d116f60dabfc183a270c1c0c811681849726aacf5b902cd37ef9"
+     ],
+     "cost_usd": 0.00036525,
+     "tokens": {
+      "prompt": 567,
+      "output": 70,
+      "thoughts": 79
+     },
+     "cached": false,
+     "parse": "json",
+     "error": null
+    },
+    "BA": {
+     "slot": "tie",
+     "candidate": 0,
+     "ungrounded": false,
+     "keys": [
+      "8704144cb319d116f60dabfc183a270c1c0c811681849726aacf5b902cd37ef9"
+     ],
+     "cost_usd": 0.00036525,
+     "tokens": {
+      "prompt": 567,
+      "output": 70,
+      "thoughts": 79
+     },
+     "cached": true,
+     "parse": "json",
+     "error": null
+    }
+   },
+   "single_order": 0,
+   "flipped": false,
+   "final": 0
+  },
+  {
+   "id": "f2",
+   "version": "v1",
+   "rerun_idx": 0,
+   "orders": {
+    "AB": {
+     "slot": "tie",
+     "candidate": 0,
+     "ungrounded": false,
+     "keys": [
+      "459157c2c1b03af1dce21e6001e66d64dfcbf5c7772ec23f0c5778f47ee995b3"
+     ],
+     "cost_usd": 0.00047525,
+     "tokens": {
+      "prompt": 587,
+      "output": 118,
+      "thoughts": 101
+     },
+     "cached": false,
+     "parse": "json",
+     "error": null
+    },
+    "BA": {
+     "slot": "tie",
+     "candidate": 0,
+     "ungrounded": false,
+     "keys": [
+      "ddc243aee82bc5255e60169a9ce3700b6a7661b0ff8cd70c9cd74b8c5e68f53b"
+     ],
+     "cost_usd": 0.00046325,
+     "tokens": {
+      "prompt": 587,
+      "output": 102,
+      "thoughts": 109
+     },
+     "cached": false,
+     "parse": "json",
+     "error": null
+    }
+   },
+   "single_order": 0,
+   "flipped": false,
+   "final": 0
+  },
+  {
+   "id": "f3",
+   "version": "v1",
+   "rerun_idx": 0,
+   "orders": {
+    "AB": {
+     "slot": "tie",
+     "candidate": 0,
+     "ungrounded": false,
+     "keys": [
+      "2ca1ce450925f75276ae51169982fcbf6fb5121af64ece17a9a195d40c6c853e"
+     ],
+     "cost_usd": 0.0004325,
+     "tokens": {
+      "prompt": 572,
+      "output": 111,
+      "thoughts": 82
+     },
+     "cached": false,
+     "parse": "json",
+     "error": null
+    },
+    "BA": {
+     "slot": "tie",
+     "candidate": 0,
+     "ungrounded": false,
+     "keys": [
+      "a616c9b8f721eaa305edf6753e6426c46082c3b4c606dcb36dcdb17489809a72"
+     ],
+     "cost_usd": 0.000452,
+     "tokens": {
+      "prompt": 572,
+      "output": 108,
+      "thoughts": 98
+     },
+     "cached": false,
+     "parse": "json",
+     "error": null
+    }
+   },
+   "single_order": 0,
+   "flipped": false,
+   "final": 0
+  },
+  {
+   "id": "f4",
+   "version": "v1",
+   "rerun_idx": 0,
+   "orders": {
+    "AB": {
+     "slot": "tie",
+     "candidate": 0,
+     "ungrounded": false,
+     "keys": [
+      "df0e28e53adef1e9b53ff334d113c18fe3cfde668b51e5ea18735b88d4644971"
+     ],
+     "cost_usd": 0.000445,
+     "tokens": {
+      "prompt": 598,
+      "output": 95,
+      "thoughts": 102
+     },
+     "cached": false,
+     "parse": "json",
+     "error": null
+    },
+    "BA": {
+     "slot": "tie",
+     "candidate": 0,
+     "ungrounded": false,
+     "keys": [
+      "df0e28e53adef1e9b53ff334d113c18fe3cfde668b51e5ea18735b88d4644971"
+     ],
+     "cost_usd": 0.000445,
+     "tokens": {
+      "prompt": 598,
+      "output": 95,
+      "thoughts": 102
+     },
+     "cached": true,
+     "parse": "json",
+     "error": null
+    }
+   },
+   "single_order": 0,
+   "flipped": false,
+   "final": 0
+  },
+  {
+   "id": "m1",
+   "version": "v1",
+   "rerun_idx": 0,
+   "orders": {
+    "AB": {
+     "slot": "tie",
+     "candidate": 0,
+     "ungrounded": false,
+     "keys": [
+      "9d5b78e788c6f3f0263c313a6ac13bc0abc9e0189671d3f080302e4500ba7c0d"
+     ],
+     "cost_usd": 0.00038225,
+     "tokens": {
+      "prompt": 575,
+      "output": 70,
+      "thoughts": 89
+     },
+     "cached": false,
+     "parse": "json",
+     "error": null
+    },
+    "BA": {
+     "slot": "tie",
+     "candidate": 0,
+     "ungrounded": false,
+     "keys": [
+      "9d5b78e788c6f3f0263c313a6ac13bc0abc9e0189671d3f080302e4500ba7c0d"
+     ],
+     "cost_usd": 0.00038225,
+     "tokens": {
+      "prompt": 575,
+      "output": 70,
+      "thoughts": 89
+     },
+     "cached": true,
+     "parse": "json",
+     "error": null
+    }
+   },
+   "single_order": 0,
+   "flipped": false,
+   "final": 0
+  },
+  {
+   "id": "m2",
+   "version": "v1",
+   "rerun_idx": 0,
+   "orders": {
+    "AB": {
+     "slot": "B",
+     "candidate": 2,
+     "ungrounded": false,
+     "keys": [
+      "4f17416b230f5591676be5faa39935f5aa64a4ae304678347f88aa2869d8ea3a"
+     ],
+     "cost_usd": 0.00054125,
+     "tokens": {
+      "prompt": 695,
+      "output": 138,
+      "thoughts": 107
+     },
+     "cached": false,
+     "parse": "json",
+     "error": null
+    },
+    "BA": {
+     "slot": "A",
+     "candidate": 2,
+     "ungrounded": false,
+     "keys": [
+      "f0c9aaf01d66bc2b1c6d6ccb8eb8b57b90d7f1854ed2fd796d096e06bace18d0"
+     ],
+     "cost_usd": 0.00056975,
+     "tokens": {
+      "prompt": 695,
+      "output": 143,
+      "thoughts": 121
+     },
+     "cached": false,
+     "parse": "json",
+     "error": null
+    }
+   },
+   "single_order": 2,
+   "flipped": false,
+   "final": 2
+  },
+  {
+   "id": "m3",
+   "version": "v1",
+   "rerun_idx": 0,
+   "orders": {
+    "AB": {
+     "slot": "A",
+     "candidate": 0,
+     "ungrounded": true,
+     "keys": [
+      "5a7cf0d0dae6b00f6f36335bf6a0bff823265458c6d5c2297961462f3438229a"
+     ],
+     "cost_usd": 0.00059025,
+     "tokens": {
+      "prompt": 651,
+      "output": 172,
+      "thoughts": 113
+     },
+     "cached": false,
+     "parse": "json",
+     "error": null
+    },
+    "BA": {
+     "slot": "tie",
+     "candidate": 0,
+     "ungrounded": false,
+     "keys": [
+      "8381e0637fb39a0d3748047ff806dad2b954f8f7dbee5c0ab42bfd580c4d5cfa"
+     ],
+     "cost_usd": 0.00057075,
+     "tokens": {
+      "prompt": 651,
+      "output": 134,
+      "thoughts": 138
+     },
+     "cached": false,
+     "parse": "json",
+     "error": null
+    }
+   },
+   "single_order": 0,
+   "flipped": false,
+   "final": 0
+  },
+  {
+   "id": "m4",
+   "version": "v1",
+   "rerun_idx": 0,
+   "orders": {
+    "AB": {
+     "slot": "B",
+     "candidate": 2,
+     "ungrounded": false,
+     "keys": [
+      "bf30595e3ab203bed93c7cde7657325b17b6241f089d8988b5411af49782c9e8"
+     ],
+     "cost_usd": 0.00050925,
+     "tokens": {
+      "prompt": 657,
+      "output": 120,
+      "thoughts": 110
+     },
+     "cached": false,
+     "parse": "json",
+     "error": null
+    },
+    "BA": {
+     "slot": "A",
+     "candidate": 2,
+     "ungrounded": false,
+     "keys": [
+      "a7b2e168140235cc56b87e8f0df7273717b2eba8e8abbca6a8ae42f472f28e4f"
+     ],
+     "cost_usd": 0.00051225,
+     "tokens": {
+      "prompt": 657,
+      "output": 122,
+      "thoughts": 110
+     },
+     "cached": false,
+     "parse": "json",
+     "error": null
+    }
+   },
+   "single_order": 2,
+   "flipped": false,
+   "final": 2
+  },
+  {
+   "id": "c1",
+   "version": "v1",
+   "rerun_idx": 0,
+   "orders": {
+    "AB": {
+     "slot": "tie",
+     "candidate": 0,
+     "ungrounded": false,
+     "keys": [
+      "557cc7cdc661a27579d61c969f36ace219b3af58879c99e9bb95855c47af8249"
+     ],
+     "cost_usd": 0.00045575,
+     "tokens": {
+      "prompt": 557,
+      "output": 107,
+      "thoughts": 104
+     },
+     "cached": false,
+     "parse": "json",
+     "error": null
+    },
+    "BA": {
+     "slot": "tie",
+     "candidate": 0,
+     "ungrounded": false,
+     "keys": [
+      "557cc7cdc661a27579d61c969f36ace219b3af58879c99e9bb95855c47af8249"
+     ],
+     "cost_usd": 0.00045575,
+     "tokens": {
+      "prompt": 557,
+      "output": 107,
+      "thoughts": 104
+     },
+     "cached": true,
+     "parse": "json",
+     "error": null
+    }
+   },
+   "single_order": 0,
+   "flipped": false,
+   "final": 0
+  },
+  {
+   "id": "c2",
+   "version": "v1",
+   "rerun_idx": 0,
+   "orders": {
+    "AB": {
+     "slot": "tie",
+     "candidate": 0,
+     "ungrounded": false,
+     "keys": [
+      "c056a3ea92a86d339d56780d66d3d594200ddeea46d5056ad7fb54e64bcce253"
+     ],
+     "cost_usd": 0.00041025,
+     "tokens": {
+      "prompt": 573,
+      "output": 99,
+      "thoughts": 79
+     },
+     "cached": false,
+     "parse": "json",
+     "error": null
+    },
+    "BA": {
+     "slot": "tie",
+     "candidate": 0,
+     "ungrounded": false,
+     "keys": [
+      "c056a3ea92a86d339d56780d66d3d594200ddeea46d5056ad7fb54e64bcce253"
+     ],
+     "cost_usd": 0.00041025,
+     "tokens": {
+      "prompt": 573,
+      "output": 99,
+      "thoughts": 79
+     },
+     "cached": true,
+     "parse": "json",
+     "error": null
+    }
+   },
+   "single_order": 0,
+   "flipped": false,
+   "final": 0
+  },
+  {
+   "id": "c3",
+   "version": "v1",
+   "rerun_idx": 0,
+   "orders": {
+    "AB": {
+     "slot": "tie",
+     "candidate": 0,
+     "ungrounded": false,
+     "keys": [
+      "ad1473d73764a9ce5bb502e92eccbfed2fff5c3795daa2e76dccb6e937ff5992"
+     ],
+     "cost_usd": 0.00045275,
+     "tokens": {
+      "prompt": 569,
+      "output": 114,
+      "thoughts": 93
+     },
+     "cached": false,
+     "parse": "json",
+     "error": null
+    },
+    "BA": {
+     "slot": "tie",
+     "candidate": 0,
+     "ungrounded": false,
+     "keys": [
+      "ceec367acb7f35adaa1604abe27dc708a0bda63fa85b166b34b07168c069cea8"
+     ],
+     "cost_usd": 0.00045275,
+     "tokens": {
+      "prompt": 569,
+      "output": 107,
+      "thoughts": 100
+     },
+     "cached": false,
+     "parse": "json",
+     "error": null
+    }
+   },
+   "single_order": 0,
+   "flipped": false,
+   "final": 0
+  },
+  {
+   "id": "c4",
+   "version": "v1",
+   "rerun_idx": 0,
+   "orders": {
+    "AB": {
+     "slot": "tie",
+     "candidate": 0,
+     "ungrounded": false,
+     "keys": [
+      "7fc076349894d1bcd66962012829b25748de229071acd5b9f25c700eb1b6da38"
+     ],
+     "cost_usd": 0.0004095,
+     "tokens": {
+      "prompt": 558,
+      "output": 79,
+      "thoughts": 101
+     },
+     "cached": false,
+     "parse": "json",
+     "error": null
+    },
+    "BA": {
+     "slot": "tie",
+     "candidate": 0,
+     "ungrounded": false,
+     "keys": [
+      "7fc076349894d1bcd66962012829b25748de229071acd5b9f25c700eb1b6da38"
+     ],
+     "cost_usd": 0.0004095,
+     "tokens": {
+      "prompt": 558,
+      "output": 79,
+      "thoughts": 101
+     },
+     "cached": true,
+     "parse": "json",
+     "error": null
+    }
+   },
+   "single_order": 0,
+   "flipped": false,
+   "final": 0
+  }
+ ],
+ "pointwise_a": [
+  {
+   "id": "f1",
+   "version": "v1",
+   "rerun_idx": 0,
+   "len_chars": 39,
+   "generator": "gen_v1",
+   "model": "gemma-4-31b-it",
+   "family": "gemma",
+   "scores": {
+    "correctness": 5,
+    "faithfulness": 5,
+    "completeness": 5,
+    "instruction_following": 5,
+    "tone_safety": 5
+   },
+   "weighted": 5.0,
+   "score_norm": 1.0,
+   "grounded_correctness": true,
+   "passed": true,
+   "evidence": {
+    "correctness": "Au",
+    "faithfulness": "The chemical symbol for gold is **Au**.",
+    "completeness": "The chemical symbol for gold is **Au**.",
+    "instruction_following": "The chemical symbol for gold is **Au**.",
+    "tone_safety": "The chemical symbol for gold is **Au**."
+   },
+   "rationale": "The response is accurate, concise, and directly answers the user's question without any unnecessary padding or errors.",
+   "keys": [
+    "0909c92d6f064a00d124de448d62f4502ccec09950a5b52e4a2a3108994a3fd5"
+   ],
+   "cost_usd": 0.000794,
+   "tokens": {
+    "prompt": 758,
+    "output": 295,
+    "thoughts": 108
+   },
+   "cached": false,
+   "parse": "json",
+   "error": null
+  },
+  {
+   "id": "f2",
+   "version": "v1",
+   "rerun_idx": 0,
+   "len_chars": 41,
+   "generator": "gen_v1",
+   "model": "gemma-4-31b-it",
+   "family": "gemma",
+   "scores": {
+    "correctness": 5,
+    "faithfulness": 5,
+    "completeness": 5,
+    "instruction_following": 5,
+    "tone_safety": 5
+   },
+   "weighted": 5.0,
+   "score_norm": 1.0,
+   "grounded_correctness": true,
+   "passed": true,
+   "evidence": {
+    "correctness": "1969",
+    "faithfulness": "Apollo 11 landed on the Moon in **1969**.",
+    "completeness": "Apollo 11 landed on the Moon in **1969**.",
+    "instruction_following": "Apollo 11 landed on the Moon in **1969**.",
+    "tone_safety": "Apollo 11 landed on the Moon in **1969**."
+   },
+   "rationale": "The response is accurate, concise, and directly answers the user's question without any unnecessary padding or errors.",
+   "keys": [
+    "d91026288be9939dd9b59ac2e621b43a2d82778968a8dcdb87d267800146e122"
+   ],
+   "cost_usd": 0.0008665,
+   "tokens": {
+    "prompt": 772,
+    "output": 327,
+    "thoughts": 122
+   },
+   "cached": false,
+   "parse": "json",
+   "error": null
+  },
+  {
+   "id": "f3",
+   "version": "v1",
+   "rerun_idx": 0,
+   "len_chars": 54,
+   "generator": "gen_v1",
+   "model": "gemma-4-31b-it",
+   "family": "gemma",
+   "scores": {
+    "correctness": 5,
+    "faithfulness": 5,
+    "completeness": 5,
+    "instruction_following": 5,
+    "tone_safety": 5
+   },
+   "weighted": 5.0,
+   "score_norm": 1.0,
+   "grounded_correctness": true,
+   "passed": true,
+   "evidence": {
+    "correctness": "The largest planet in our solar system is **Jupiter**.",
+    "faithfulness": "The largest planet in our solar system is **Jupiter**.",
+    "completeness": "The largest planet in our solar system is **Jupiter**.",
+    "instruction_following": "The largest planet in our solar system is **Jupiter**.",
+    "tone_safety": "The largest planet in our solar system is **Jupiter**."
+   },
+   "rationale": "The response is accurate, concise, and directly answers the user's question without any unnecessary padding or errors.",
+   "keys": [
+    "b7b299aea3b5961b1a836ab72000c26637fe851771d7cc485c4457a4e7b6f191"
+   ],
+   "cost_usd": 0.000801,
+   "tokens": {
+    "prompt": 762,
+    "output": 311,
+    "thoughts": 96
+   },
+   "cached": false,
+   "parse": "json",
+   "error": null
+  },
+  {
+   "id": "f4",
+   "version": "v1",
+   "rerun_idx": 0,
+   "len_chars": 91,
+   "generator": "gen_v1",
+   "model": "gemma-4-31b-it",
+   "family": "gemma",
+   "scores": {
+    "correctness": 5,
+    "faithfulness": 5,
+    "completeness": 5,
+    "instruction_following": 5,
+    "tone_safety": 5
+   },
+   "weighted": 5.0,
+   "score_norm": 1.0,
+   "grounded_correctness": true,
+   "passed": true,
+   "evidence": {
+    "correctness": "carbon dioxide",
+    "faithfulness": "Plants primarily absorb **carbon dioxide** ($\text{CO}_2$) from the air for photosynthesis.",
+    "completeness": "Plants primarily absorb **carbon dioxide** ($\text{CO}_2$) from the air for photosynthesis.",
+    "instruction_following": "Plants primarily absorb **carbon dioxide** ($\text{CO}_2$) from the air for photosynthesis.",
+    "tone_safety": "Plants primarily absorb **carbon dioxide** ($\text{CO}_2$) from the air for photosynthesis."
+   },
+   "rationale": "The response is accurate, concise, and directly answers the user's question without any unnecessary filler or errors.",
+   "keys": [
+    "07a2df12bbefcef054d959872de4b4ff97e2d245920a1d1e869572343ab43d6b"
+   ],
+   "cost_usd": 0.000895,
+   "tokens": {
+    "prompt": 778,
+    "output": 350,
+    "thoughts": 117
+   },
+   "cached": false,
+   "parse": "json",
+   "error": null
+  },
+  {
+   "id": "m1",
+   "version": "v1",
+   "rerun_idx": 0,
+   "len_chars": 13,
+   "generator": "gen_v1",
+   "model": "gemma-4-31b-it",
+   "family": "gemma",
+   "scores": {
+    "correctness": 5,
+    "faithfulness": 5,
+    "completeness": 5,
+    "instruction_following": 5,
+    "tone_safety": 5
+   },
+   "weighted": 5.0,
+   "score_norm": 1.0,
+   "grounded_correctness": true,
+   "passed": true,
+   "evidence": {
+    "correctness": "17 x 24 = 408",
+    "faithfulness": "17 x 24 = 408",
+    "completeness": "17 x 24 = 408",
+    "instruction_following": "17 x 24 = 408",
+    "tone_safety": "17 x 24 = 408"
+   },
+   "rationale": "The response is accurate, concise, and directly answers the user's prompt without any unnecessary filler.",
+   "keys": [
+    "092aae950ca3d2962b856bf4e81a90a14a365f54aace6ddfd2c415ef908eb083"
+   ],
+   "cost_usd": 0.0008285,
+   "tokens": {
+    "prompt": 764,
+    "output": 303,
+    "thoughts": 122
+   },
+   "cached": false,
+   "parse": "json",
+   "error": null
+  },
+  {
+   "id": "m2",
+   "version": "v1",
+   "rerun_idx": 0,
+   "len_chars": 348,
+   "generator": "gen_v1",
+   "model": "gemma-4-31b-it",
+   "family": "gemma",
+   "scores": {
+    "correctness": 5,
+    "faithfulness": 5,
+    "completeness": 5,
+    "instruction_following": 5,
+    "tone_safety": 5
+   },
+   "weighted": 5.0,
+   "score_norm": 1.0,
+   "grounded_correctness": false,
+   "passed": false,
+   "evidence": {
+    "correctness": "The train's average speed is 75 km/h.",
+    "faithfulness": "Total Distance = 150 km\nTotal Time = 2 hours",
+    "completeness": "The train's average speed is 75 km/h.",
+    "instruction_following": "To find the average speed, you use the following formula: ... The train's average speed is 75 km/h.",
+    "tone_safety": "To find the average speed, you use the following formula:"
+   },
+   "rationale": "The model provided a correct, clear, and concise answer to the math problem, showing the steps taken to reach the solution.",
+   "keys": [
+    "5105588197094a4b4800bf6ab4d881a2f46224d130e874289fbc13aba74347bf"
+   ],
+   "cost_usd": 0.0009305,
+   "tokens": {
+    "prompt": 884,
+    "output": 350,
+    "thoughts": 123
+   },
+   "cached": false,
+   "parse": "json",
+   "error": null
+  },
+  {
+   "id": "m3",
+   "version": "v1",
+   "rerun_idx": 0,
+   "len_chars": 189,
+   "generator": "gen_v1",
+   "model": "gemma-4-31b-it",
+   "family": "gemma",
+   "scores": {
+    "correctness": 5,
+    "faithfulness": 5,
+    "completeness": 5,
+    "instruction_following": 5,
+    "tone_safety": 5
+   },
+   "weighted": 5.0,
+   "score_norm": 1.0,
+   "grounded_correctness": false,
+   "passed": false,
+   "evidence": {
+    "correctness": "Yes, all bloops are lazzies.",
+    "faithfulness": "This is a logical syllogism: 1. If all bloops are razzies, 2. And all razzies are lazzies, 3. Then all bloops must also be lazzies.",
+    "completeness": "Yes, all bloops are lazzies.",
+    "instruction_following": "Yes, all bloops are lazzies. This is a logical syllogism: 1. If all bloops are razzies, 2. And all razzies are lazzies, 3. Then all bloops must also be lazzies.",
+    "tone_safety": "Yes, all bloops are lazzies."
+   },
+   "rationale": "The response is accurate, concise, and correctly identifies the logical syllogism presented in the prompt. It follows all instructions perfectly.",
+   "keys": [
+    "bc4be1de8e876d84735875f71dedfbcaa582cb210e489f39b06976b1222cd72c"
+   ],
+   "cost_usd": 0.00101625,
+   "tokens": {
+    "prompt": 849,
+    "output": 396,
+    "thoughts": 140
+   },
+   "cached": false,
+   "parse": "json",
+   "error": null
+  },
+  {
+   "id": "m4",
+   "version": "v1",
+   "rerun_idx": 0,
+   "len_chars": 234,
+   "generator": "gen_v1",
+   "model": "gemma-4-31b-it",
+   "family": "gemma",
+   "scores": {
+    "correctness": 5,
+    "faithfulness": 5,
+    "completeness": 5,
+    "instruction_following": 5,
+    "tone_safety": 5
+   },
+   "weighted": 5.0,
+   "score_norm": 1.0,
+   "grounded_correctness": true,
+   "passed": true,
+   "evidence": {
+    "correctness": "15% of 80 is **12**.",
+    "faithfulness": "15% of 80 is **12**.",
+    "completeness": "15% of 80 is **12**.",
+    "instruction_following": "15% of 80 is **12**. **Here are two easy ways to calculate it:** * **Method 1 (Breakdown):** 10% of 80 is 8. 5% is half of that, which is 4. 8 + 4 = **12**. * **Method 2 (Multiplication):** 0.15 × 80 = **12**.",
+    "tone_safety": "15% of 80 is **12**."
+   },
+   "rationale": "The model correctly calculated the percentage and provided helpful, accurate methods for verification. It followed all instructions and maintained an appropriate tone.",
+   "keys": [
+    "e342df21f0a16ff05a9cedf759cb7caa261353067493b59238e2136ceab0efeb"
+   ],
+   "cost_usd": 0.00100575,
+   "tokens": {
+    "prompt": 855,
+    "output": 406,
+    "thoughts": 122
+   },
+   "cached": false,
+   "parse": "json",
+   "error": null
+  },
+  {
+   "id": "c1",
+   "version": "v1",
+   "rerun_idx": 0,
+   "len_chars": 6,
+   "generator": "gen_v1",
+   "model": "gemma-4-31b-it",
+   "family": "gemma",
+   "scores": {
+    "correctness": 5,
+    "faithfulness": 5,
+    "completeness": 5,
+    "instruction_following": 5,
+    "tone_safety": 5
+   },
+   "weighted": 5.0,
+   "score_norm": 1.0,
+   "grounded_correctness": true,
+   "passed": true,
+   "evidence": {
+    "correctness": "Yellow",
+    "faithfulness": "Yellow",
+    "completeness": "Yellow",
+    "instruction_following": "Yellow",
+    "tone_safety": "Yellow"
+   },
+   "rationale": "The model followed all instructions, including the negative constraint to provide exactly one word, and provided the correct answer.",
+   "keys": [
+    "770e20e0fc594af4e18887fe111f159217d1df3f2b5226b530d1d2f41b3a9829"
+   ],
+   "cost_usd": 0.0007545,
+   "tokens": {
+    "prompt": 756,
+    "output": 260,
+    "thoughts": 117
+   },
+   "cached": false,
+   "parse": "json",
+   "error": null
+  },
+  {
+   "id": "c2",
+   "version": "v1",
+   "rerun_idx": 0,
+   "len_chars": 16,
+   "generator": "gen_v1",
+   "model": "gemma-4-31b-it",
+   "family": "gemma",
+   "scores": {
+    "correctness": 5,
+    "faithfulness": 5,
+    "completeness": 5,
+    "instruction_following": 5,
+    "tone_safety": 5
+   },
+   "weighted": 5.0,
+   "score_norm": 1.0,
+   "grounded_correctness": true,
+   "passed": true,
+   "evidence": {
+    "correctness": "Red, Green, Blue",
+    "faithfulness": "Red, Green, Blue",
+    "completeness": "Red, Green, Blue",
+    "instruction_following": "Red, Green, Blue",
+    "tone_safety": "Red, Green, Blue"
+   },
+   "rationale": "The model followed all instructions, including the negative constraint to provide only a comma-separated list. The content is factually accurate.",
+   "keys": [
+    "8396a5ceec2e25a271e9cae5580fdf10f7a107afa1be096c8cdc7b9655825d34"
+   ],
+   "cost_usd": 0.000786,
+   "tokens": {
+    "prompt": 768,
+    "output": 290,
+    "thoughts": 106
+   },
+   "cached": false,
+   "parse": "json",
+   "error": null
+  },
+  {
+   "id": "c3",
+   "version": "v1",
+   "rerun_idx": 0,
+   "len_chars": 37,
+   "generator": "gen_v1",
+   "model": "gemma-4-31b-it",
+   "family": "gemma",
+   "scores": {
+    "correctness": 5,
+    "faithfulness": 5,
+    "completeness": 5,
+    "instruction_following": 5,
+    "tone_safety": 5
+   },
+   "weighted": 5.0,
+   "score_norm": 1.0,
+   "grounded_correctness": true,
+   "passed": true,
+   "evidence": {
+    "correctness": "The capital of Australia is Canberra.",
+    "faithfulness": "The capital of Australia is Canberra.",
+    "completeness": "The capital of Australia is Canberra.",
+    "instruction_following": "The capital of Australia is Canberra.",
+    "tone_safety": "The capital of Australia is Canberra."
+   },
+   "rationale": "The response is accurate, concise, and follows all instructions, including the word count constraint.",
+   "keys": [
+    "8c30520f61bf6639e38ecfc32fae9aa69bfa6b3642ec4c80450eb6ce112c91b1"
+   ],
+   "cost_usd": 0.000805,
+   "tokens": {
+    "prompt": 766,
+    "output": 289,
+    "thoughts": 120
+   },
+   "cached": false,
+   "parse": "json",
+   "error": null
+  },
+  {
+   "id": "c4",
+   "version": "v1",
+   "rerun_idx": 0,
+   "len_chars": 1,
+   "generator": "gen_v1",
+   "model": "gemma-4-31b-it",
+   "family": "gemma",
+   "scores": {
+    "correctness": 5,
+    "faithfulness": 5,
+    "completeness": 5,
+    "instruction_following": 5,
+    "tone_safety": 5
+   },
+   "weighted": 5.0,
+   "score_norm": 1.0,
+   "grounded_correctness": true,
+   "passed": true,
+   "evidence": {
+    "correctness": "6",
+    "faithfulness": "6",
+    "completeness": "6",
+    "instruction_following": "6",
+    "tone_safety": "6"
+   },
+   "rationale": "The model followed all instructions, including the negative constraint to provide only a number, and provided the correct factual answer.",
+   "keys": [
+    "1cfd28f63f7a07d1e0ee731c8f5b9a00abb5dd64e511d455c49de3f930c90c07"
+   ],
+   "cost_usd": 0.00073375,
+   "tokens": {
+    "prompt": 757,
+    "output": 264,
+    "thoughts": 99
+   },
+   "cached": false,
+   "parse": "json",
+   "error": null
+  }
+ ],
+ "pointwise_b": [
+  {
+   "id": "f1",
+   "version": "v1",
+   "rerun_idx": 0,
+   "len_chars": 39,
+   "generator": "gen_v2",
+   "model": "gemma-4-31b-it",
+   "family": "gemma",
+   "scores": {
+    "correctness": 5,
+    "faithfulness": 5,
+    "completeness": 5,
+    "instruction_following": 5,
+    "tone_safety": 5
+   },
+   "weighted": 5.0,
+   "score_norm": 1.0,
+   "grounded_correctness": true,
+   "passed": true,
+   "evidence": {
+    "correctness": "Au",
+    "faithfulness": "The chemical symbol for gold is **Au**.",
+    "completeness": "The chemical symbol for gold is **Au**.",
+    "instruction_following": "The chemical symbol for gold is **Au**.",
+    "tone_safety": "The chemical symbol for gold is **Au**."
+   },
+   "rationale": "The response is accurate, concise, and directly answers the user's question without unnecessary padding, adhering perfectly to the system instructions.",
+   "keys": [
+    "d31ecffcd89e3c3d6885e3327a6c15eebe87440f68121bd3869035e948a9bf2b"
+   ],
+   "cost_usd": 0.0007905,
+   "tokens": {
+    "prompt": 780,
+    "output": 298,
+    "thoughts": 99
+   },
+   "cached": false,
+   "parse": "json",
+   "error": null
+  },
+  {
+   "id": "f2",
+   "version": "v1",
+   "rerun_idx": 0,
+   "len_chars": 37,
+   "generator": "gen_v2",
+   "model": "gemma-4-31b-it",
+   "family": "gemma",
+   "scores": {
+    "correctness": 5,
+    "faithfulness": 5,
+    "completeness": 5,
+    "instruction_following": 5,
+    "tone_safety": 5
+   },
+   "weighted": 5.0,
+   "score_norm": 1.0,
+   "grounded_correctness": true,
+   "passed": true,
+   "evidence": {
+    "correctness": "Apollo 11 landed on the Moon in 1969.",
+    "faithfulness": "Apollo 11 landed on the Moon in 1969.",
+    "completeness": "Apollo 11 landed on the Moon in 1969.",
+    "instruction_following": "Apollo 11 landed on the Moon in 1969.",
+    "tone_safety": "Apollo 11 landed on the Moon in 1969."
+   },
+   "rationale": "The response is accurate, concise, and directly answers the user's question without any unnecessary padding or errors.",
+   "keys": [
+    "838c357efebc38af202c990527aed005f39c4f8538f90195821703efd0b0be54"
+   ],
+   "cost_usd": 0.000863,
+   "tokens": {
+    "prompt": 794,
+    "output": 324,
+    "thoughts": 119
+   },
+   "cached": false,
+   "parse": "json",
+   "error": null
+  },
+  {
+   "id": "f3",
+   "version": "v1",
+   "rerun_idx": 0,
+   "len_chars": 50,
+   "generator": "gen_v2",
+   "model": "gemma-4-31b-it",
+   "family": "gemma",
+   "scores": {
+    "correctness": 5,
+    "faithfulness": 5,
+    "completeness": 5,
+    "instruction_following": 5,
+    "tone_safety": 5
+   },
+   "weighted": 5.0,
+   "score_norm": 1.0,
+   "grounded_correctness": true,
+   "passed": true,
+   "evidence": {
+    "correctness": "Jupiter is the largest planet in our solar system.",
+    "faithfulness": "Jupiter is the largest planet in our solar system.",
+    "completeness": "Jupiter is the largest planet in our solar system.",
+    "instruction_following": "Jupiter is the largest planet in our solar system.",
+    "tone_safety": "Jupiter is the largest planet in our solar system."
+   },
+   "rationale": "The response is accurate, concise, and directly answers the user's question without any unnecessary padding or errors.",
+   "keys": [
+    "4624617869fe367659140b32df09c909a62e4393fff35b4c2c8266e70ebc7481"
+   ],
+   "cost_usd": 0.00078675,
+   "tokens": {
+    "prompt": 783,
+    "output": 297,
+    "thoughts": 97
+   },
+   "cached": false,
+   "parse": "json",
+   "error": null
+  },
+  {
+   "id": "f4",
+   "version": "v1",
+   "rerun_idx": 0,
+   "len_chars": 91,
+   "generator": "gen_v2",
+   "model": "gemma-4-31b-it",
+   "family": "gemma",
+   "scores": {
+    "correctness": 5,
+    "faithfulness": 5,
+    "completeness": 5,
+    "instruction_following": 5,
+    "tone_safety": 5
+   },
+   "weighted": 5.0,
+   "score_norm": 1.0,
+   "grounded_correctness": false,
+   "passed": false,
+   "evidence": {
+    "correctness": "Plants primarily absorb **carbon dioxide** ($\text{CO}_2$) from the air for photosynthesis.",
+    "faithfulness": "Plants primarily absorb **carbon dioxide** ($\text{CO}_2$) from the air for photosynthesis.",
+    "completeness": "Plants primarily absorb **carbon dioxide** ($\text{CO}_2$) from the air for photosynthesis.",
+    "instruction_following": "Plants primarily absorb **carbon dioxide** ($\text{CO}_2$) from the air for photosynthesis.",
+    "tone_safety": "Plants primarily absorb **carbon dioxide** ($\text{CO}_2$) from the air for photosynthesis."
+   },
+   "rationale": "The response is accurate, concise, and directly answers the user's question without unnecessary padding or errors.",
+   "keys": [
+    "31f1649f2d30456d24db2cb1c9960be307c94b65a7e91c8319d1e111fb7aa324"
+   ],
+   "cost_usd": 0.000881,
+   "tokens": {
+    "prompt": 800,
+    "output": 351,
+    "thoughts": 103
+   },
+   "cached": false,
+   "parse": "json",
+   "error": null
+  },
+  {
+   "id": "m1",
+   "version": "v1",
+   "rerun_idx": 0,
+   "len_chars": 13,
+   "generator": "gen_v2",
+   "model": "gemma-4-31b-it",
+   "family": "gemma",
+   "scores": {
+    "correctness": 5,
+    "faithfulness": 5,
+    "completeness": 5,
+    "instruction_following": 5,
+    "tone_safety": 5
+   },
+   "weighted": 5.0,
+   "score_norm": 1.0,
+   "grounded_correctness": true,
+   "passed": true,
+   "evidence": {
+    "correctness": "17 x 24 = 408",
+    "faithfulness": "17 x 24 = 408",
+    "completeness": "17 x 24 = 408",
+    "instruction_following": "17 x 24 = 408",
+    "tone_safety": "17 x 24 = 408"
+   },
+   "rationale": "The response is accurate, concise, and directly answers the user's prompt without any unnecessary padding or errors.",
+   "keys": [
+    "349016aed80836a0eb99ed8b121a638e136f54422db267f16522e611a4c5df65"
+   ],
+   "cost_usd": 0.000831,
+   "tokens": {
+    "prompt": 786,
+    "output": 300,
+    "thoughts": 123
+   },
+   "cached": false,
+   "parse": "json",
+   "error": null
+  },
+  {
+   "id": "m2",
+   "version": "v1",
+   "rerun_idx": 0,
+   "len_chars": 29,
+   "generator": "gen_v2",
+   "model": "gemma-4-31b-it",
+   "family": "gemma",
+   "scores": {
+    "correctness": 5,
+    "faithfulness": 5,
+    "completeness": 5,
+    "instruction_following": 5,
+    "tone_safety": 5
+   },
+   "weighted": 5.0,
+   "score_norm": 1.0,
+   "grounded_correctness": true,
+   "passed": true,
+   "evidence": {
+    "correctness": "75 km/h",
+    "faithfulness": "The average speed is 75 km/h.",
+    "completeness": "The average speed is 75 km/h.",
+    "instruction_following": "The average speed is 75 km/h.",
+    "tone_safety": "The average speed is 75 km/h."
+   },
+   "rationale": "The response is accurate, concise, and directly answers the prompt without unnecessary filler.",
+   "keys": [
+    "8eb93ede860d4dd62e18db002cce0589069900d479cea8427e7f5fe7d9385342"
+   ],
+   "cost_usd": 0.00083025,
+   "tokens": {
+    "prompt": 801,
+    "output": 301,
+    "thoughts": 119
+   },
+   "cached": false,
+   "parse": "json",
+   "error": null
+  },
+  {
+   "id": "m3",
+   "version": "v1",
+   "rerun_idx": 0,
+   "len_chars": 4,
+   "generator": "gen_v2",
+   "model": "gemma-4-31b-it",
+   "family": "gemma",
+   "scores": {
+    "correctness": 5,
+    "faithfulness": 5,
+    "completeness": 5,
+    "instruction_following": 5,
+    "tone_safety": 5
+   },
+   "weighted": 5.0,
+   "score_norm": 1.0,
+   "grounded_correctness": true,
+   "passed": true,
+   "evidence": {
+    "correctness": "Yes.",
+    "faithfulness": "Yes.",
+    "completeness": "Yes.",
+    "instruction_following": "Yes.",
+    "tone_safety": "Yes."
+   },
+   "rationale": "The response is perfectly concise and accurate. While it does not explain the reasoning (transitivity) as the reference does, it answers the specific question asked ('are all bloops lazzies?') correctly and follows the system prompt's instruction to be concise.",
+   "keys": [
+    "2f0e5bc99159a5574ffcd06be78426fb53ab812e1f475dc7ee50642a6faba9a8"
+   ],
+   "cost_usd": 0.00082825,
+   "tokens": {
+    "prompt": 805,
+    "output": 301,
+    "thoughts": 117
+   },
+   "cached": false,
+   "parse": "json",
+   "error": null
+  },
+  {
+   "id": "m4",
+   "version": "v1",
+   "rerun_idx": 0,
+   "len_chars": 2,
+   "generator": "gen_v2",
+   "model": "gemma-4-31b-it",
+   "family": "gemma",
+   "scores": {
+    "correctness": 5,
+    "faithfulness": 5,
+    "completeness": 5,
+    "instruction_following": 5,
+    "tone_safety": 5
+   },
+   "weighted": 5.0,
+   "score_norm": 1.0,
+   "grounded_correctness": true,
+   "passed": true,
+   "evidence": {
+    "correctness": "12",
+    "faithfulness": "12",
+    "completeness": "12",
+    "instruction_following": "12",
+    "tone_safety": "12"
+   },
+   "rationale": "The response is perfectly accurate, concise, and follows all instructions provided in the system prompt.",
+   "keys": [
+    "ffb6474958c9820d3bbe780de02c60c982c57479cf9277cce309e65a07a3f7d6"
+   ],
+   "cost_usd": 0.00077925,
+   "tokens": {
+    "prompt": 777,
+    "output": 259,
+    "thoughts": 131
+   },
+   "cached": false,
+   "parse": "json",
+   "error": null
+  },
+  {
+   "id": "c1",
+   "version": "v1",
+   "rerun_idx": 0,
+   "len_chars": 6,
+   "generator": "gen_v2",
+   "model": "gemma-4-31b-it",
+   "family": "gemma",
+   "scores": {
+    "correctness": 5,
+    "faithfulness": 5,
+    "completeness": 5,
+    "instruction_following": 5,
+    "tone_safety": 5
+   },
+   "weighted": 5.0,
+   "score_norm": 1.0,
+   "grounded_correctness": true,
+   "passed": true,
+   "evidence": {
+    "correctness": "Yellow",
+    "faithfulness": "Yellow",
+    "completeness": "Yellow",
+    "instruction_following": "Yellow",
+    "tone_safety": "Yellow"
+   },
+   "rationale": "The model followed all instructions, including the negative constraint to use exactly one word, and provided the correct factual answer.",
+   "keys": [
+    "561cf7cdc4affc3ed40762c2c00cc7e2581a8e0e2d8b021d26fca1618beec7dd"
+   ],
+   "cost_usd": 0.000733,
+   "tokens": {
+    "prompt": 778,
+    "output": 260,
+    "thoughts": 99
+   },
+   "cached": false,
+   "parse": "json",
+   "error": null
+  },
+  {
+   "id": "c2",
+   "version": "v1",
+   "rerun_idx": 0,
+   "len_chars": 16,
+   "generator": "gen_v2",
+   "model": "gemma-4-31b-it",
+   "family": "gemma",
+   "scores": {
+    "correctness": 5,
+    "faithfulness": 5,
+    "completeness": 5,
+    "instruction_following": 5,
+    "tone_safety": 5
+   },
+   "weighted": 5.0,
+   "score_norm": 1.0,
+   "grounded_correctness": true,
+   "passed": true,
+   "evidence": {
+    "correctness": "Red, Green, Blue",
+    "faithfulness": "Red, Green, Blue",
+    "completeness": "Red, Green, Blue",
+    "instruction_following": "Red, Green, Blue",
+    "tone_safety": "Red, Green, Blue"
+   },
+   "rationale": "The model followed all instructions, including the negative constraint to provide only a comma-separated list, and provided the correct information.",
+   "keys": [
+    "eee5a7e0a61d4abc4b8331eff58cf3bc3b5096df812c9af781d3a01178da2654"
+   ],
+   "cost_usd": 0.000778,
+   "tokens": {
+    "prompt": 790,
+    "output": 285,
+    "thoughts": 102
+   },
+   "cached": false,
+   "parse": "json",
+   "error": null
+  },
+  {
+   "id": "c3",
+   "version": "v1",
+   "rerun_idx": 0,
+   "len_chars": 9,
+   "generator": "gen_v2",
+   "model": "gemma-4-31b-it",
+   "family": "gemma",
+   "scores": {
+    "correctness": 5,
+    "faithfulness": 5,
+    "completeness": 5,
+    "instruction_following": 5,
+    "tone_safety": 5
+   },
+   "weighted": 5.0,
+   "score_norm": 1.0,
+   "grounded_correctness": true,
+   "passed": true,
+   "evidence": {
+    "correctness": "Canberra.",
+    "faithfulness": "Canberra.",
+    "completeness": "Canberra.",
+    "instruction_following": "Canberra.",
+    "tone_safety": "Canberra."
+   },
+   "rationale": "The response is accurate, concise, and follows all instructions perfectly.",
+   "keys": [
+    "72b3098b0297688d25f14cdaba1f4566dd6a6e2056a207bf1452e05d453876fd"
+   ],
+   "cost_usd": 0.000772,
+   "tokens": {
+    "prompt": 784,
+    "output": 264,
+    "thoughts": 120
+   },
+   "cached": false,
+   "parse": "json",
+   "error": null
+  },
+  {
+   "id": "c4",
+   "version": "v1",
+   "rerun_idx": 0,
+   "len_chars": 1,
+   "generator": "gen_v2",
+   "model": "gemma-4-31b-it",
+   "family": "gemma",
+   "scores": {
+    "correctness": 5,
+    "faithfulness": 5,
+    "completeness": 5,
+    "instruction_following": 5,
+    "tone_safety": 5
+   },
+   "weighted": 5.0,
+   "score_norm": 1.0,
+   "grounded_correctness": true,
+   "passed": true,
+   "evidence": {
+    "correctness": "6",
+    "faithfulness": "6",
+    "completeness": "6",
+    "instruction_following": "6",
+    "tone_safety": "6"
+   },
+   "rationale": "The model followed all instructions, including the negative constraint to respond with a number only, and provided the correct factual answer.",
+   "keys": [
+    "ad70d17ec078989cf849bd62104e0bb318a48a70e9397283a06581415d341364"
+   ],
+   "cost_usd": 0.00074525,
+   "tokens": {
+    "prompt": 779,
+    "output": 267,
+    "thoughts": 100
+   },
+   "cached": false,
+   "parse": "json",
+   "error": null
+  }
+ ]
+}

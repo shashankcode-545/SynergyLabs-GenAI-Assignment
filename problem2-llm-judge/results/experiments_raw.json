@@ -1,8 +1,8 @@
 {
  "provenance": {
   "kind": "measured",
-  "ts": "2026-11-26T09:33:13",
-  "git": "977690a",
+  "ts": "2026-11-26T10:47:33",
+  "git": "030786e",
   "judge": {
    "name": "judge_v1",
    "provider": "gemini",
@@ -14,9 +14,9 @@
    "thinking_level": "LOW",
    "max_output_tokens": 2048
   },
-  "api_calls_made": 32,
-  "cache_hits": 240,
-  "spent_total_usd": 0.1805
+  "api_calls_made": 42,
+  "cache_hits": 302,
+  "spent_total_usd": 0.2088
  },
  "P": {
   "v0": [
@@ -5499,7 +5499,7 @@
        "output": 44,
        "thoughts": 100
       },
-      "cached": false,
+      "cached": true,
       "parse": "json",
       "error": null
      },
@@ -5516,7 +5516,7 @@
        "output": 48,
        "thoughts": 108
       },
-      "cached": false,
+      "cached": true,
       "parse": "json",
       "error": null
      }
@@ -5544,7 +5544,7 @@
        "output": 46,
        "thoughts": 99
       },
-      "cached": false,
+      "cached": true,
       "parse": "json",
       "error": null
      },
@@ -5561,7 +5561,7 @@
        "output": 50,
        "thoughts": 97
       },
-      "cached": false,
+      "cached": true,
       "parse": "json",
       "error": null
      }
@@ -5589,7 +5589,7 @@
        "output": 61,
        "thoughts": 107
       },
-      "cached": false,
+      "cached": true,
       "parse": "json",
       "error": null
      },
@@ -5606,7 +5606,7 @@
        "output": 64,
        "thoughts": 100
       },
-      "cached": false,
+      "cached": true,
       "parse": "json",
       "error": null
      }
@@ -5634,7 +5634,7 @@
        "output": 68,
        "thoughts": 96
       },
-      "cached": false,
+      "cached": true,
       "parse": "json",
       "error": null
      },
@@ -5651,7 +5651,7 @@
        "output": 69,
        "thoughts": 104
       },
-      "cached": false,
+      "cached": true,
       "parse": "json",
       "error": null
      }
@@ -5679,7 +5679,7 @@
        "output": 75,
        "thoughts": 91
       },
-      "cached": false,
+      "cached": true,
       "parse": "json",
       "error": null
      },
@@ -5696,7 +5696,7 @@
        "output": 76,
        "thoughts": 90
       },
-      "cached": false,
+      "cached": true,
       "parse": "json",
       "error": null
      }
@@ -5724,7 +5724,7 @@
        "output": 63,
        "thoughts": 118
       },
-      "cached": false,
+      "cached": true,
       "parse": "json",
       "error": null
      },
@@ -5741,7 +5741,7 @@
        "output": 91,
        "thoughts": 105
       },
-      "cached": false,
+      "cached": true,
       "parse": "json",
       "error": null
      }
@@ -5769,7 +5769,7 @@
        "output": 61,
        "thoughts": 98
       },
-      "cached": false,
+      "cached": true,
       "parse": "json",
       "error": null
      },
@@ -5786,7 +5786,7 @@
        "output": 68,
        "thoughts": 98
       },
-      "cached": false,
+      "cached": true,
       "parse": "json",
       "error": null
      }
@@ -5814,7 +5814,7 @@
        "output": 87,
        "thoughts": 102
       },
-      "cached": false,
+      "cached": true,
       "parse": "json",
       "error": null
      },
@@ -5831,7 +5831,7 @@
        "output": 117,
        "thoughts": 105
       },
-      "cached": false,
+      "cached": true,
       "parse": "json",
       "error": null
      }
@@ -5861,7 +5861,7 @@
        "output": 111,
        "thoughts": 91
       },
-      "cached": false,
+      "cached": true,
       "parse": "json",
       "error": null
      },
@@ -5878,7 +5878,7 @@
        "output": 119,
        "thoughts": 106
       },
-      "cached": false,
+      "cached": true,
       "parse": "json",
       "error": null
      }
@@ -5906,7 +5906,7 @@
        "output": 131,
        "thoughts": 98
       },
-      "cached": false,
+      "cached": true,
       "parse": "json",
       "error": null
      },
@@ -5923,7 +5923,7 @@
        "output": 118,
        "thoughts": 100
       },
-      "cached": false,
+      "cached": true,
       "parse": "json",
       "error": null
      }
@@ -5951,7 +5951,7 @@
        "output": 120,
        "thoughts": 101
       },
-      "cached": false,
+      "cached": true,
       "parse": "json",
       "error": null
      },
@@ -5968,7 +5968,7 @@
        "output": 145,
        "thoughts": 101
       },
-      "cached": false,
+      "cached": true,
       "parse": "json",
       "error": null
      }
@@ -5996,7 +5996,7 @@
        "output": 129,
        "thoughts": 105
       },
-      "cached": false,
+      "cached": true,
       "parse": "json",
       "error": null
      },
@@ -6013,7 +6013,7 @@
        "output": 132,
        "thoughts": 93
       },
-      "cached": false,
+      "cached": true,
       "parse": "json",
       "error": null
      }
@@ -6041,7 +6041,7 @@
        "output": 112,
        "thoughts": 102
       },
-      "cached": false,
+      "cached": true,
       "parse": "json",
       "error": null
      },
@@ -6058,7 +6058,7 @@
        "output": 112,
        "thoughts": 100
       },
-      "cached": false,
+      "cached": true,
       "parse": "json",
       "error": null
      }
@@ -6086,7 +6086,7 @@
        "output": 125,
        "thoughts": 120
       },
-      "cached": false,
+      "cached": true,
       "parse": "json",
       "error": null
      },
@@ -6103,7 +6103,7 @@
        "output": 138,
        "thoughts": 117
       },
-      "cached": false,
+      "cached": true,
       "parse": "json",
       "error": null
      }
@@ -6131,7 +6131,7 @@
        "output": 117,
        "thoughts": 92
       },
-      "cached": false,
+      "cached": true,
       "parse": "json",
       "error": null
      },
@@ -6148,7 +6148,7 @@
        "output": 122,
        "thoughts": 91
       },
-      "cached": false,
+      "cached": true,
       "parse": "json",
       "error": null
      }
@@ -6176,7 +6176,7 @@
        "output": 124,
        "thoughts": 116
       },
-      "cached": false,
+      "cached": true,
       "parse": "json",
       "error": null
      },
@@ -6193,7 +6193,7 @@
        "output": 145,
        "thoughts": 101
       },
-      "cached": false,
+      "cached": true,
       "parse": "json",
       "error": null
      }
