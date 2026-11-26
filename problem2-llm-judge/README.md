@@ -101,7 +101,7 @@ All numbers below are **[MEASURED]**.
 | B: `gen_v2` (constraint-following + fact-check prompt) | 0.92 [0.75, 1.00] | 1.00 | 0.58 [0.50, 0.71] |
 
 - **Pairwise, both orders:** B wins 2 (`m2`, `m4`), A wins 0, ties 10. Order flip rate 0%; sign test p = 0.50.
-- **Decision rule (fixed before the run):** B wins only if the lower bound of its win-rate CI is above 0.5. The bound is exactly 0.50, so the declared result is **A kept: no significant difference**. v2 is directionally better (2–0), but 12 inputs are too few to show it.
+- **Decision rule (fixed before the run):** B wins only if the lower bound of its win-rate CI is above 0.5. The bound is exactly 0.50, so the declared result is **no statistically decisive winner; v1 (A) retained** (no significant difference). v2 is directionally better (2–0), but 12 inputs are too few to show it.
 - **Generator history:** `gemma-4-26b-a4b-it`, the earlier approved generator, returned 503 repeatedly. Its 11 outputs stay in `cache/` for audit only. No A/B result mixes generators.
 - **Pointwise:** every one of the 24 answers scored 5/5 on every criterion, so pointwise hits a ceiling here. All 3 pass-rule failures (A `m2`, A `m3`, B `f4`) are **grounding-check failures**: the judge's correctness quote was not verbatim in the answer.
   - `m2`: the judge paraphrased.

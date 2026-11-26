@@ -1,0 +1,6 @@
+> cd problem1-rag
+> ..\.venv\Scripts\python -m rag query "What are the typical root causes of Excessive Agency in LLM-based systems?"
+Q: What are the typical root causes of Excessive Agency in LLM-based systems?
+A: The root causes of Excessive Agency in LLM-based systems are typically categorized as excessive functionality, excessive permissions, and excessive autonomy. [S1]
+   [S1] OWASP Top 10 for LLM Applications 2025 - LLM06:2025 Excessive Agency (Description) score=0.855
+{"abstained": false, "reason": "", "chunk_count": 5, "latency_ms": {"embed": 582.0, "retrieve": 173.6, "generate": 0.3, "total": 756.0}, "tokens": {"prompt": 1451, "output": 56, "thoughts": 0}, "cost_usd": 0.00044675}

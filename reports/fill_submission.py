@@ -128,7 +128,7 @@ def fill(doc):
     k95 = next(k for k in rows if k.startswith("End-to-end"))
     set_cell(rows[k95].cells[1], f"{e2e['p95_ms']:.0f}")
     set_cell(rows[k95].cells[2], f"live run, n={e2e['n']}, query embed + retrieval + generation (p50 {e2e['p50_ms']:.0f}); "
-                                 "free-tier API retries dominate the tail")
+                                 "tail driven by Gemini generation API latency (live generation calls 1-78 s, problem1-rag/cache/llm.jsonl); retrieval < 10 ms")
     d1 = [
         "LanceDB: embedded library (pip install, no server; Docker absent here), SQL-like metadata filters, merge_insert "
         "upsert, data in files on local disk or object storage so cost follows storage rather than always-on pods. "
@@ -164,6 +164,10 @@ def fill(doc):
         mt = bv["metrics"]
         pa, pb, qa, qb = mt["pointwise"]["v0"], mt["pointwise"]["v1"], mt["pairwise"]["v0"], mt["pairwise"]["v1"]
         sa, sb, rr = mt["self_preference"]["v0"], mt["self_preference"]["v1"], mt["test_retest_v1"]
+        raw = j(P2R / "experiments_raw.json")
+        pad_fail = {v: sum(not r["passed"] for r in raw["P"][v] if r["variant"] == "P") for v in ("v0", "v1")}
+        n_pad = sum(r["variant"] == "P" for r in raw["P"]["v1"])
+        s_orders = [o["candidate"] for v in ("v0", "v1") for x in raw["S"][v] for o in x["orders"].values()]
     pct = lambda x: f"{100 * x:.0f}%"
     set_cell(T[21], "Mermaid source: problem2-llm-judge/README.md. Suite JSON/JSONL/YAML -> pydantic validation -> family "
              "guard -> prompt (v1: rubric anchors + few-shot + reference) -> [pairwise: ORDER SWAP, AB and BA prompts] -> judge "
@@ -192,7 +196,10 @@ def fill(doc):
                                "guard refuses same-family judge/generator")
         elif p.text.startswith("Declared winner"):
             set_placeholder(p, f"{ab['winner']} - win rate of B {ab['win_rate_b'][0]:.2f} [{ab['win_rate_b'][1]:.2f}, "
-                               f"{ab['win_rate_b'][2]:.2f}], sign test p = {ab['sign_test_p']:.3f} (rule fixed before the run)"
+                               f"{ab['win_rate_b'][2]:.2f}], sign test p = {ab['sign_test_p']:.3f} (rule fixed before the run): no statistically decisive "
+                               f"winner, v1 retained. Limits: 12 inputs; pointwise at ceiling ({sum(all(v == 5 for v in r['scores'].values()) for r in ab['pointwise_a'] + ab['pointwise_b'])}/"
+                               f"{len(ab['pointwise_a']) + len(ab['pointwise_b'])} answers scored 5/5 on every criterion); the pass-rate gap comes from "
+                               "grounding-check artifacts (markdown/LaTeX quotes), not answer quality"
                             if ab else PENDING)
     names = {"Correctness": "correctness", "Faithfulness": "faithfulness", "Completeness": "completeness",
              "Instruction-following": "instruction_following", "Tone / safety": "tone_safety"}
@@ -213,8 +220,10 @@ def fill(doc):
                                        f"{pct(qa['single_order_accuracy'])} (v0 single order) -> {pct(qb['swap_final_accuracy'])} (v1 swap-aggregated)",
                "Verbosity / length": f"padded-minus-terse score {pa['pad_minus_terse'][0]:+.2f} -> {pb['pad_minus_terse'][0]:+.2f}; padded "
                                      f"preferred {pct(qa['padded_preferred_single_order'])} -> {pct(qb['padded_preferred_final'])}; "
-                                     f"verbose-wrong preferred {pct(qa['verbose_wrong_preferred_single_order'])} -> {pct(qb['verbose_wrong_preferred_final'])}",
-               "Self-enhancement": f"self-preference delta {sa['delta_self_preference']:+.2f} -> {sb['delta_self_preference']:+.2f} (paraphrase-swap probe)",
+                                     f"verbose-wrong preferred {pct(qa['verbose_wrong_preferred_single_order'])} -> {pct(qb['verbose_wrong_preferred_final'])}; "
+                                     f"padded-but-correct answers failed {pad_fail['v0']}/{n_pad} -> {pad_fail['v1']}/{n_pad}",
+               "Self-enhancement": f"self-preference delta {sa['delta_self_preference']:+.2f} -> {sb['delta_self_preference']:+.2f} (paraphrase-swap probe); "
+                                   f"{sum(c == 0 for c in s_orders)}/{len(s_orders)} verdicts were ties, so the probe is insensitive",
                "Sycophancy / style": f"confident-wrong passed {pct(pa['CW_passed_rate'])} -> {pct(pb['CW_passed_rate'])} (false premise "
                                      f"{pa['CW_false_premise_passed']} -> {pb['CW_false_premise_passed']}); verbose-wrong passed "
                                      f"{pct(pa['VW_passed_rate'])} -> {pct(pb['VW_passed_rate'])}",
@@ -225,7 +234,7 @@ def fill(doc):
         set_cell(r.cells[1], mit[k]), set_cell(r.cells[2], res[k])
     val = [(PENDING, "")] * 4
     if bv:
-        val = [(f"{pct(pa['gold_accuracy'])} -> {pct(pb['gold_accuracy'])}", f"n = {pb['n_gold']} probe outputs with constructed gold labels (v0 -> v1)"),
+        val = [(f"{pct(pa['gold_accuracy'])} -> {pct(pb['gold_accuracy'])}", f"n = {pb['n_gold']} probe outputs with constructed gold labels (v0 -> v1); clear-cut probes = ceiling, real-task reliability untested"),
                (f"kappa {pa['gold_kappa']:.2f} -> {pb['gold_kappa']:.2f}", "Cohen's kappa, pass/fail vs gold"),
                (pct(rr["verdict_flip_rate"]), f"{rr['outputs']} outputs x {rr['runs_each']} runs at temp = {rr['temperature']}; mean score range {rr['mean_weighted_score_range']:.2f}"),
                ("Y" if pb["VW_passed_rate"] > 0 or pb["T_failed_rate"] > 0 else "N",
@@ -254,15 +263,20 @@ def fill(doc):
         f"Judge {judge_model} is Gemini-family; the A/B generator {gen_model} is Gemma-family, and a config guard refuses "
         "same-family judging. Both are Google models, so the separation is partial; the paraphrase-swap probe measures the "
         "residual self-preference: " + (f"delta {sa['delta_self_preference']:+.2f} -> {sb['delta_self_preference']:+.2f}." if bv else PENDING),
-        (f"[Draft from measured results - candidate to confirm] Position bias: v0 flip rate {pct(qa['flip_rate'])}, v1 "
-         f"{pct(qb['flip_rate'])}; the swap-and-agree rule removes order effects from final verdicts by construction, at the "
-         f"cost of {pct(qb['ties_from_disagreement'])} of pairs becoming ties. Confidence is limited by n = 24 pairs.") if bv else
-        ("[Candidate to answer once results exist] " + PENDING + ". Interim note (replaced judge gemini-3.5-flash-lite, v0 only): "
-         "100% gold agreement and 0% flip rate on the probe suite, i.e. a ceiling effect - these probes may be too easy to show gains."),
-        (f"[Evidence for the candidate's own verdict] v1 gold agreement {pct(pb['gold_accuracy'])} (kappa {pb['gold_kappa']:.2f}) "
-         f"on constructed probes; test-retest flips {pct(rr['verdict_flip_rate'])}; confident-wrong passed {pct(pb['CW_passed_rate'])}; "
-         "probes are clear-cut, so real-task reliability is likely lower. Guardrails to consider: pairwise both orders, "
-         "verified quotes, human review of failures and ties.") if bv else "[Candidate's own verdict] " + PENDING,
+        ("[DRAFT FOR YOUR REVIEW - this question asks for your own view; edit or replace before submitting] "
+         f"Measured: no position, sycophancy or self-preference bias was detected for either judge version (flip rate "
+         f"{pct(qa['flip_rate'])} -> {pct(qb['flip_rate'])}; confident-wrong passed {pct(pa['CW_passed_rate'])} -> {pct(pb['CW_passed_rate'])}; "
+         f"self-preference delta {sb['delta_self_preference']:+.2f}). The one measurable effect was length: v0 failed "
+         f"{pad_fail['v0']}/{n_pad} padded-but-correct answers, v1 {pad_fail['v1']}/{n_pad}. Confidence is limited: the probes are "
+         f"clear-cut (ceiling), n is small ({pb['n_gold']} gold outputs, 24 pairs), and the self-preference probe returned only ties.") if bv else
+        ("[Candidate to answer once results exist] " + PENDING),
+        ("[RECOMMENDATION FOR YOUR REVIEW - not your personal reflection; edit before submitting] Recommendation: do not use "
+         "this judge as the only release gate. Use it as a regression filter with guardrails: pairwise in both orders with "
+         "verified quotes, human review of every failure and every AB/BA disagreement, and re-validation on harder, "
+         f"human-labelled probes. Evidence: v1 gold agreement {pct(pb['gold_accuracy'])} (kappa {pb['gold_kappa']:.2f}) on "
+         f"clear-cut constructed probes; test-retest flips {pct(rr['verdict_flip_rate'])}; the A/B comparison found no decisive "
+         "winner on 12 inputs; the pass rule ignores instruction-following, and the verbatim-quote check is brittle on "
+         "markdown/LaTeX answers.") if bv else "[Candidate's own verdict] " + PENDING,
     ]
     for t, text in zip(T[29:34], d2):
         set_cell(t, text)

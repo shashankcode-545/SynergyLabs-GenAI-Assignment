@@ -1,0 +1,5 @@
+> ..\.venv\Scripts\python -m judge show --pair f1-T-vs-VW   (AB/BA verdict line)
+pair f1-T-vs-VW: AB -> candidate 1, BA -> candidate 1, flipped=False, final=1 (1 = first output, 2 = second, 0 = tie)
+
+> Select-String -Path results\bias_validation.md -Pattern "Position \(A/B order\)"
+| Position (A/B order) | every pair judged AB **and** BA; final verdict only if both orders agree, else tie (`judge.judge_pair`) | flip rate 0% -> 0%; slot-1 win rate 50% -> 50% (ideal 50%); accuracy vs gold: v0 single-order 100% -> v1 swap-aggregated 100% |

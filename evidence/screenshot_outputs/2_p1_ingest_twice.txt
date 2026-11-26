@@ -1,0 +1,24 @@
+> ..\.venv\Scripts\python -m rag ingest    (run 1)
+table chunks_gemini_embedding_2_768_c1200_o200  embed=gemini-embedding-2@768  chunk=1200/200
+  skipped (unchanged) nist-ai-100-1
+  skipped (unchanged) nist-ai-600-1
+  skipped (unchanged) owasp-llm01-prompt-injection
+  skipped (unchanged) owasp-llm02-sensitive-information-disclosure
+  skipped (unchanged) owasp-llm06-excessive-agency
+  skipped (unchanged) owasp-llm08-vector-and-embedding-weaknesses
+  skipped (unchanged) owasp-llm07-system-prompt-leakage
+  skipped (unchanged) owasp-llm09-misinformation
+vectors before: 356  after: 356
+
+> ..\.venv\Scripts\python -m rag ingest    (run 2)
+table chunks_gemini_embedding_2_768_c1200_o200  embed=gemini-embedding-2@768  chunk=1200/200
+  skipped (unchanged) nist-ai-100-1
+  skipped (unchanged) nist-ai-600-1
+  skipped (unchanged) owasp-llm01-prompt-injection
+  skipped (unchanged) owasp-llm02-sensitive-information-disclosure
+  skipped (unchanged) owasp-llm06-excessive-agency
+  skipped (unchanged) owasp-llm08-vector-and-embedding-weaknesses
+  skipped (unchanged) owasp-llm07-system-prompt-leakage
+  skipped (unchanged) owasp-llm09-misinformation
+vectors before: 356  after: 356
+
