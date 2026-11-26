@@ -368,3 +368,29 @@ def availability_probe(online, gen_online, offline):
     except Exception as e:
         out.update(generator=False, generator_error=f"{type(e).__name__}: {str(e)[:160]}")
     return out
+
+
+def usage_report():
+    """Judge usage per run/version from the judge cache (offline): calls, tokens, latency, cost."""
+    import numpy as np
+    from .pipeline import ROOT
+    model = load_cfg("judge_v1")["model"]
+    rows = [json.loads(l) for l in (ROOT / "cache" / f"judge_{model}.jsonl").read_text(encoding="utf-8").splitlines()]
+    groups = {}
+    for e in rows:
+        run, ver = e["tag"].split(":")[0], ("repair" if e["tag"].endswith("repair") else e["tag"].split(":")[-1])
+        groups.setdefault((run, ver), []).append(e)
+    lines = []
+    for (run, ver), es in sorted(groups.items()):
+        lat = [e["latency_ms"] for e in es]
+        lines.append(f"| {run} | {ver} | {len(es)} | {sum(e['usage']['prompt'] for e in es)} | {sum(e['usage']['output'] for e in es)} | "
+                     f"{sum(e['usage']['thoughts'] for e in es)} | {np.percentile(lat, 50):.0f} | {np.percentile(lat, 95):.0f} | "
+                     f"{sum(e['cost_usd'] for e in es):.4f} |")
+    total = sum(e["cost_usd"] for e in rows)
+    md = (f"# Judge usage [MEASURED]: `{model}` (from `cache/judge_{model}.jsonl`)\n\n"
+          "| Run | Version | Calls | Prompt tokens | Output tokens | Thinking tokens | Latency p50 (ms) | Latency p95 (ms) | Cost ($) |\n"
+          "|---|---|---|---|---|---|---|---|---|\n" + "\n".join(lines) +
+          f"\n\nTotal: {len(rows)} calls, ${total:.4f}. Cost = API usage metadata x list price "
+          "($0.25 / $1.50 per 1M input / output tokens, thinking billed as output).\n")
+    write("usage", {"judge_model": model, "calls": len(rows), "cost_usd": total}, md)
+    return md

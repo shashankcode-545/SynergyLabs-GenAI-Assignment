@@ -74,23 +74,89 @@ cd problem2-llm-judge
 
 ## Results
 
-See [`results/bias_validation.md`](results/bias_validation.md) (bias before → after, judge validation), [`results/ab_report.md`](results/ab_report.md) (A/B winner) and [`results/report.md`](results/report.md) (suite report).
+All numbers below are **[MEASURED]**.
+- **Models:** judge `gemini-3.1-flash-lite` for both v0 and v1, so before and after use the same model and data.
+- **Reports:** [`results/bias_validation.md`](results/bias_validation.md) (bias before → after, validation), [`results/report.md`](results/report.md) (suite report) and [`results/usage.md`](results/usage.md) (calls, tokens, latency, cost). Per-call records are in `results/experiments_raw.json`.
+- **Checks:**
+  - `tests/test_results.py` verifies counts, unique ids, parse rate, a single judge model, and that the metrics match a recomputation.
+  - `python -m judge experiments --stage bias --offline` reproduces the reports byte-for-byte from `cache/`.
 
-**Final results: pending.** The full suite with the current judge (`gemini-3.1-flash-lite`) and A/B generator (`gemma-4-26b-a4b-it`) has not run. Google returned `503 UNAVAILABLE "high demand"` for every model we tried, even after bounded retries (log in `../reports/progress_report.md`). No final number is reported until `results/bias_validation.md` and `results/ab_report.md` exist; `tests/test_results.py` then validates them.
+**Coverage**
 
-**Interim, incomplete [MEASURED]:** [`results/interim_gemini-3.5-flash-lite.md`](results/interim_gemini-3.5-flash-lite.md).
-- Source: the cached calls of the replaced judge `gemini-3.5-flash-lite`, one judge model only, built with no API calls.
-- Coverage: v0 complete (48 pointwise, 24 pairs); v1 partial (19 pointwise, 1 pair).
-- Finding: the naive v0 judge already scores 100% gold agreement, a 0% AB/BA flip rate and AUROC 1.00. These clear-cut probes hit a **ceiling** for this judge, so they may not show mitigation gains. Harder probes would be needed to show bias reduction.
+| Run | Calls | Result |
+|---|---|---|
+| P pointwise | 96 (48 outputs × v0, v1) | complete |
+| Q pairwise, AB + BA | 96 (24 pairs × 2 orders × v0, v1) | complete |
+| S self-preference | 32 (8 pairs × 2 orders × v0, v1) | complete |
+| R test-retest | 32 (16 outputs × 2 reruns) | complete |
 
-### How to finish (resumable; all cached calls are skipped)
+0 parse failures and 0 repair retries in 256 judge calls, costing $0.1405.
+
+**A/B comparison: not completed, no winner declared.** `gemma-4-26b-a4b-it` kept returning `503 UNAVAILABLE "high demand"`.
+- Generations so far: `gen_v1` 10/12 and `gen_v2` 1/12, so 13 are missing.
+- The pipeline (`judge compare`, decision rule fixed in advance) is implemented and unit-tested, but it has no complete A/B data.
+
+### Results [MEASURED]
+
+| Bias | v0 → v1 |
+|---|---|
+| Position | flip rate 0% → 0%; slot-1 win rate 50% → 50%; accuracy vs gold 100% (single order) → 100% (swap-aggregated) |
+| Verbosity / length | padded-minus-terse score −0.55 → −0.11. v0 **failed 8 of 12 padded-but-correct answers**; v1 passed 12/12 (`experiments_raw.json`, P records by variant). Padded preferred in pairwise 0% → 0%; verbose-wrong preferred 0% → 0% |
+| Self-enhancement | δ 0.00 → 0.00. Every one of the 32 verdicts was a tie: the judge rated each answer and its cross-family paraphrase as equal |
+| Sycophancy / style | confident-wrong passed 0% → 0% (false-premise subset 0/4 → 0/4); verbose-wrong passed 0% → 0% |
+| Score clustering | normalized entropy 0.63 → 0.76 (v1 uses all 5 levels); AUROC correct vs wrong 1.00 → 1.00 |
+
+**Validation:**
+- Gold agreement 100% → 100% (Cohen's κ 1.00 → 1.00, n = 36).
+- Pairwise gold agreement 100% → 100%.
+- Test-retest: 0% pass/fail flips (16 outputs × 3 runs, temperature 0, score range 0.00).
+- Adversarial probes (verbose-but-wrong, terse-but-correct, confident-wrong): not fooled.
+
+**Suite report (v1, 48 probes):** pass rate 0.50 [0.35, 0.65], mean score 0.63 [0.54, 0.72]. Mean per criterion:
+
+| Criterion | Mean (1–5) |
+|---|---|
+| correctness | 3.00 |
+| faithfulness | 3.02 |
+| completeness | 4.44 |
+| instruction-following | 3.54 |
+| tone/safety | 4.48 |
+
+**Cost of the mitigations:** v1 pointwise judging cost 3.2× v0 ($0.0448 vs $0.0139 for 48 calls; 37.8K vs 7.8K prompt tokens).
+
+## Discussion
+
+**How biased was the judge before vs after?**
+- On this probe suite the naive v0 judge showed **no measurable** position bias, sycophancy or self-preference. The probes hit a ceiling: v0 already scored 100% gold agreement and a 0% flip rate. So the v1 mitigations could not show a reduction in those biases. The honest reading is "no bias detected at this sensitivity", not "bias removed".
+- Two effects were measurable:
+  - **Length:** v0 was biased *against* length. It failed 8/12 correct answers that had content-free padding. The v1 rubric keeps correctness separate from instruction-following and passed them (padded-minus-terse −0.55 → −0.11).
+  - **Score spread:** v1 spread its scores over the full scale (entropy 0.63 → 0.76) with no loss of separation (AUROC 1.00).
+- The same pattern held for the replaced judge `gemini-3.5-flash-lite` (interim, v0 only: [`results/interim_gemini-3.5-flash-lite.md`](results/interim_gemini-3.5-flash-lite.md)).
+
+**Limitations, stated rather than fixed after seeing the data:**
+- The probes are clear-cut, so they cannot reveal subtler biases. Harder, borderline probes and human-labelled pairs are the next step.
+- n is small: 36 gold outputs, 24 pairs, 8 self-preference pairs.
+- The self-preference probe is insensitive: all ties.
+- The v1 pass rule does not gate on instruction-following. Padded answers to "answer in exactly one word" items still pass, although their instruction-following score drops.
+- Judge and generators all come from one vendor (Google).
+- The A/B comparison is unfinished.
+
+**Would we let it gate a release?** Not as the only gate (evidence for the decision):
+- On clear-cut cases it is accurate, deterministic at temperature 0 and order-insensitive.
+- Its real-task reliability is untested.
+- The pass rule ignores instruction-following.
+
+Reasonable guardrails:
+- use it as a regression filter;
+- run pairwise in both orders with verified quotes;
+- send every failure and every AB/BA disagreement to human review;
+- re-validate against human labels on harder probes before trusting it with borderline releases.
+
+### Resume (cached calls are skipped)
 
 ```powershell
-..\.venv\Scripts\python -m judge probe          # 1 judge + 1 generator call (2 attempts each); exit 0 = both available
-..\.venv\Scripts\python -u -m judge experiments --stage core
-$env:LLM_TIMEOUT_S=240; ..\.venv\Scripts\python -u -m judge experiments --stage gen --cache gen_calls.jsonl
-..\.venv\Scripts\python -u -m judge experiments                  # S + AB + all reports (or --stage bias without A/B)
-..\.venv\Scripts\python -m pytest -q                              # includes results validation
+..\.venv\Scripts\python -m judge probe
+$env:LLM_TIMEOUT_S=240; ..\.venv\Scripts\python -u -m judge experiments --stage gen --cache gen_calls.jsonl   # 13 A/B generations
+..\.venv\Scripts\python -u -m judge experiments        # runs only the 48 A/B judge calls (~$0.05 est.), rewrites all reports
+..\.venv\Scripts\python -m pytest -q
 ```
-
-Remaining: 298 judge calls (≈ $0.22 estimated from measured per-call costs) and 21 A/B generations ($0).

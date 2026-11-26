@@ -34,7 +34,7 @@ Every API call is cached and replayable. Hard spend caps apply (P1 $1.5 + P2 $3.
 | Phase 0: scaffold, pinned models, Gemini smoke test | done | `cd907dc` | `tests/` 6 passed |
 | Phase 1a: P1 corpus (8 docs), 18 eval + 5 dev questions, validators | done (questions AI-drafted; candidate review recommended) | `7e17448` | `problem1-rag/tests/` |
 | Phases 1b–2: P1 ingestion, query API, evaluation (retrieval, answers, latency, cost) | done | see git log | `problem1-rag/tests/` 35 passed |
-| Phases 3–4: P2 judge pipeline, bias + validation runs | not started | | |
+| Phases 3–4: P2 judge pipeline, bias + validation runs | bias + validation complete (judge gemini-3.1-flash-lite, 256 calls); A/B pending (Gemma 503, 13/24 generations missing) | see git log | `problem2-llm-judge/tests/` 16 + 3 results checks |
 | Phase 5: packaging, submission template | not started | | |
 
 **Pinned models (Phase 0):**

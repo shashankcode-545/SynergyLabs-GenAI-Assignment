@@ -1,0 +1,51 @@
+{
+ "provenance": {
+  "kind": "measured",
+  "ts": "2026-11-26T09:33:13",
+  "git": "977690a",
+  "judge": {
+   "name": "judge_v1",
+   "provider": "gemini",
+   "model": "gemini-3.1-flash-lite",
+   "family": "gemini",
+   "prompt_version": "v1",
+   "temperature": 0,
+   "seed": 42,
+   "thinking_level": "LOW",
+   "max_output_tokens": 2048
+  },
+  "api_calls_made": 32,
+  "cache_hits": 240,
+  "spent_total_usd": 0.1805
+ },
+ "suite": "suites/probes.jsonl",
+ "judge": "judge_v1",
+ "summary": {
+  "n": 48,
+  "parse_failed": 0,
+  "pass_rate": [
+   0.5,
+   0.3541666666666667,
+   0.6458333333333334
+  ],
+  "mean_score_norm": [
+   0.6307291666666667,
+   0.5403580729166667,
+   0.7190169270833333
+  ],
+  "calls": 48,
+  "cost_usd": 0.04483925,
+  "tokens": {
+   "prompt": 37817,
+   "output": 18008,
+   "thoughts": 5582
+  },
+  "mean_by_criterion": {
+   "correctness": 3.0,
+   "faithfulness": 3.0208333333333335,
+   "completeness": 4.4375,
+   "instruction_following": 3.5416666666666665,
+   "tone_safety": 4.479166666666667
+  }
+ }
+}

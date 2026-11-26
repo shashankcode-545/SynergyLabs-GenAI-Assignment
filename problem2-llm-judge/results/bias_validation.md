@@ -1,0 +1,28 @@
+# Bias handling [MEASURED]: judge v0 (naive) -> v1 (mitigated)
+
+Same judge model (`gemini-3.1-flash-lite`), same data; only the prompt and the code-side mitigations change.
+Probe suite: 12 items x {T terse-correct, P padded-correct, VW verbose-wrong, CW confident-wrong}; 24 pairs judged in both orders.
+
+| Bias | Mitigation implemented (in code) | Metric & result (before v0 -> after v1) |
+|---|---|---|
+| Position (A/B order) | every pair judged AB **and** BA; final verdict only if both orders agree, else tie (`judge.judge_pair`) | flip rate 0% -> 0%; slot-1 win rate 50% -> 50% (ideal 50%); accuracy vs gold: v0 single-order 100% -> v1 swap-aggregated 100% |
+| Verbosity / length | rubric penalizes content-free length under instruction_following; padded-answer probe; "do not reward length" rule | padded-minus-terse score -0.55 -> -0.11; padded preferred over terse (pairwise) 0% -> 0%; verbose-wrong preferred over terse-correct 0% -> 0% |
+| Self-enhancement | `family` on every config; `guard_family` refuses judge.family == generator.family; A/B generator is Gemma (judge is Gemini) | self-preference delta 0.00 -> 0.00 (0 = no preference for Gemini-written text; 4 items x 2 sets x 2 orders) |
+| Sycophancy / style | per-criterion verbatim evidence, correctness quote verified in code (unverified -> fail); reference block; pairwise decisive quote verified (else tie) | confident-wrong passed 0% -> 0% (false-premise subset 0/4 -> 0/4); verbose-wrong passed 0% -> 0% |
+| Score clustering | 1-5 anchors per criterion + 3 few-shot calibration examples; pairwise for comparisons | normalized entropy 0.63 -> 0.76 (7/10 -> 5/5 levels used); AUROC correct vs wrong 1.00 -> 1.00 |
+
+Parse failures: pointwise 0/48 -> 0/48, pairwise 0/24 -> 0/24.
+Self-preference raw: P(Gemini original beats Gemma paraphrase) 0.50 -> 0.50; P(Gemma original beats Gemini paraphrase) 0.50 -> 0.50.
+Limitation: Gemma and Gemini share a vendor (Google), so the "different family" mitigation is partial; n is small, so differences are indicative.
+
+# Judge validation [MEASURED]
+
+| Method | Result (v0 -> v1) | Notes |
+|---|---|---|
+| Agreement with gold labels (pointwise pass/fail) | 100% -> 100% | n = 36 outputs with constructed gold (T pass, VW/CW fail) |
+| Cohen's kappa vs gold | 1.00 -> 1.00 | same outputs |
+| Pairwise agreement with gold winner | 100% (single order) -> 100% (swap-aggregated) | 24 pairs; T-vs-P counts tie or terse as correct |
+| Test-retest flip rate (v1) | 0% pass/fail flips | 16 outputs x 3 runs at temperature 0; mean weighted-score range 0.00 |
+| Adversarial: verbose-but-wrong passed? | 0% -> 0% | fooled = passed |
+| Adversarial: terse-but-correct failed? | 0% -> 0% | fooled = failed |
+| Adversarial: confident-wrong passed? | 0% -> 0% | includes 4 false-premise (sycophancy) items |

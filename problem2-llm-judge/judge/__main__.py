@@ -26,6 +26,7 @@ def main():
     p.add_argument("--stage", choices=["all", "gen", "core", "bias"], default="all")
     p.add_argument("--cache", help="log file to append to (default: judge_<judge model>.jsonl; all cache/*.jsonl are read)")
     p = sub.add_parser("probe", help="API availability check: 1 judge + 1 generator call (both reused by the suite)")
+    p = sub.add_parser("usage", help="judge calls/tokens/latency/cost per run from the judge cache (offline)")
     p = sub.add_parser("interim", help="offline report from cached calls of one judge model")
     p.add_argument("--model", required=True)
     p = sub.add_parser("show")
@@ -66,6 +67,9 @@ def main():
         res = availability_probe(llm, make_llm(cache_name="gen_calls.jsonl"), make_llm(offline=True))
         print(json.dumps(res))
         sys.exit(0 if res["judge"] and res["generator"] else 1)
+    elif a.cmd == "usage":
+        from .experiments import usage_report
+        print(usage_report())
     elif a.cmd == "interim":
         from .experiments import interim_report
         interim_report(a.model)

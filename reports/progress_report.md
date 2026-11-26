@@ -1,5 +1,37 @@
 # Progress report
 
+## Update 2026-11-26: P2 bias + validation complete; A/B blocked by Gemma 503 (uncommitted, pending approval)
+
+- **Judge** `gemini-3.1-flash-lite`, key `GEMINI_API_KEY_P2`. Every run is complete and verified:
+
+  | Run | Calls |
+  |---|---|
+  | P | 96 |
+  | Q | 96 |
+  | S | 32 |
+  | R | 32 |
+
+  256 calls, $0.1405 (`results/usage.md`); 0 parse failures; 0 repairs.
+- **Validation:** `tests/test_results.py` passes 3/3. An offline replay reproduces `bias_validation.md` and `report.md` byte-for-byte.
+- **Results** (`results/bias_validation.md`):
+  - no position bias, sycophancy or self-preference detected, in v0 or v1 (ceiling on clear-cut probes);
+  - v0 failed 8/12 padded-but-correct answers, v1 0/12 (padded-minus-terse −0.55 → −0.11);
+  - score entropy 0.63 → 0.76;
+  - gold agreement 100% → 100% (κ 1.00);
+  - test-retest flips 0%.
+- **Errors during the run (all progress kept):**
+  - core stage: 1× `504 DEADLINE_EXCEEDED` (not in the retry list at the time; 504 has since been added to the bounded-retry codes), then a successful resume;
+  - Gemma: 503 "high demand" on 3 attempts. The last bounded loop made no progress and stopped.
+
+  Logs: `evidence/p2_run_*.log`.
+- **A/B: not completed.** Generations `gen_v1` 10/12, `gen_v2` 1/12 (13 missing); 48 A/B judge calls not run; **no winner declared**.
+- **Deliverables updated:**
+  - P2 README (results, Discussion, limitations);
+  - `reports/submission.docx`: bias, validation, rubric and design cells filled from results; A/B cells PENDING; candidate cells untouched; headings verified.
+- **Spend:** P2 total across all cache files $0.1805 of $3.50.
+- **Remaining:** 13 Gemma generations ($0) and 48 judge calls (≈ $0.05 est.).
+- **Resume:** `--stage gen --cache gen_calls.jsonl`, then `experiments`.
+
 ## Update 2026-11-25: offline recovery work while Google returns 503 (no live calls made)
 
 - **Interim report** (offline, cached data only): `problem2-llm-judge/results/interim_gemini-3.5-flash-lite.md`.

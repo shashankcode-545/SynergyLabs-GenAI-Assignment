@@ -1,0 +1,118 @@
+{
+ "provenance": {
+  "kind": "measured",
+  "ts": "2026-11-26T09:33:13",
+  "git": "977690a",
+  "judge": {
+   "name": "judge_v1",
+   "provider": "gemini",
+   "model": "gemini-3.1-flash-lite",
+   "family": "gemini",
+   "prompt_version": "v1",
+   "temperature": 0,
+   "seed": 42,
+   "thinking_level": "LOW",
+   "max_output_tokens": 2048
+  },
+  "api_calls_made": 32,
+  "cache_hits": 240,
+  "spent_total_usd": 0.1805
+ },
+ "metrics": {
+  "pointwise": {
+   "v0": {
+    "n": 48,
+    "parse_failed": 0,
+    "gold_accuracy": 1.0,
+    "gold_kappa": 1.0,
+    "n_gold": 36,
+    "T_failed_rate": 0.0,
+    "VW_passed_rate": 0.0,
+    "CW_passed_rate": 0.0,
+    "CW_false_premise_passed": "0/4",
+    "pad_minus_terse": [
+     -0.5462962962962963,
+     -0.7129629629629631,
+     -0.3796296296296297
+    ],
+    "length_spearman_correct_only": -0.7504395083990973,
+    "norm_entropy": 0.6300011633708066,
+    "distinct_levels": 7,
+    "scale_levels": 10,
+    "auroc_correct_vs_wrong": 1.0,
+    "ungrounded_correctness": 0
+   },
+   "v1": {
+    "n": 48,
+    "parse_failed": 0,
+    "gold_accuracy": 1.0,
+    "gold_kappa": 1.0,
+    "n_gold": 36,
+    "T_failed_rate": 0.0,
+    "VW_passed_rate": 0.0,
+    "CW_passed_rate": 0.0,
+    "CW_false_premise_passed": "0/4",
+    "pad_minus_terse": [
+     -0.11249999999999998,
+     -0.13124999999999995,
+     -0.09687499999999995
+    ],
+    "length_spearman_correct_only": -0.7865386509538472,
+    "norm_entropy": 0.7620195005216853,
+    "distinct_levels": 5,
+    "scale_levels": 5,
+    "auroc_correct_vs_wrong": 1.0,
+    "ungrounded_correctness": 0
+   }
+  },
+  "pairwise": {
+   "v0": {
+    "n": 24,
+    "parse_failed": 0,
+    "flip_rate": 0.0,
+    "slot1_win_rate": 0.5,
+    "single_order_accuracy": 1.0,
+    "swap_final_accuracy": 1.0,
+    "ties_from_disagreement": 0.0,
+    "padded_preferred_single_order": 0.0,
+    "padded_preferred_final": 0.0,
+    "verbose_wrong_preferred_single_order": 0.0,
+    "verbose_wrong_preferred_final": 0.0,
+    "ungrounded_winner_orders": 0
+   },
+   "v1": {
+    "n": 24,
+    "parse_failed": 0,
+    "flip_rate": 0.0,
+    "slot1_win_rate": 0.5,
+    "single_order_accuracy": 1.0,
+    "swap_final_accuracy": 1.0,
+    "ties_from_disagreement": 0.0,
+    "padded_preferred_single_order": 0.0,
+    "padded_preferred_final": 0.0,
+    "verbose_wrong_preferred_single_order": 0.0,
+    "verbose_wrong_preferred_final": 0.0,
+    "ungrounded_winner_orders": 0
+   }
+  },
+  "self_preference": {
+   "v0": {
+    "P_X_gemini_original_wins": 0.5,
+    "P_Y_gemma_original_wins": 0.5,
+    "delta_self_preference": 0.0
+   },
+   "v1": {
+    "P_X_gemini_original_wins": 0.5,
+    "P_Y_gemma_original_wins": 0.5,
+    "delta_self_preference": 0.0
+   }
+  },
+  "test_retest_v1": {
+   "outputs": 16,
+   "runs_each": 3,
+   "temperature": 0,
+   "verdict_flip_rate": 0.0,
+   "mean_weighted_score_range": 0.0
+  }
+ }
+}

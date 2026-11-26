@@ -156,8 +156,9 @@ def fill(doc):
     for t, text in zip(T[10:16], d1):
         set_cell(t, text)
 
-    PENDING = ("PENDING - not yet measured: live judge runs blocked by Gemini 503 'high demand' (reports/progress_report.md). "
-               "Interim, incomplete data: problem2-llm-judge/results/interim_gemini-3.5-flash-lite.md")
+    PENDING = ("PENDING - not measured: " + ("A/B generator gemma-4-26b-a4b-it returned 503 'high demand' (13 of 24 A/B "
+               "generations missing); see problem2-llm-judge/README.md" if bv else "live judge runs blocked by Gemini 503 "
+               "'high demand' (reports/progress_report.md); interim data: problem2-llm-judge/results/interim_gemini-3.5-flash-lite.md"))
     gen_model = yaml.safe_load((ROOT / "problem2-llm-judge/configs/gen_v1.yaml").read_text())["model"]
     if bv:
         mt = bv["metrics"]
